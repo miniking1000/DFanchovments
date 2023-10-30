@@ -2,10 +2,14 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.pythonchik.dfanchovments.DFanchovments;
@@ -13,17 +17,34 @@ import org.pythonchik.dfanchovments.DFanchovments;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class soulbreak extends CEnchantment implements Listener {
+public class vampire extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
 
-    public soulbreak(NamespacedKey id) {
+
+    @EventHandler
+    public void onHit(EntityDamageByEntityEvent event){
+        if (!(event.getDamager() instanceof Player)){
+            return;
+        }
+        Player player = (Player) event.getDamager();
+        if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getItemMeta() != null) {
+            if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.vampire)) {
+                double hp = player.getHealth() * (event.getDamage() / ((4-player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.vampire).intValue())*10));
+                if (hp > 20)
+                    hp = 20.0;
+                player.setHealth(hp);
+                player.getWorld().spawnParticle(Particle.HEART, event.getEntity().getLocation(), 1);
+            }
+        }
+    }
+
+    public vampire(NamespacedKey id) {
         super(id);
     }
 
     public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"soulbreak");
+        return new NamespacedKey(plugin,"vampire");
     }
     @Override
     public List<String> getTragers(){
@@ -38,12 +59,12 @@ public class soulbreak extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "Уничтожение души";
+        return "вампиризм";
     }
 
     @Override
     public int getMaxLevel() {
-        return 1;
+        return 3;
     }
 
     @Override

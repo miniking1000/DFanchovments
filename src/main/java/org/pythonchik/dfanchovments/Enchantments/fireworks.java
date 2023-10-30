@@ -5,51 +5,57 @@ import org.bukkit.NamespacedKey;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class Arrain extends CEnchantment implements Listener {
+public class fireworks extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
 
-    public Arrain(NamespacedKey id) {
-        super(id);
-    }
-
-
     @EventHandler
-    public void onArrowHit(ProjectileHitEvent event){
-        if (event.getHitEntity() == null){
-            return;
-        }
+    private void HAHAH(ProjectileHitEvent event){
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.ARrain)) {
-            if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.1){
-                EntityType arrow = EntityType.ARROW;
-                for (int i=0;i<((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*3;i++){
-                    event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(Math.random()*3-1.5,30-5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),Math.random()*3-1.5),arrow).setVelocity(new Vector(0,-2*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0));
+        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.fireworks)) {
+            if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.25){
+                final Collection<Entity> list = event.getEntity().getWorld().getNearbyEntities(event.getEntity().getLocation(), 2, 2, 2);
+                for (final Entity entity : list)
+                {
+                    if (!(entity instanceof Damageable))
+                        continue;
+                    EntityDamageEvent e = new EntityDamageEvent(entity, EntityDamageEvent.DamageCause.PROJECTILE, 0);
+                    Bukkit.getPluginManager().callEvent(e);
+                    if (e.isCancelled())
+                        continue;
+
+                    Damageable le = ((Damageable) entity);
+                    event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 0F);
+                    le.damage(((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*2);
                 }
-                event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(0,5+5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0),arrow);
             }
         }
     }
 
-    public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"ARrain");
+    public fireworks(NamespacedKey id) {
+        super(id);
     }
 
+    public NamespacedKey getId(){
+        return new NamespacedKey(plugin,"fireworks");
+    }
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
@@ -58,12 +64,12 @@ public class Arrain extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "ARrain";
+        return "Пороховой заряд";
     }
 
     @Override
     public int getMaxLevel() {
-        return 5;
+        return 3;
     }
 
     @Override

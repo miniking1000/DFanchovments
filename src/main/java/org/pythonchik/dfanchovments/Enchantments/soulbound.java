@@ -2,6 +2,7 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.pythonchik.dfanchovments.CEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
@@ -10,15 +11,15 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.pythonchik.dfanchovments.DFanchovments;
-import org.pythonchik.dfanchovments.Enchantments.soulbreak;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class soulbound extends Enchantment implements Listener {
+public class soulbound extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
     private final static Map<Player, List<ItemStack>> itemsToKeep = new HashMap<Player, List<ItemStack>>();
@@ -44,52 +45,53 @@ public class soulbound extends Enchantment implements Listener {
         e.getDrops().removeAll(soulbound);
         itemsToKeep.put(e.getEntity(), soulbound);
     }
-
+    @Override
     public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         {
+        retu.add("BOW");
         //swords
-        retu.add("wooden_sword");
-        retu.add("stone_sword");
-        retu.add("iron_sword");
-        retu.add("diamond_sword");
-        retu.add("golden_sword");
-        retu.add("netherite_sword");
+        retu.add("WOODEN_SWORD");
+        retu.add("STONE_SWORD");
+        retu.add("IRON_SWORD");
+        retu.add("DIAMOND_SWORD");
+        retu.add("GOLDEN_SWORD");
+        retu.add("NETHERITE_SWORD");
         //picks
-        retu.add("wooden_pickaxe");
-        retu.add("stone_pickaxe");
-        retu.add("iron_pickaxe");
-        retu.add("diamond_pickaxe");
-        retu.add("golden_pickaxe");
-        retu.add("netherite_pickaxe");
+        retu.add("WOODEN_PICKAXE");
+        retu.add("STONE_PICKAXE");
+        retu.add("IRON_PICKAXE");
+        retu.add("DIAMOND_PICKAXE");
+        retu.add("GOLDEN_PICKAXE");
+        retu.add("NETHERITE_PICKAXE");
         //hellmets
-        retu.add("leather_helmet");
-        retu.add("chainmail_helmet");
-        retu.add("iron_helmet");
-        retu.add("diamond_helmet");
-        retu.add("golden_helmet");
-        retu.add("netherite_helmet");
-        //chestplates
-        retu.add("leather_chestplate");
-        retu.add("chainmail_chestplate");
-        retu.add("iron_chestplate");
-        retu.add("diamond_chestplate");
-        retu.add("golden_chestplate");
-        retu.add("netherite_chestplate");
+        retu.add("LEATHER_HELMET");
+        retu.add("CHAINMAIL_HELMET");
+        retu.add("IRON_HELMET");
+        retu.add("DIAMOND_HELMET");
+        retu.add("GOLDEN_HELMET");
+        retu.add("NETHERITE_HELMET");
+        //chestplaTES
+        retu.add("LEATHER_CHESTPLATE");
+        retu.add("CHAINMAIL_CHESTPLATE");
+        retu.add("IRON_CHESTPLATE");
+        retu.add("DIAMOND_CHESTPLATE");
+        retu.add("GOLDEN_CHESTPLATE");
+        retu.add("NETHERITE_CHESTPLATE");
         //laggings
-        retu.add("leather_leggings");
-        retu.add("chainmail_leggings");
-        retu.add("iron_leggings");
-        retu.add("diamond_leggings");
-        retu.add("golden_leggings");
-        retu.add("netherite_leggings");
+        retu.add("LEATHER_LEGGINGS");
+        retu.add("CHAINMAIL_LEGGINGS");
+        retu.add("IRON_LEGGINGS");
+        retu.add("DIAMOND_LEGGINGS");
+        retu.add("GOLDEN_LEGGINGS");
+        retu.add("NETHERITE_LEGGINGS");
         //bots
-        retu.add("leather_boots");
-        retu.add("chainmail_boots");
-        retu.add("iron_boots");
-        retu.add("diamond_boots");
-        retu.add("golden_boots");
-        retu.add("netherite_boots");
+        retu.add("LEATHER_BOOTS");
+        retu.add("CHAINMAIL_BOOTS");
+        retu.add("IRON_BOOTS");
+        retu.add("DIAMOND_BOOTS");
+        retu.add("GOLDEN_BOOTS");
+        retu.add("NETHERITE_BOOTS");
     } // adding items swords/picks/armor
         return retu;
     }
@@ -139,7 +141,12 @@ public class soulbound extends Enchantment implements Listener {
     }
 
     @Override
-    public boolean conflictsWith(Enchantment other) {
+    public boolean conflictsWith(@NotNull Enchantment other) {
+        return false;
+    }
+
+    @Override
+    public boolean conflictsWith(CEnchantment other) {
         return false;
     }
 

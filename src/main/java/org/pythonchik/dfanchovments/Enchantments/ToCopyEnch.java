@@ -2,16 +2,19 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+
+import org.pythonchik.dfanchovments.CEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ToCopyEnch extends Enchantment implements Listener {
+public class ToCopyEnch extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
 
@@ -22,7 +25,7 @@ public class ToCopyEnch extends Enchantment implements Listener {
     public NamespacedKey getId(){
         return new NamespacedKey(plugin,"name");
     }
-
+    @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
         retu.add("bedrock");
@@ -59,7 +62,12 @@ public class ToCopyEnch extends Enchantment implements Listener {
     }
 
     @Override
-    public boolean conflictsWith(Enchantment other) {
+    public boolean conflictsWith(@NotNull CEnchantment other) {
+        return false;
+    }
+
+    @Override
+    public boolean conflictsWith(@NotNull Enchantment other) {
         return false;
     }
 

@@ -8,7 +8,7 @@ public class XP {
 
     public XP(){}
 
-    public int getTotalExperience(Player player) {
+    public static int getTotalExperience(Player player) {
         int experience = 0;
         int level = player.getLevel();
         if(level >= 0 && level <= 15) {
@@ -32,7 +32,7 @@ public class XP {
         }
     }
 
-    public void setTotalExperience(Player player,int xp) {
+    public static void setTotalExperience(Player player,int xp) {
         //Levels 0 through 15
         if(xp >= 0 && xp < 351) {
             //Calculate Everything
@@ -82,7 +82,7 @@ public class XP {
         }
     }
 
-    private float round(float d, int decimalPlace) {
+    private static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_DOWN);
         return bd.floatValue();

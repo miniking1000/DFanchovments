@@ -1,24 +1,23 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.pythonchik.dfanchovments.CEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.joml.Random;
+import org.jetbrains.annotations.NotNull;
 import org.pythonchik.dfanchovments.DFanchovments;
 import org.pythonchik.dfanchovments.XP;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class XPEnch extends Enchantment implements Listener {
+public class XPEnch extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
     XP xpclass = new XP();
@@ -44,15 +43,15 @@ public class XPEnch extends Enchantment implements Listener {
     public NamespacedKey getId(){
         return new NamespacedKey(plugin,"XPEnch");
     }
-
+    @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
-        retu.add("wooden_sword");
-        retu.add("stone_sword");
-        retu.add("iron_sword");
-        retu.add("diamond_sword");
-        retu.add("golden_sword");
-        retu.add("netherite_sword");
+        retu.add("WOODEN_SWORD");
+        retu.add("STONE_SWORD");
+        retu.add("IRON_SWORD");
+        retu.add("DIAMOND_SWORD");
+        retu.add("GOLDEN_SWORD");
+        retu.add("NETHERITE_SWORD");
         return retu;
     }
     @Override
@@ -86,7 +85,12 @@ public class XPEnch extends Enchantment implements Listener {
     }
 
     @Override
-    public boolean conflictsWith(Enchantment other) {
+    public boolean conflictsWith(@NotNull Enchantment other) {
+        return false;
+    }
+
+    @Override
+    public boolean conflictsWith(CEnchantment other) {
         return false;
     }
 
