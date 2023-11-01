@@ -32,6 +32,9 @@ public class shockwave extends CEnchantment implements Listener {
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
+        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null){
+            return;
+        }
         if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.shockwave)) {
             if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.25){
                 final Collection<Entity> list = event.getEntity().getWorld().getNearbyEntities(event.getEntity().getLocation(), ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()+1, ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()+1, ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()+1);
@@ -66,7 +69,7 @@ public class shockwave extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "Ударная волна";
+        return DFanchovments.getConfig1().getString("shockwave.name");
     }
 
     @Override

@@ -49,6 +49,7 @@ public class soulbound extends CEnchantment implements Listener {
     public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         {
+        retu.add("MUSHROOM_STEM");
         retu.add("BOW");
         //swords
         retu.add("WOODEN_SWORD");
@@ -112,7 +113,7 @@ public class soulbound extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "Свзязь души";
+        return DFanchovments.getConfig1().getString("soulbound.name");
     }
 
     @Override

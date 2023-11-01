@@ -52,7 +52,7 @@ public class telepathy extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "telepathy";
+        return DFanchovments.getConfig1().getString("telepathy.name");
     }
 
     @Override

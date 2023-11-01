@@ -43,6 +43,12 @@ public class XP {
             int experienceNeeded = (2 * level) + 7;
             float experience = (float) remainder / (float) experienceNeeded;
             experience = round(experience, 2);
+            if (experience >1){
+                experience = 1;
+            }
+            if (experience <0){
+                experience = 0;
+            }
 
 
             //Set Everything
@@ -60,6 +66,13 @@ public class XP {
             float experience = (float) remainder / (float) experienceNeeded;
             experience = round(experience, 2);
 
+            if (experience >1){
+                experience = 1;
+            }
+            if (experience <0){
+                experience = 0;
+            }
+
             //Set Everything
             player.setLevel(level);
             player.setExp(experience);
@@ -74,6 +87,13 @@ public class XP {
             int experienceNeeded = (9 * level) - 158;
             float experience = (float) remainder / (float) experienceNeeded;
             experience = round(experience, 2);
+
+            if (experience >1){
+                experience = 1;
+            }
+            if (experience <0){
+                experience = 0;
+            }
 
 
             //Set Everything

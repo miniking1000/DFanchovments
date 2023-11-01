@@ -33,7 +33,7 @@ public class ToCopyEnch extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "name";
+        return DFanchovments.getConfig1().getString("name.name");
     }
 
     @Override

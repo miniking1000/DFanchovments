@@ -38,7 +38,7 @@ public class soulbreak extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "Уничтожение души";
+        return DFanchovments.getConfig1().getString("soulbreak.name");
     }
 
     @Override

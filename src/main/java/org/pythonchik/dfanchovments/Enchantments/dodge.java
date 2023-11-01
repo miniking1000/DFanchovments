@@ -52,7 +52,7 @@ public class dodge extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "Уклонение";
+        return DFanchovments.getConfig1().getString("dodge.name");
     }
 
     @Override

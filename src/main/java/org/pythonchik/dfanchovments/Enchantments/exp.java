@@ -17,31 +17,33 @@ import org.pythonchik.dfanchovments.XP;
 import java.util.ArrayList;
 import java.util.List;
 
-public class XPEnch extends CEnchantment implements Listener {
+public class exp extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
-    XP xpclass = new XP();
+
     @EventHandler
-    public void onBitchEvent(EntityDeathEvent event){
+    public void ondKillEvent(EntityDeathEvent event){
 
         if (event.getEntity().getKiller() == null){
             return;
         }
         Player player = event.getEntity().getKiller();
-        //if (!player.getInventory().getItemInMainHand().equals(new ItemStack(Material.AIR)) && player.getInventory().getItemInMainHand().getItemMeta() != null) {
-            if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(this)) {
-                int a = xpclass.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*2);
-                xpclass.setTotalExperience(player, a);
-            }
-        //}
+        if (player.getInventory().getItemInMainHand().getItemMeta() == null){
+            return;
+        }
+        if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(this)) {
+            int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*2);
+            XP.setTotalExperience(player, a);
+        }
+
     }
 
-    public XPEnch(NamespacedKey id) {
+    public exp(NamespacedKey id) {
         super(id);
     }
 
     public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"XPEnch");
+        return new NamespacedKey(plugin,"exp");
     }
     @Override
     public List<String> getTragers(){
@@ -56,7 +58,7 @@ public class XPEnch extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "Образование";
+        return DFanchovments.getConfig1().getString("exp.name");
     }
 
     @Override

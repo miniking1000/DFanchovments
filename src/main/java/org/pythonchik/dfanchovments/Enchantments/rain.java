@@ -18,11 +18,11 @@ import org.pythonchik.dfanchovments.DFanchovments;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Arrain extends CEnchantment implements Listener {
+public class rain extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
 
-    public Arrain(NamespacedKey id) {
+    public rain(NamespacedKey id) {
         super(id);
     }
 
@@ -35,11 +35,14 @@ public class Arrain extends CEnchantment implements Listener {
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.ARrain)) {
+        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null){
+            return;
+        }
+        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(this)) {
             if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.1){
                 EntityType arrow = EntityType.ARROW;
-                for (int i=0;i<((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*3;i++){
-                    event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(Math.random()*3-1.5,30-5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),Math.random()*3-1.5),arrow).setVelocity(new Vector(0,-2*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0));
+                for (int i=0;i<((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue();i++){
+                    event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(Math.random()*1-0.5,30-5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),Math.random()*1-0.5),arrow).setVelocity(new Vector(0,-5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0));
                 }
                 event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(0,5+5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0),arrow);
             }
@@ -47,7 +50,7 @@ public class Arrain extends CEnchantment implements Listener {
     }
 
     public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"ARrain");
+        return new NamespacedKey(plugin,"rain");
     }
 
     @Override
@@ -58,7 +61,7 @@ public class Arrain extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "ARrain";
+        return DFanchovments.getConfig1().getString("rain.name");
     }
 
     @Override

@@ -29,6 +29,9 @@ public class fireworks extends CEnchantment implements Listener {
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
+        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null){
+            return;
+        }
         if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.fireworks)) {
             if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.25){
                 final Collection<Entity> list = event.getEntity().getWorld().getNearbyEntities(event.getEntity().getLocation(), 2, 2, 2);
@@ -64,7 +67,7 @@ public class fireworks extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "Пороховой заряд";
+        return DFanchovments.getConfig1().getString("fireworks.name");
     }
 
     @Override

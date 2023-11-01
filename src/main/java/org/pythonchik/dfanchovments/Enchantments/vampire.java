@@ -30,9 +30,9 @@ public class vampire extends CEnchantment implements Listener {
         Player player = (Player) event.getDamager();
         if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getItemMeta() != null) {
             if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.vampire)) {
-                double hp = player.getHealth() * (event.getDamage() / ((4-player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.vampire).intValue())*10));
-                if (hp > 20)
-                    hp = 20.0;
+                double hp = player.getHealth() + player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.vampire).doubleValue();
+                if (hp > player.getMaxHealth())
+                    hp = player.getMaxHealth();
                 player.setHealth(hp);
                 player.getWorld().spawnParticle(Particle.HEART, event.getEntity().getLocation(), 1);
             }
@@ -59,7 +59,7 @@ public class vampire extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "вампиризм";
+        return DFanchovments.getConfig1().getString("vampire.name");
     }
 
     @Override

@@ -52,7 +52,7 @@ public class potioness extends CEnchantment implements Listener {
             }
         }
         if (lvl >0) {
-            ((Player) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.POISON,10*lvl,lvl==1||lvl==2||lvl==3? 0 : lvl==4||lvl==5||lvl==6? 1 : lvl==7||lvl==8||lvl==9||lvl==10 ? 2 : lvl==11||lvl==12||lvl==13||lvl==14||lvl==15 ? 3 : 5));
+            ((Player) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.POISON,25*lvl,lvl==1?0:lvl==2||lvl==3? 1 : lvl==4||lvl==5||lvl==6? 2 : lvl==7||lvl==8||lvl==9||lvl==10 ? 4 : lvl==11||lvl==12||lvl==13||lvl==14||lvl==15 ? 6 : 7));
         }
     }
 
@@ -98,7 +98,7 @@ public class potioness extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return "Отравленность";
+        return DFanchovments.getConfig1().getString("potioness.name");
     }
 
     @Override
