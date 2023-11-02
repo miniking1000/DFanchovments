@@ -31,10 +31,12 @@ public class vampire extends CEnchantment implements Listener {
         if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getItemMeta() != null) {
             if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.vampire)) {
                 double hp = player.getHealth() + player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.vampire).doubleValue();
-                if (hp > player.getMaxHealth())
-                    hp = player.getMaxHealth();
-                player.setHealth(hp);
-                player.getWorld().spawnParticle(Particle.HEART, event.getEntity().getLocation(), 1);
+                if (Math.random() <= player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.vampire).doubleValue()*0.05) {
+                    if (hp > player.getMaxHealth())
+                        hp = player.getMaxHealth();
+                    player.setHealth(hp);
+                    player.getWorld().spawnParticle(Particle.HEART, event.getEntity().getLocation(), 1);
+                }
             }
         }
     }

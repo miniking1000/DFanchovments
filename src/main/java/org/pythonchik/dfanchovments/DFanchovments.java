@@ -23,7 +23,6 @@ public final class DFanchovments extends JavaPlugin {
     public static shockwave shockwave;
     public static fireworks fireworks;
     public static vampire vampire;
-    public static telepathy telepathy;
     public static potioness potioness;
     public static dodge dodge;
 
@@ -50,7 +49,6 @@ public final class DFanchovments extends JavaPlugin {
         shockwave = new shockwave(new NamespacedKey(plugin,"shockwave"));
         fireworks = new fireworks(new NamespacedKey(plugin,"fireworks"));
         vampire = new vampire(new NamespacedKey(plugin, "vampire"));
-        telepathy = new telepathy(new NamespacedKey(plugin,"telepathy"));
         potioness = new potioness(new NamespacedKey(plugin,"potioness"));
         dodge = new dodge(new NamespacedKey(plugin, "dodge"));
         rain = new rain(new NamespacedKey(plugin,"rain"));
@@ -62,7 +60,6 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(shockwave);
         CEnchantments.add(fireworks);
         CEnchantments.add(vampire);
-        CEnchantments.add(telepathy);
         CEnchantments.add(potioness);
         CEnchantments.add(dodge);
         CEnchantments.add(exp);
@@ -72,18 +69,19 @@ public final class DFanchovments extends JavaPlugin {
         loadConfig();
         LoadEnchantments();
 
+        getServer().getPluginManager().registerEvents(new dfchants(config,this),this);
+        getServer().getPluginManager().registerEvents(new fishing(),this);
 
         getServer().getPluginManager().registerEvents(soulbound,this);
         getServer().getPluginManager().registerEvents(shockwave,this);
         getServer().getPluginManager().registerEvents(fireworks,this);
         getServer().getPluginManager().registerEvents(vampire,this);
-        getServer().getPluginManager().registerEvents(telepathy,this);
         getServer().getPluginManager().registerEvents(potioness,this);
         getServer().getPluginManager().registerEvents(dodge,this);
         getServer().getPluginManager().registerEvents(exp,this);
         getServer().getPluginManager().registerEvents(rain,this);
-        getServer().getPluginManager().registerEvents(new dfchants(config,this),this);
         //any listeners to ench
+
         getCommand("dfchants").setExecutor(new dfchants(config,this));
     }
 
@@ -107,7 +105,6 @@ public final class DFanchovments extends JavaPlugin {
             Enchantment.registerEnchantment(shockwave);
             Enchantment.registerEnchantment(fireworks);
             Enchantment.registerEnchantment(vampire);
-            Enchantment.registerEnchantment(telepathy);
             Enchantment.registerEnchantment(potioness);
             Enchantment.registerEnchantment(dodge);
             Enchantment.registerEnchantment(exp);

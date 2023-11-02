@@ -2,49 +2,62 @@ exp:
   name: "&7Образование"
   lore: "&6Данное зачарование позваолит вам добывать больше опыта при убийстве мобов"
   material: "EXPERIENCE_BOTTLE"
-  xp: 18021
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
 soulbreak:
   name: "&7Уничтожение души"
   lore: "&6Данное зачарование не даст зачарованию Связь Души сработать"
   material: "WHITE_CANDLE"
-  xp: 8670
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
 soulbound:
   name: "&7Связь Души"
   lore: "&6Данное зачарование позваолит вам не терять вещь при смерти"
   material: "WHITE_BANNER"
-  xp: 24045
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
 rain:
   name: "&7Шквал Стрел"
   lore: "&6Обрушивает на противника шквал стрел при попадании"
   material: "ARROW"
-  xp: 8670
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
 shockwave:
   name: "&7Тяжелая стрела"
   lore: "&6При попадании в землю нанесет урон в небольшом радиусе"
   material: "ANVIL"
-  xp: 8670
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
 fireworks:
   name: "&7Пороховой заряд"
   lore: "&6Стрелы будут взрыватся как фейрверки нанося немного дополнительного урона"
   material: "FIREWORK_ROCKET"
-  xp: 12895
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
 vampire:
   name: "&7Вампиризм"
   lore: "&6Восстанавливает вам здоровье за нанесенный урон&c(ахахаха)"
   material: "DRAGON_BREATH"
-  xp: 12895
-telepathy:
-  name: "&7Телепатия"
-  lore: "&6выкопанные блоки попадут сразу в инвентарь"
-  material: "HOPPER"
-  xp: 47520
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
 potioness:
   name: "&7Отравленность"
   lore: "&6При получении урона от игрока отравляет его на короткое время"
   material: "SPIDER_EYE"
-  xp: 24045
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
 dodge:
   name: "&7Уклониение"
   lore: "&6Иногда может полностью поглотить полученный урон"
   material: "BRUSH"
-  xp: 18021
+  biome: "MINECRAFT:FOREST"
+  chance: 5
+  luck: 3
