@@ -1,63 +1,55 @@
 exp:
   name: "&7Образование"
-  lore: "&6Данное зачарование позваолит вам добывать больше опыта при убийстве мобов"
-  material: "EXPERIENCE_BOTTLE"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
-  luck: 3
+  biome: "JAGGED_PEAKS"
+  chance: 3
+  luck: 2
 soulbreak:
   name: "&7Уничтожение души"
-  lore: "&6Данное зачарование не даст зачарованию Связь Души сработать"
-  material: "WHITE_CANDLE"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
-  luck: 3
+  biome: "THE_VOID"
+  chance: 9
+  luck: 2
 soulbound:
   name: "&7Связь Души"
-  lore: "&6Данное зачарование позваолит вам не терять вещь при смерти"
-  material: "WHITE_BANNER"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
-  luck: 3
+  biome: "SOUL_SAND_VALLEY"
+  chance: 1
+  luck: 2
 rain:
   name: "&7Шквал Стрел"
-  lore: "&6Обрушивает на противника шквал стрел при попадании"
-  material: "ARROW"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
-  luck: 3
+  biome: "WOODED_BADLANDS"
+  chance: 4
+  luck: 2
 shockwave:
   name: "&7Тяжелая стрела"
-  lore: "&6При попадании в землю нанесет урон в небольшом радиусе"
-  material: "ANVIL"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
-  luck: 3
+  biome: "STONY_SHORE"
+  chance: 4
+  luck: 2
 fireworks:
   name: "&7Пороховой заряд"
-  lore: "&6Стрелы будут взрыватся как фейрверки нанося немного дополнительного урона"
-  material: "FIREWORK_ROCKET"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
-  luck: 3
+  biome: "BADLANDS"
+  chance: 2
+  luck: 2
 vampire:
   name: "&7Вампиризм"
-  lore: "&6Восстанавливает вам здоровье за нанесенный урон&c(ахахаха)"
-  material: "DRAGON_BREATH"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
-  luck: 3
+  biome: "CRIMSON_FOREST"
+  chance: 1
+  luck: 0
 potioness:
   name: "&7Отравленность"
-  lore: "&6При получении урона от игрока отравляет его на короткое время"
-  material: "SPIDER_EYE"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
-  luck: 3
+  biome: "SPARSE_JUNGLE"
+  chance: 3
+  luck: 2
 dodge:
   name: "&7Уклониение"
-  lore: "&6Иногда может полностью поглотить полученный урон"
-  material: "BRUSH"
-  biome: "MINECRAFT:FOREST"
-  chance: 5
+  biome: "CHERRY_GROVE"
+  chance: 1
+  luck: 2
+bamboom:
+  name: "&7Звуковой заряд"
+  biome: "DEEP_DARK"
+  chance: 2
+  luck: 2
+leviosa:
+  name: "&7Левитация"
+  biome: "END_MIDLANDS"
+  chance: 2
   luck: 3

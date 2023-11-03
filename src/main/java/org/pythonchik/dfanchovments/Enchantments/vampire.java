@@ -35,7 +35,7 @@ public class vampire extends CEnchantment implements Listener {
                     if (hp > player.getMaxHealth())
                         hp = player.getMaxHealth();
                     player.setHealth(hp);
-                    player.getWorld().spawnParticle(Particle.HEART, event.getEntity().getLocation(), 1);
+                    player.getWorld().spawnParticle(Particle.HEART, event.getEntity().getLocation(), 5,1,1,1);
                 }
             }
         }

@@ -2,7 +2,4 @@ name: DFanchovments
 version: '${version}'
 main: org.pythonchik.dfanchovments.DFanchovments
 api-version: '1.20'
-commands:
-  dfchants :
-    description: YAPIII
-    usage: ask _Foxya_ for usage
+

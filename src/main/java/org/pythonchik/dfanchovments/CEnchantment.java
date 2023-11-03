@@ -34,7 +34,6 @@ public abstract class CEnchantment extends Enchantment {
      * @deprecated CEnchantments are badly named, use {@link #getKey()}.
      */
     @NotNull
-    @Deprecated
     public abstract String getName();
 
     /**
@@ -79,7 +78,7 @@ public abstract class CEnchantment extends Enchantment {
      * only for {@link CEnchantment#BINDING_CURSE} and
      * {@link CEnchantment#VANISHING_CURSE}.
      */
-    @Deprecated
+
     public abstract boolean isCursed();
 
     /**

@@ -25,6 +25,8 @@ public final class DFanchovments extends JavaPlugin {
     public static vampire vampire;
     public static potioness potioness;
     public static dodge dodge;
+    public static bamboom bamboom;
+    //public static leviosa leviosa;
 
     //add a line to ench
 
@@ -53,6 +55,8 @@ public final class DFanchovments extends JavaPlugin {
         dodge = new dodge(new NamespacedKey(plugin, "dodge"));
         rain = new rain(new NamespacedKey(plugin,"rain"));
         exp = new exp(new NamespacedKey(plugin,"exp"));
+        bamboom = new bamboom(new NamespacedKey(plugin,"bamboom"));
+        //leviosa = new leviosa((new NamespacedKey(plugin,"leviosa")));
         //add a line to ench
 
         CEnchantments.add(soulbreak);
@@ -64,13 +68,16 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(dodge);
         CEnchantments.add(exp);
         CEnchantments.add(rain);
+        CEnchantments.add(bamboom);
+        //CEnchantments.add(leviosa);
         //add a lint to ench
 
         loadConfig();
         LoadEnchantments();
 
-        getServer().getPluginManager().registerEvents(new dfchants(config,this),this);
+
         getServer().getPluginManager().registerEvents(new fishing(),this);
+        getServer().getPluginManager().registerEvents(new anvil(),this);
 
         getServer().getPluginManager().registerEvents(soulbound,this);
         getServer().getPluginManager().registerEvents(shockwave,this);
@@ -80,9 +87,11 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(dodge,this);
         getServer().getPluginManager().registerEvents(exp,this);
         getServer().getPluginManager().registerEvents(rain,this);
+        getServer().getPluginManager().registerEvents(bamboom,this);
+        //getServer().getPluginManager().registerEvents(leviosa,this);
         //any listeners to ench
 
-        getCommand("dfchants").setExecutor(new dfchants(config,this));
+        //getCommand("dfchants").setExecutor(new dfchants(config,this));
     }
 
     @Override
@@ -109,6 +118,8 @@ public final class DFanchovments extends JavaPlugin {
             Enchantment.registerEnchantment(dodge);
             Enchantment.registerEnchantment(exp);
             Enchantment.registerEnchantment(rain);
+            Enchantment.registerEnchantment(bamboom);
+            //Enchantment.registerEnchantment(leviosa);
             //add line to ench
         }
         catch (IllegalArgumentException e){

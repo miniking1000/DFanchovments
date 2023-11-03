@@ -2,6 +2,8 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -32,6 +34,9 @@ public class fireworks extends CEnchantment implements Listener {
         if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null){
             return;
         }
+        if (!(event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin,"exploded"),PersistentDataType.BOOLEAN))){
+            return;
+        }
         if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.fireworks)) {
             if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.25){
                 final Collection<Entity> list = event.getEntity().getWorld().getNearbyEntities(event.getEntity().getLocation(), 2, 2, 2);
@@ -46,6 +51,7 @@ public class fireworks extends CEnchantment implements Listener {
 
                     Damageable le = ((Damageable) entity);
                     event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 0F);
+                    event.getEntity().getPersistentDataContainer().set(new NamespacedKey(plugin,"exploded"), PersistentDataType.BOOLEAN,true);
                     le.damage(((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*2);
                 }
             }

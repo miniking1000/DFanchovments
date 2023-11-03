@@ -49,7 +49,7 @@ public class soulbound extends CEnchantment implements Listener {
     public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         {
-        retu.add("MUSHROOM_STEM");
+        retu.add("CROSSBOW");
         retu.add("BOW");
         //swords
         retu.add("WOODEN_SWORD");
