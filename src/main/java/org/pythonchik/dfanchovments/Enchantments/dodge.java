@@ -41,6 +41,7 @@ public class dodge extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
+        retu.add("ENCHANTED_BOOK");
         //chestplates
         retu.add("LEATHER_CHESTPLATE");
         retu.add("CHAINMAIL_CHESTPLATE");

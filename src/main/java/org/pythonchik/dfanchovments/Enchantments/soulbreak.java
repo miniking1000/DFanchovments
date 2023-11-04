@@ -28,6 +28,7 @@ public class soulbreak extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
+        retu.add("ENCHANTED_BOOK");
         retu.add("WOODEN_SWORD");
         retu.add("STONE_SWORD");
         retu.add("IRON_SWORD");

@@ -81,6 +81,7 @@ public class leviosa extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
+        retu.add("ENCHANTED_BOOK");
         retu.add("TRIDENT");
         return retu;
     }

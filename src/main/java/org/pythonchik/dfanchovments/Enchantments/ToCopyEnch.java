@@ -28,7 +28,7 @@ public class ToCopyEnch extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
-        retu.add("bedrock");
+        retu.add("ENCHANTED_BOOK");
         return retu;
     }
     @Override

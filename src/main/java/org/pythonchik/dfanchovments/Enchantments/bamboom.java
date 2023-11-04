@@ -1,9 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Arrow;
@@ -52,6 +49,7 @@ public class bamboom extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
+        retu.add("ENCHANTED_BOOK");
         retu.add("CROSSBOW");
         return retu;
     }

@@ -31,7 +31,7 @@ public class vampire extends CEnchantment implements Listener {
         if (player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getItemMeta() != null) {
             if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.vampire)) {
                 double hp = player.getHealth() + player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.vampire).doubleValue();
-                if (Math.random() <= player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.vampire).doubleValue()*0.05) {
+                if (Math.random() <= player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.vampire).doubleValue()*0.10) {
                     if (hp > player.getMaxHealth())
                         hp = player.getMaxHealth();
                     player.setHealth(hp);
@@ -51,6 +51,7 @@ public class vampire extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
+        retu.add("ENCHANTED_BOOK");
         retu.add("WOODEN_SWORD");
         retu.add("STONE_SWORD");
         retu.add("IRON_SWORD");

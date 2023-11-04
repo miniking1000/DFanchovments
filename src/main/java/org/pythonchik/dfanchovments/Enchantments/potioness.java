@@ -66,6 +66,7 @@ public class potioness extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
+        retu.add("ENCHANTED_BOOK");
         //hellmets
         retu.add("LEATHER_HELMET");
         retu.add("CHAINMAIL_HELMET");
