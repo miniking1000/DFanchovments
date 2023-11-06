@@ -2,6 +2,7 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
@@ -38,6 +39,9 @@ public class rain extends CEnchantment implements Listener {
         if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null){
             return;
         }
+        if (!(event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin,"rained"),PersistentDataType.BOOLEAN))){
+            return;
+        }
         if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(this)) {
             if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.1){
                 EntityType arrow = EntityType.ARROW;
@@ -45,6 +49,7 @@ public class rain extends CEnchantment implements Listener {
                     event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(Math.random()*1-0.5,30-5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),Math.random()*1-0.5),arrow).setVelocity(new Vector(0,-5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0));
                 }
                 event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(0,5+5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0),arrow);
+                event.getEntity().getPersistentDataContainer().set(new NamespacedKey(plugin,"rained"), PersistentDataType.BOOLEAN,true);
             }
         }
     }

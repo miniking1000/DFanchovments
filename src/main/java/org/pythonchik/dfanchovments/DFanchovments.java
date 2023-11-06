@@ -26,6 +26,9 @@ public final class DFanchovments extends JavaPlugin {
     public static potioness potioness;
     public static dodge dodge;
     public static bamboom bamboom;
+    public static godkiller godkiller;
+    public static tntanon tntanon;
+    public static fish fish;
     //public static leviosa leviosa;
 
     //add a line to ench
@@ -43,6 +46,23 @@ public final class DFanchovments extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        getLogger().info("\n" +
+                "       _                        \n" +
+                "       \\`*-.                    \n" +
+                "        )  _`-.                 \n" +
+                "       .  : `. .                \n" +
+                "       : _   '  \\               \n" +
+                "       ; *` _.   `*-._          \n" +
+                "       `-.-'          `-.       \n" +
+                "         ;       `       `.     \n" +
+                "         :.       .        \\    \n" +
+                "         . \\  .   :   .-'   .   \n" +
+                "         '  `+.;  ;  '      :   \n" +
+                "         :  '  |    ;       ;-. \n" +
+                "         ; '   : :`-:     _.`* ;\n" +
+                "      .*' /  .*' ; .*`- +'  `*' \n" +
+                "      `*-*   `*-*  `*-*'        \n" +
+                "");
         message = new Message(this);
         plugin = this;
 
@@ -56,7 +76,9 @@ public final class DFanchovments extends JavaPlugin {
         rain = new rain(new NamespacedKey(plugin,"rain"));
         exp = new exp(new NamespacedKey(plugin,"exp"));
         bamboom = new bamboom(new NamespacedKey(plugin,"bamboom"));
-        //leviosa = new leviosa((new NamespacedKey(plugin,"leviosa")));
+        godkiller = new godkiller(new NamespacedKey(plugin,"godkiller"));
+        tntanon = new tntanon(new NamespacedKey(plugin,"tntanon"));
+        fish = new fish(new NamespacedKey(plugin,"fish"));
         //add a line to ench
 
         CEnchantments.add(soulbreak);
@@ -69,7 +91,9 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(exp);
         CEnchantments.add(rain);
         CEnchantments.add(bamboom);
-        //CEnchantments.add(leviosa);
+        CEnchantments.add(godkiller);
+        CEnchantments.add(tntanon);
+        CEnchantments.add(fish);
         //add a lint to ench
 
         loadConfig();
@@ -88,7 +112,9 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(exp,this);
         getServer().getPluginManager().registerEvents(rain,this);
         getServer().getPluginManager().registerEvents(bamboom,this);
-        //getServer().getPluginManager().registerEvents(leviosa,this);
+        getServer().getPluginManager().registerEvents(godkiller,this);
+        getServer().getPluginManager().registerEvents(tntanon,this);
+        getServer().getPluginManager().registerEvents(fish,this);
         //any listeners to ench
 
         //getCommand("dfchants").setExecutor(new dfchants(config,this));
@@ -119,7 +145,9 @@ public final class DFanchovments extends JavaPlugin {
             Enchantment.registerEnchantment(exp);
             Enchantment.registerEnchantment(rain);
             Enchantment.registerEnchantment(bamboom);
-            //Enchantment.registerEnchantment(leviosa);
+            Enchantment.registerEnchantment(godkiller);
+            Enchantment.registerEnchantment(tntanon);
+            Enchantment.registerEnchantment(fish);
             //add line to ench
         }
         catch (IllegalArgumentException e){

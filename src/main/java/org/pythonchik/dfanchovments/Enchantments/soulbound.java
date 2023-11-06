@@ -1,6 +1,7 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.bukkit.enchantments.Enchantment;
@@ -52,6 +53,7 @@ public class soulbound extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("CROSSBOW");
         retu.add("BOW");
+        retu.add("DEAD_FIRE_CORAL_FAN");
         //swords
         retu.add("WOODEN_SWORD");
         retu.add("STONE_SWORD");

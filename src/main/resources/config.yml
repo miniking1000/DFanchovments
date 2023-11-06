@@ -1,7 +1,7 @@
 exp:
   name: "&7Образование"
   biome: "JAGGED_PEAKS"
-  chance: 3
+  chance: 2
   luck: 2
 soulbreak:
   name: "&7Уничтожение души"
@@ -48,8 +48,18 @@ bamboom:
   biome: "DEEP_DARK"
   chance: 2
   luck: 2
-leviosa:
-  name: "&7Левитация"
-  biome: "END_MIDLANDS"
+godkiller:
+  name: "&5Убивца бессмертных"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+tntanon:
+  name: "&7Взрывная заряд"
+  biome: "SAVANNA"
   chance: 2
-  luck: 3
+  luck: 1
+fish:
+  name: "&7Рыбный заряд"
+  biome: "RIVER"
+  chance: 20
+  luck: -100

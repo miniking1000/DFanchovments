@@ -36,7 +36,7 @@ public class fishing implements Listener {
             FileConfiguration config = DFanchovments.getConfig1();
             for (String cfg : config.getKeys(false)) {
                 if (player.getLocation().getWorld().getBiome(player.getLocation()).equals(Biome.valueOf(config.getString(cfg + ".biome")))) {
-                    if (Math.random() * 100 < config.getDouble(cfg + ".chance") + (config.getInt(cfg + ".luck") * ((player.getInventory().getItemInMainHand().getItemMeta() != null) ? (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(Enchantment.LUCK) ? player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK) : 0) : 0))) {
+                    if (Math.random() * 100 < config.getDouble(cfg + ".chance") + (config.getDouble(cfg + ".luck") * ((player.getInventory().getItemInMainHand().getItemMeta() != null) ? (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(Enchantment.LUCK) ? player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK) : 0) : 0))) {
                         ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
                         for (CEnchantment enchs : DFanchovments.CEnchantments) {
                             if (enchs.getName().equals(config.getString(cfg + ".name"))) {
