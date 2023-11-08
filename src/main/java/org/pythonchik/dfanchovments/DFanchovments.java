@@ -1,13 +1,13 @@
 package org.pythonchik.dfanchovments;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pythonchik.dfanchovments.Enchantments.*;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -29,6 +29,8 @@ public final class DFanchovments extends JavaPlugin {
     public static godkiller godkiller;
     public static tntanon tntanon;
     public static fish fish;
+    public static poshot poshot;
+    public static grib grib;
     //public static leviosa leviosa;
 
     //add a line to ench
@@ -46,23 +48,12 @@ public final class DFanchovments extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        getLogger().info("\n" +
-                "       _                        \n" +
-                "       \\`*-.                    \n" +
-                "        )  _`-.                 \n" +
-                "       .  : `. .                \n" +
-                "       : _   '  \\               \n" +
-                "       ; *` _.   `*-._          \n" +
-                "       `-.-'          `-.       \n" +
-                "         ;       `       `.     \n" +
-                "         :.       .        \\    \n" +
-                "         . \\  .   :   .-'   .   \n" +
-                "         '  `+.;  ;  '      :   \n" +
-                "         :  '  |    ;       ;-. \n" +
-                "         ; '   : :`-:     _.`* ;\n" +
-                "      .*' /  .*' ; .*`- +'  `*' \n" +
-                "      `*-*   `*-*  `*-*'        \n" +
-                "");
+        this.getLogger().info("this is a 'B': G");
+        this.getLogger().info("wait, what? this is not it. Did it escaped?");
+        this.getLogger().warning("ATTENTION!! 'B' HAS ESCAPED!! ALL SECURITY FIND IT IMMEDIATELY.");
+        this.getLogger().warning("IF ANYONE WILL SEE IT, PLEASE CONTACT US!");
+        this.getLogger().info("we can not replace it now, we had only 2 of them");
+        this.getLogger().info("please, tell me, once you see it.");
         message = new Message(this);
         plugin = this;
 
@@ -79,6 +70,8 @@ public final class DFanchovments extends JavaPlugin {
         godkiller = new godkiller(new NamespacedKey(plugin,"godkiller"));
         tntanon = new tntanon(new NamespacedKey(plugin,"tntanon"));
         fish = new fish(new NamespacedKey(plugin,"fish"));
+        poshot = new poshot(new NamespacedKey(plugin,"poshot"));
+        grib = new grib(new NamespacedKey(plugin,"grib"));
         //add a line to ench
 
         CEnchantments.add(soulbreak);
@@ -94,6 +87,8 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(godkiller);
         CEnchantments.add(tntanon);
         CEnchantments.add(fish);
+        CEnchantments.add(poshot);
+        CEnchantments.add(grib);
         //add a lint to ench
 
         loadConfig();
@@ -115,9 +110,11 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(godkiller,this);
         getServer().getPluginManager().registerEvents(tntanon,this);
         getServer().getPluginManager().registerEvents(fish,this);
+        getServer().getPluginManager().registerEvents(poshot,this);
+        getServer().getPluginManager().registerEvents(grib,this);
         //any listeners to ench
 
-        //getCommand("dfchants").setExecutor(new dfchants(config,this));
+        getCommand("dfchants").setExecutor(new dfchants(config,this));
     }
 
     @Override
@@ -148,6 +145,8 @@ public final class DFanchovments extends JavaPlugin {
             Enchantment.registerEnchantment(godkiller);
             Enchantment.registerEnchantment(tntanon);
             Enchantment.registerEnchantment(fish);
+            Enchantment.registerEnchantment(poshot);
+            Enchantment.registerEnchantment(grib);
             //add line to ench
         }
         catch (IllegalArgumentException e){

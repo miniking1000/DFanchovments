@@ -60,6 +60,11 @@ tntanon:
   luck: 1
 fish:
   name: "&7Рыбный заряд"
-  biome: "RIVER"
+  biome: "THE_VOID"
   chance: 20
+  luck: -100
+poshot:
+  name: "&7Зельестрел"
+  biome: "RIVER"
+  chance: 2000
   luck: -100
