@@ -31,7 +31,7 @@ public final class DFanchovments extends JavaPlugin {
     public static fish fish;
     public static poshot poshot;
     public static grib grib;
-    //public static leviosa leviosa;
+
 
     //add a line to ench
 
@@ -48,12 +48,6 @@ public final class DFanchovments extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.getLogger().info("this is a 'B': G");
-        this.getLogger().info("wait, what? this is not it. Did it escaped?");
-        this.getLogger().warning("ATTENTION!! 'B' HAS ESCAPED!! ALL SECURITY FIND IT IMMEDIATELY.");
-        this.getLogger().warning("IF ANYONE WILL SEE IT, PLEASE CONTACT US!");
-        this.getLogger().info("we can not replace it now, we had only 2 of them");
-        this.getLogger().info("please, tell me, once you see it.");
         message = new Message(this);
         plugin = this;
 
