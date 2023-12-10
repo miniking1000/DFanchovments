@@ -32,7 +32,7 @@ public class exp extends CEnchantment implements Listener {
             return;
         }
         if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(this)) {
-            int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*2);
+            int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this)*2);
             XP.setTotalExperience(player, a);
         }
 

@@ -23,7 +23,7 @@ public class ToCopyEnch extends CEnchantment implements Listener {
     }
 
     public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"name");
+        return new NamespacedKey(plugin,"<name>");
     }
     @Override
     public List<String> getTragers(){
@@ -33,7 +33,7 @@ public class ToCopyEnch extends CEnchantment implements Listener {
     }
     @Override
     public String getName() {
-        return DFanchovments.getConfig1().getString("name.name");
+        return DFanchovments.getConfig1().getString("<name>.name");
     }
 
     @Override

@@ -31,7 +31,7 @@ public final class DFanchovments extends JavaPlugin {
     public static fish fish;
     public static poshot poshot;
     public static grib grib;
-
+    public static infiny infiny;
 
     //add a line to ench
 

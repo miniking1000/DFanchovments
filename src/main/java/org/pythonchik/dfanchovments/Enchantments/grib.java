@@ -26,8 +26,11 @@ public class grib extends CEnchantment implements Listener {
         if (event.getEntity().getShooter() instanceof Player){
             if (event.getHitBlock() != null) {
                 Player player = (Player) event.getEntity().getShooter();
+                if (player.getInventory().getItemInMainHand().getItemMeta() == null) {
+                    return;
+                }
                 if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.grib)) {
-                    if (Math.random() <= 0.001) { //0.1%
+                    if (Math.random() <= 0.002) { //0.2%
                         Location location = event.getHitBlock().getLocation();
                         location.add(0,1,0).getBlock().setType(Material.MUSHROOM_STEM);
                         location.add(0,1,0).getBlock().setType(Material.MUSHROOM_STEM);
@@ -100,6 +103,7 @@ public class grib extends CEnchantment implements Listener {
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
         retu.add("BOW");
+        retu.add("CROSSBOW");
         retu.add("ENCHANTED_BOOK");
         return retu;
     }

@@ -39,7 +39,7 @@ potioness:
   chance: 3
   luck: 2
 dodge:
-  name: "&7Уклониение"
+  name: "&7Уклонение"
   biome: "CHERRY_GROVE"
   chance: 1
   luck: 2
@@ -68,3 +68,8 @@ poshot:
   biome: "RIVER"
   chance: 2000
   luck: -100
+infiniy:
+  name: бескончаемость
+  biome: "THE_UWU"
+  chance: 0
+  luck: -0
