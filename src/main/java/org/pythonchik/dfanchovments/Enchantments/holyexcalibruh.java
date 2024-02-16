@@ -44,17 +44,18 @@ public class holyexcalibruh extends CEnchantment implements Listener {
         if (!damager.getInventory().getItemInMainHand().containsEnchantment(this)) return;
         if (!damager.getPersistentDataContainer().has(new NamespacedKey(plugin,"holycd"), PersistentDataType.INTEGER) || damager.getPersistentDataContainer().get(new NamespacedKey(plugin, "holycd"), PersistentDataType.INTEGER) <= 0) {
             Entity entity = event.getEntity();
-            Firework firework = (Firework) entity.getLocation().getWorld().spawnEntity(entity.getLocation().add(0,0.6,0), EntityType.FIREWORK);
+            Firework firework = (Firework) entity.getLocation().getWorld().spawnEntity(entity.getLocation().add(0,3.1,0), EntityType.FIREWORK);
             FireworkMeta firemeta = firework.getFireworkMeta();
             firemeta.setPower(3);
-            firework.setMaxLife(1000);
-            firework.setLife(1000);
+            firework.setMaxLife(20);
+            firework.setLife(20);
 
             firework.addPassenger(entity);
-            damager.playSound(entity,Sound.ENTITY_DRAGON_FIREBALL_EXPLODE,1,1);
-            firemeta.addEffects(FireworkEffect.builder().flicker(false).trail(false).withColor(Color.YELLOW).withFade(Color.ORANGE).with(FireworkEffect.Type.BALL_LARGE).build(),
-                    FireworkEffect.builder().flicker(false).trail(false).withColor(Color.YELLOW).withFade(Color.ORANGE).with(FireworkEffect.Type.BALL).build(),
-                    FireworkEffect.builder().flicker(false).trail(false).withColor(Color.RED).withFade(Color.BLACK).with(FireworkEffect.Type.STAR).build());
+            damager.playSound(entity,Sound.ENTITY_ENDER_DRAGON_HURT,1,1);
+
+            firemeta.addEffects(FireworkEffect.builder().flicker(false).trail(false).withColor(Color.BLACK).withFade(Color.BLACK).with(FireworkEffect.Type.BALL_LARGE).build(),
+                    FireworkEffect.builder().flicker(false).trail(false).withColor(Color.BLACK).withFade(Color.BLACK).with(FireworkEffect.Type.BALL).build(),
+                    FireworkEffect.builder().flicker(false).trail(false).withColor(Color.BLACK).withFade(Color.BLACK).with(FireworkEffect.Type.STAR).build());
             firework.setSilent(true);
             firework.setFireworkMeta(firemeta);
             entity.setGlowing(true);
@@ -66,8 +67,8 @@ public class holyexcalibruh extends CEnchantment implements Listener {
                 @Override
                 public void run() {
                     i++;
-                    firework.setVelocity(new Vector().setY(i*1.75));
-                    entity.setVelocity(new Vector().setY(i*1.75));
+                    firework.setVelocity(new Vector().setY(i*0.3));
+                    entity.setVelocity(new Vector().setY(i*0.3));
                 }
             }.runTaskTimer(plugin, 0, 1);
 
@@ -75,20 +76,21 @@ public class holyexcalibruh extends CEnchantment implements Listener {
                 @Override
                 public void run() {
                     entity.setGlowing(false);
-                    damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS,false);
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "execute as " + entity.getUniqueId() + " run kill @s");
-                    damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS,true);
-
                     runtask.cancel();
 
                 }
-            }.runTaskLater(plugin, 40);
+            }.runTaskLater(plugin, 20);
 
 
-        } else{
-            damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS,false);
-            Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"execute as " + damager.getUniqueId() +  String.format(" run title @s actionbar {\"text\":\"Подожди еще %dс. перед использованием\",\"color\":\"yellow\"}",damager.getPersistentDataContainer().get(new NamespacedKey(plugin,"holycd"),PersistentDataType.INTEGER)));
-            damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS,true);
+        } else {
+            if (damager.getWorld().getGameRuleValue(GameRule.LOG_ADMIN_COMMANDS)) {
+                damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS, false);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "execute as " + damager.getUniqueId() + String.format(" run title @s actionbar {\"text\":\"Подожди еще %d сек. перед использованием\",\"color\":\"gold\"}", damager.getPersistentDataContainer().get(new NamespacedKey(plugin, "holycd"), PersistentDataType.INTEGER)));
+                damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS, true);
+            } else{
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "execute as " + damager.getUniqueId() + String.format(" run title @s actionbar {\"text\":\"Подожди еще %d сек. перед использованием\",\"color\":\"gold\"}", damager.getPersistentDataContainer().get(new NamespacedKey(plugin, "holycd"), PersistentDataType.INTEGER)));
+            }
             //damager.sendMessage(ChatColor.translateAlternateColorCodes('&',String.format("Необходимо подождать еще %d секунд перед использованием способности",damager.getPersistentDataContainer().get(new NamespacedKey(plugin,"holycd"),PersistentDataType.INTEGER))));
             //notify user about CD
         }

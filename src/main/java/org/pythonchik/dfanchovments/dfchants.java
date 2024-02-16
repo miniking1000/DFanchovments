@@ -41,7 +41,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
                         if (args.length > 1) {
                             if (Bukkit.getPlayer(args[1]) != null) {
                                 Bukkit.getPlayer(args[1]).getPersistentDataContainer().set(new NamespacedKey(plugin, "holycd"), PersistentDataType.INTEGER, 0);
-                                message.send(sender, "Способность откачена.");
+                                message.send(sender, "Откат способности.");
                             } else {
                                 message.send(sender, "Игрок не найден.");
                             }
@@ -80,7 +80,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
                         }
                     } else {
                         plugin.reload5();
-                        message.send(sender, "Плагин был успешно.");
+                        message.send(sender, "Плагин был почти успеш.");
                     }
                 } else {
                     plugin.reload5();
@@ -95,7 +95,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
                     if (args.length > 1) {
                         if (Bukkit.getPlayer(args[1]) != null) {
                             Bukkit.getPlayer(args[1]).getPersistentDataContainer().set(new NamespacedKey(plugin, "holycd"), PersistentDataType.INTEGER, 0);
-                            plugin.getLogger().info("Способность откачена.");
+                            plugin.getLogger().info("Откат способности.");
                         } else {
                             plugin.getLogger().info("Игрок не найден.");
                         }
