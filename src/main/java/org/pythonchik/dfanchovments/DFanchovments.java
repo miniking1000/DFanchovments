@@ -31,7 +31,7 @@ public final class DFanchovments extends JavaPlugin {
     public static fish fish;
     public static poshot poshot;
     public static grib grib;
-    public static infiny infiny;
+    public static holyexcalibruh holyexcalibruh;
 
     //add a line to ench
 
@@ -66,6 +66,7 @@ public final class DFanchovments extends JavaPlugin {
         fish = new fish(new NamespacedKey(plugin,"fish"));
         poshot = new poshot(new NamespacedKey(plugin,"poshot"));
         grib = new grib(new NamespacedKey(plugin,"grib"));
+        holyexcalibruh = new holyexcalibruh(new NamespacedKey(plugin,"holyexcalibruh"));
         //add a line to ench
 
         CEnchantments.add(soulbreak);
@@ -83,6 +84,7 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(fish);
         CEnchantments.add(poshot);
         CEnchantments.add(grib);
+        CEnchantments.add(holyexcalibruh);
         //add a lint to ench
 
         loadConfig();
@@ -106,15 +108,16 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(fish,this);
         getServer().getPluginManager().registerEvents(poshot,this);
         getServer().getPluginManager().registerEvents(grib,this);
+        getServer().getPluginManager().registerEvents(holyexcalibruh,this);
         //any listeners to ench
 
         getCommand("dfchants").setExecutor(new dfchants(config,this));
+        getCommand("dfchants").setTabCompleter(new dfchants(config,this));
     }
 
     @Override
     public void onDisable() {
         CEnchantments = new ArrayList<>();
-
     }
     private void LoadEnchantments(){
         try {
@@ -141,6 +144,7 @@ public final class DFanchovments extends JavaPlugin {
             Enchantment.registerEnchantment(fish);
             Enchantment.registerEnchantment(poshot);
             Enchantment.registerEnchantment(grib);
+            Enchantment.registerEnchantment(holyexcalibruh);
             //add line to ench
         }
         catch (IllegalArgumentException e){

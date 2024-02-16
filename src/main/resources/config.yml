@@ -68,8 +68,8 @@ poshot:
   biome: "RIVER"
   chance: 2000
   luck: -100
-infiniy:
-  name: бескончаемость
-  biome: "THE_UWU"
+holyexcalibruh:
+  name: "#FFFC00Святая длань"
+  biome: "_THE_UWU_"
   chance: 0
-  luck: -0
+  luck: 0.0001
