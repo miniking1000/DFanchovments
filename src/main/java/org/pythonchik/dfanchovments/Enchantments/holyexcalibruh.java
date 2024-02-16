@@ -83,7 +83,9 @@ public class holyexcalibruh extends CEnchantment implements Listener {
 
 
         } else{
+            damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS,false);
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(),"execute as " + damager.getUniqueId() +  String.format(" run title @s actionbar {\"text\":\"Подожди еще %dс. перед использованием\",\"color\":\"yellow\"}",damager.getPersistentDataContainer().get(new NamespacedKey(plugin,"holycd"),PersistentDataType.INTEGER)));
+            damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS,true);
             //damager.sendMessage(ChatColor.translateAlternateColorCodes('&',String.format("Необходимо подождать еще %d секунд перед использованием способности",damager.getPersistentDataContainer().get(new NamespacedKey(plugin,"holycd"),PersistentDataType.INTEGER))));
             //notify user about CD
         }
