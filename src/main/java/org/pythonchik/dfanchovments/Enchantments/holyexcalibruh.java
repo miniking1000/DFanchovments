@@ -75,7 +75,10 @@ public class holyexcalibruh extends CEnchantment implements Listener {
                 @Override
                 public void run() {
                     entity.setGlowing(false);
+                    damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS,false);
                     Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "execute as " + entity.getUniqueId() + " run kill @s");
+                    damager.getWorld().setGameRule(GameRule.LOG_ADMIN_COMMANDS,true);
+
                     runtask.cancel();
 
                 }
