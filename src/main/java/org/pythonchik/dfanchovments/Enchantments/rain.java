@@ -30,22 +30,22 @@ public class rain extends CEnchantment implements Listener {
 
     @EventHandler
     public void onArrowHit(ProjectileHitEvent event){
-        if (event.getHitEntity() == null){
+        if (event.getHitEntity() == null) {
             return;
         }
         if (!(event.getEntity().getShooter() instanceof Player)) {
             return;
         }
-        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null){
+        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null) {
             return;
         }
-        if (!(event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin,"rained"),PersistentDataType.BOOLEAN))){
+        if ((event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin,"rained"),PersistentDataType.BOOLEAN))) {
             return;
         }
         if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(this)) {
-            if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.1){
+            if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.1) {
                 EntityType arrow = EntityType.ARROW;
-                for (int i=0;i<((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue();i++){
+                for (int i=0;i<((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue();i++) {
                     event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(Math.random()*1-0.5,30-5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),Math.random()*1-0.5),arrow).setVelocity(new Vector(0,-5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0));
                 }
                 event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(0,5+5*((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue(),0),arrow);

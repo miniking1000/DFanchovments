@@ -1,22 +1,16 @@
 package org.pythonchik.dfanchovments;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joml.Math;
-import org.joml.Random;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,18 +31,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
         if (sender instanceof Player){
             if (sender.isOp()) {
                 if (args.length > 0) {
-                    if (args[0].equals("cooldown")) {
-                        if (args.length > 1) {
-                            if (Bukkit.getPlayer(args[1]) != null) {
-                                Bukkit.getPlayer(args[1]).getPersistentDataContainer().set(new NamespacedKey(plugin, "holycd"), PersistentDataType.INTEGER, 0);
-                                message.send(sender, "Откат способности.");
-                            } else {
-                                message.send(sender, "Игрок не найден.");
-                            }
-                        } else {
-                            message.send(sender, "Нужно ввести имя игрока.");
-                        }
-                    } else if (args[0].equals("give")) {
+                    if (args[0].equals("give")) {
                         if (args.length < 3) {
                             message.send(sender, "Команда не полная");
                         } else {
@@ -84,29 +67,13 @@ public class dfchants implements CommandExecutor, TabCompleter {
                     }
                 } else {
                     plugin.reload5();
-                    message.send(sender, "Плагин был успешно.");
+                    message.send(sender, "Плагин не был неудачно.");
                 }
             } else {
-                message.send(sender, "ха-ха, еще одно никому не нужноо сообщение (-_o) -> https://www.youtube.com/watch?v=dQw4w9WgXcQ <-");
+                message.send(sender, "ха-ха, еще одно никому не нужнооееееее сообщение (-_o) -> https://www.youtube.com/watch?v=dQw4w9WgXcQ <-");
             }
         } else {
             if (args.length > 0) {
-                if (args[0].equals("cooldown")) {
-                    if (args.length > 1) {
-                        if (Bukkit.getPlayer(args[1]) != null) {
-                            Bukkit.getPlayer(args[1]).getPersistentDataContainer().set(new NamespacedKey(plugin, "holycd"), PersistentDataType.INTEGER, 0);
-                            plugin.getLogger().info("Откат способности.");
-                        } else {
-                            plugin.getLogger().info("Игрок не найден.");
-                        }
-                    } else {
-                        plugin.getLogger().info("Нужно ввести ник игрока.");
-                    }
-                } else {
-                    plugin.reload5();
-                    plugin.getLogger().info("Плагин был или не был.");
-                }
-            } else {
                 plugin.reload5();
                 plugin.getLogger().info("Плагин был или не был.");
             }
@@ -119,18 +86,11 @@ public class dfchants implements CommandExecutor, TabCompleter {
         if (command.getName().equalsIgnoreCase("dfchants")) {
             if (args.length == 1) {
                 List<String> completions = new ArrayList<>();
-                completions.add("cooldown");
                 completions.add("reload");
                 completions.add("give");
                 return completions;
             } else if (args.length == 2) {
-                if (args[0].equals("cooldown")) {
-                    List<String> completions = new ArrayList<>();
-                    for (Player name : Bukkit.getOnlinePlayers()) {
-                        completions.add(name.getName());
-                    }
-                    return completions;
-                } else if (args[0].equals("give")) {
+                if (args[0].equals("give")) {
                     List<String> completions = new ArrayList<>();
                     for (String name : config.getKeys(false)) {
                         completions.add(config.getString(name + ".name").replace(" ", "_"));

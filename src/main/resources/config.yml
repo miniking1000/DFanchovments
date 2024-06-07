@@ -73,3 +73,8 @@ holyexcalibruh:
   biome: "_THE_UWU_"
   chance: 0
   luck: 0.0001
+sparkling:
+  name: "&7Блестит"
+  biome: "PLAINS"
+  chance: 5
+  luck: 3

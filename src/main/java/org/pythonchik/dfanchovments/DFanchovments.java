@@ -1,7 +1,6 @@
 package org.pythonchik.dfanchovments;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -26,12 +25,9 @@ public final class DFanchovments extends JavaPlugin {
     public static potioness potioness;
     public static dodge dodge;
     public static bamboom bamboom;
-    public static godkiller godkiller;
     public static tntanon tntanon;
     public static fish fish;
     public static poshot poshot;
-    public static grib grib;
-    public static holyexcalibruh holyexcalibruh;
 
     //add a line to ench
 
@@ -61,12 +57,9 @@ public final class DFanchovments extends JavaPlugin {
         rain = new rain(new NamespacedKey(plugin,"rain"));
         exp = new exp(new NamespacedKey(plugin,"exp"));
         bamboom = new bamboom(new NamespacedKey(plugin,"bamboom"));
-        godkiller = new godkiller(new NamespacedKey(plugin,"godkiller"));
         tntanon = new tntanon(new NamespacedKey(plugin,"tntanon"));
         fish = new fish(new NamespacedKey(plugin,"fish"));
         poshot = new poshot(new NamespacedKey(plugin,"poshot"));
-        grib = new grib(new NamespacedKey(plugin,"grib"));
-        holyexcalibruh = new holyexcalibruh(new NamespacedKey(plugin,"holyexcalibruh"));
         //add a line to ench
 
         CEnchantments.add(soulbreak);
@@ -79,12 +72,9 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(exp);
         CEnchantments.add(rain);
         CEnchantments.add(bamboom);
-        CEnchantments.add(godkiller);
         CEnchantments.add(tntanon);
         CEnchantments.add(fish);
         CEnchantments.add(poshot);
-        CEnchantments.add(grib);
-        CEnchantments.add(holyexcalibruh);
         //add a lint to ench
 
         loadConfig();
@@ -103,12 +93,9 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(exp,this);
         getServer().getPluginManager().registerEvents(rain,this);
         getServer().getPluginManager().registerEvents(bamboom,this);
-        getServer().getPluginManager().registerEvents(godkiller,this);
         getServer().getPluginManager().registerEvents(tntanon,this);
         getServer().getPluginManager().registerEvents(fish,this);
         getServer().getPluginManager().registerEvents(poshot,this);
-        getServer().getPluginManager().registerEvents(grib,this);
-        getServer().getPluginManager().registerEvents(holyexcalibruh,this);
         //any listeners to ench
 
         getCommand("dfchants").setExecutor(new dfchants(config,this));
@@ -139,12 +126,9 @@ public final class DFanchovments extends JavaPlugin {
             Enchantment.registerEnchantment(exp);
             Enchantment.registerEnchantment(rain);
             Enchantment.registerEnchantment(bamboom);
-            Enchantment.registerEnchantment(godkiller);
             Enchantment.registerEnchantment(tntanon);
             Enchantment.registerEnchantment(fish);
             Enchantment.registerEnchantment(poshot);
-            Enchantment.registerEnchantment(grib);
-            Enchantment.registerEnchantment(holyexcalibruh);
             //add line to ench
         }
         catch (IllegalArgumentException e){
