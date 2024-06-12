@@ -28,6 +28,7 @@ public final class DFanchovments extends JavaPlugin {
     public static tntanon tntanon;
     public static fish fish;
     public static poshot poshot;
+    public static steveoshot steveoshot;
 
     //add a line to ench
 
@@ -60,6 +61,7 @@ public final class DFanchovments extends JavaPlugin {
         tntanon = new tntanon(new NamespacedKey(plugin,"tntanon"));
         fish = new fish(new NamespacedKey(plugin,"fish"));
         poshot = new poshot(new NamespacedKey(plugin,"poshot"));
+        steveoshot = new steveoshot(new NamespacedKey(plugin,"steveoshot"));
         //add a line to ench
 
         CEnchantments.add(soulbreak);
@@ -75,6 +77,7 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(tntanon);
         CEnchantments.add(fish);
         CEnchantments.add(poshot);
+        CEnchantments.add(steveoshot);
         //add a lint to ench
 
         loadConfig();
@@ -96,6 +99,7 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(tntanon,this);
         getServer().getPluginManager().registerEvents(fish,this);
         getServer().getPluginManager().registerEvents(poshot,this);
+        getServer().getPluginManager().registerEvents(steveoshot,this);
         //any listeners to ench
 
         getCommand("dfchants").setExecutor(new dfchants(config,this));
@@ -129,6 +133,7 @@ public final class DFanchovments extends JavaPlugin {
             Enchantment.registerEnchantment(tntanon);
             Enchantment.registerEnchantment(fish);
             Enchantment.registerEnchantment(poshot);
+            Enchantment.registerEnchantment(steveoshot);
             //add line to ench
         }
         catch (IllegalArgumentException e){
