@@ -102,4 +102,9 @@ public class exp extends CEnchantment implements Listener {
         return false;
 
     }
+
+    @Override
+    public String getTranslationKey() {
+        return null;
+    }
 }

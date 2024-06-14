@@ -17,7 +17,7 @@ public abstract class CEnchantment extends Enchantment {
     private final NamespacedKey key;
 
     public CEnchantment(@NotNull NamespacedKey key) {
-        super(key);
+        super();
         this.key = key;
     }
 

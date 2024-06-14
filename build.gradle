@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id("io.github.patrick.remapper") version "1.4.0"
 }
 
 group = 'org.pythonchik'
@@ -7,6 +8,7 @@ version = '1.2'
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         name = "spigotmc-repo"
         url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
@@ -18,11 +20,11 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.20.1-R0.1-SNAPSHOT"
-    implementation 'org.jetbrains:annotations:24.0.1'
+    compileOnly "org.spigotmc:spigot:1.21-R0.1-SNAPSHOT:remapped-mojang"
+    compileOnly 'org.jetbrains:annotations:24.0.1'
 }
 
-def targetJavaVersion = 17
+def targetJavaVersion = 21
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -32,6 +34,14 @@ java {
     }
     compileJava.options.encoding = 'UTF-8'
     compileTestJava.options.encoding = 'UTF-8'
+}
+
+tasks.remap {
+    version.set("1.21")
+}
+
+tasks.build {
+    dependsOn(tasks.remap)
 }
 
 tasks.withType(JavaCompile).configureEach {

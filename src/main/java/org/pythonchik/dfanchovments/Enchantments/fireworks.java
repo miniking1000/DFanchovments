@@ -117,4 +117,10 @@ public class fireworks extends CEnchantment implements Listener {
         return false;
 
     }
+
+    @NotNull
+    @Override
+    public String getTranslationKey() {
+        return null;
+    }
 }

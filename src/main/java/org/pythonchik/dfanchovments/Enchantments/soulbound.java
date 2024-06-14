@@ -158,4 +158,10 @@ public class soulbound extends CEnchantment implements Listener {
     public boolean canEnchantItem(ItemStack item) {
         return false;
     }
+
+    @NotNull
+    @Override
+    public String getTranslationKey() {
+        return null;
+    }
 }

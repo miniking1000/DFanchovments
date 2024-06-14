@@ -1,10 +1,13 @@
 package org.pythonchik.dfanchovments;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pythonchik.dfanchovments.Enchantments.*;
 import java.io.File;
@@ -120,6 +123,8 @@ public final class DFanchovments extends JavaPlugin {
             e.printStackTrace();
         }
         try {
+            //CustomEnchantHandler.unfreezeRegistry();
+            //Enchantment soulbound = Registry.register(BuiltInRegistries.ENCHANTMENT_PROVIDER_TYPE, soulbound.getName(), soulbound);
             Enchantment.registerEnchantment(soulbound);
             Enchantment.registerEnchantment(soulbreak);
             Enchantment.registerEnchantment(shockwave);
@@ -135,6 +140,9 @@ public final class DFanchovments extends JavaPlugin {
             Enchantment.registerEnchantment(poshot);
             Enchantment.registerEnchantment(steveoshot);
             //add line to ench
+
+            //CustomEnchantHandler.freezeRegistry();
+
         }
         catch (IllegalArgumentException e){
         }
@@ -142,7 +150,6 @@ public final class DFanchovments extends JavaPlugin {
             e.printStackTrace();
         }
     }
-
     public void loadConfig() {
         File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {

@@ -35,7 +35,7 @@ public class tntanon extends CEnchantment implements Listener {
             if (player.getInventory().getItemInMainHand().containsEnchantment(DFanchovments.tntanon)) {
                 if (player.getInventory().getItemInOffHand().getType().equals(Material.TNT)) {
                     player.getInventory().getItemInOffHand().setAmount(player.getInventory().getItemInOffHand().getAmount()-1);
-                    player.getLocation().getWorld().spawnEntity(player.getLocation().add(0,1,0), EntityType.PRIMED_TNT).setVelocity(event.getEntity().getVelocity());
+                    player.getLocation().getWorld().spawnEntity(player.getLocation().add(0,1,0), EntityType.TNT).setVelocity(event.getEntity().getVelocity());
                     event.getEntity().remove();
                 } 
             }
@@ -95,5 +95,11 @@ public class tntanon extends CEnchantment implements Listener {
     public boolean canEnchantItem(ItemStack item) {
         return false;
 
+    }
+
+    @NotNull
+    @Override
+    public String getTranslationKey() {
+        return null;
     }
 }

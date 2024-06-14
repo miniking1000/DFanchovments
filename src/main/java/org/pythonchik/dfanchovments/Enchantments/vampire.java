@@ -105,4 +105,10 @@ public class vampire extends CEnchantment implements Listener {
         return false;
 
     }
+
+    @NotNull
+    @Override
+    public String getTranslationKey() {
+        return null;
+    }
 }

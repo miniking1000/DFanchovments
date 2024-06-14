@@ -35,7 +35,7 @@ public class poshot extends CEnchantment implements Listener {
             Player player = (Player) event.getEntity().getShooter();
             if (player.getInventory().getItemInMainHand().containsEnchantment(DFanchovments.poshot)) {
                 if (player.getInventory().getItemInOffHand().getType().equals(Material.SPLASH_POTION)) {
-                    ThrownPotion potion = (ThrownPotion) player.getLocation().getWorld().spawnEntity(player.getLocation().add(0,1,0), EntityType.SPLASH_POTION);
+                    ThrownPotion potion = (ThrownPotion) player.getLocation().getWorld().spawnEntity(player.getLocation().add(0,1,0), EntityType.POTION);
                     potion.setItem(player.getInventory().getItemInOffHand());
                     potion.setVelocity(event.getEntity().getVelocity());
                     player.getInventory().getItemInOffHand().setAmount(player.getInventory().getItemInOffHand().getAmount()-1);
@@ -98,5 +98,11 @@ public class poshot extends CEnchantment implements Listener {
     public boolean canEnchantItem(ItemStack item) {
         return false;
 
+    }
+
+    @NotNull
+    @Override
+    public String getTranslationKey() {
+        return null;
     }
 }
