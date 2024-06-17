@@ -1,30 +1,24 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.*;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
-import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class bamboom extends CEnchantment implements Listener {
-
-    DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
+    NamespacedKey id;
     public bamboom(NamespacedKey id) {
-        super(id);
+        this.id = id;
     }
-    public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"bamboom");
-    }
+
     @EventHandler
     public void onCrossShoot(ProjectileLaunchEvent event){
         if (!(event.getEntity() instanceof Arrow)){
@@ -35,10 +29,12 @@ public class bamboom extends CEnchantment implements Listener {
         }
         Player player = (Player) event.getEntity().getShooter();
         if (player.getInventory().getItemInMainHand().getItemMeta() != null){
-            if (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.bamboom)){
-                if (Math.random() <= player.getInventory().getItemInMainHand().getItemMeta().getEnchants().get(DFanchovments.bamboom).doubleValue()*0.05) {
-                    event.getEntity().getLocation().getWorld().spawnParticle(Particle.SONIC_BOOM, event.getEntity().getLocation(), 1);
-                    ((Arrow) event.getEntity()).setVelocity(event.getEntity().getVelocity().multiply(1 + (0.5 * player.getInventory().getItemInMainHand().getEnchantmentLevel(DFanchovments.bamboom))));
+            ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
+            assert meta != null;
+            if (meta.getPersistentDataContainer().has(id)){
+                if (Math.random() <= meta.getPersistentDataContainer().get(id, PersistentDataType.INTEGER)*0.05) {
+                    ((Player) event.getEntity().getShooter()).getLocation().getWorld().spawnParticle(Particle.SONIC_BOOM, event.getEntity().getLocation(), 1);
+                    ((Arrow) event.getEntity()).setVelocity(event.getEntity().getVelocity().multiply(1 + (0.5 * meta.getPersistentDataContainer().get(id, PersistentDataType.INTEGER))));
                 }
             }
         }
@@ -51,54 +47,7 @@ public class bamboom extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public String getName() {
-        return DFanchovments.getConfig1().getString("bamboom.name");
-    }
-
-    @Override
-    public int getMaxLevel() {
-        return 3;
-    }
-
-    @Override
-    public int getStartLevel() {
-        return 1;
-    }
-
-    @Override
-    public EnchantmentTarget getItemTarget() {
-        return null;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return false;
-    }
-
-    @Override
-    public boolean isCursed() {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(@NotNull CEnchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(@NotNull Enchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean canEnchantItem(ItemStack item) {
-        return false;
-
-    }
-
-    @NotNull
-    @Override
-    public String getTranslationKey() {
-        return null;
+    public NamespacedKey getId(){
+        return this.id;
     }
 }

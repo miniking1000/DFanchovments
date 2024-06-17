@@ -1,80 +1,72 @@
-exp:
-  name: "&7Образование"
-  biome: "JAGGED_PEAKS"
-  chance: 2
-  luck: 2
-soulbreak:
-  name: "&7Уничтожение души"
-  biome: "THE_VOID"
-  chance: 9
-  luck: 2
 soulbound:
   name: "&7Связь Души"
-  biome: "SOUL_SAND_VALLEY"
-  chance: 1
-  luck: 2
-rain:
-  name: "&7Шквал Стрел"
-  biome: "WOODED_BADLANDS"
-  chance: 4
-  luck: 2
-shockwave:
-  name: "&7Тяжелая стрела"
-  biome: "STONY_SHORE"
-  chance: 4
-  luck: 2
-fireworks:
-  name: "&7Пороховой заряд"
-  biome: "BADLANDS"
-  chance: 2
-  luck: 2
-vampire:
-  name: "&7Вампиризм"
-  biome: "CRIMSON_FOREST"
-  chance: 1
-  luck: 0
-potioness:
-  name: "&7Отравленность"
-  biome: "SPARSE_JUNGLE"
-  chance: 3
-  luck: 2
-dodge:
-  name: "&7Уклонение"
-  biome: "CHERRY_GROVE"
-  chance: 1
-  luck: 2
-bamboom:
-  name: "&7Звуковой заряд"
-  biome: "DEEP_DARK"
-  chance: 2
-  luck: 2
-godkiller:
-  name: "&5Убивца бессмертных"
   biome: "THE_VOID"
   chance: 0
   luck: 0
+  maxlvl: 1
+shockwave:
+  name: "&7Тяжелая стрела"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 4
+fireworks:
+  name: "&7Пороховой заряд"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 3
+potioness:
+  name: "&7Отравленность"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 4
+dodge:
+  name: "&7Уклонение"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 1
+rain:
+  name: "&7Шквал Стрел"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 5
+exp:
+  name: "&7Образование"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 5
+bamboom:
+  name: "&7Звуковой заряд"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 3
 tntanon:
-  name: "&7Взрывная заряд"
-  biome: "SAVANNA"
-  chance: 2
-  luck: 1
+  name: "&7Взрывной заряд"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 1
 fish:
   name: "&7Рыбный заряд"
   biome: "THE_VOID"
-  chance: 20
-  luck: -100
+  chance: 0
+  luck: 0
+  maxlvl: 1
 poshot:
   name: "&7Зельестрел"
-  biome: "RIVER"
-  chance: 2000
-  luck: -100
-holyexcalibruh:
-  name: "#FFFC00Святая длань"
-  biome: "_THE_UWU_"
+  biome: "THE_VOID"
   chance: 0
-  luck: 0.0001
+  luck: 0
+  maxlvl: 1
 steveoshot:
   name: "&7Стиво-стрел"
   biome: "THE_VOID"
-  chance: 5
-  luck: 3
+  chance: 0
+  luck: 0
+  maxlvl: 1

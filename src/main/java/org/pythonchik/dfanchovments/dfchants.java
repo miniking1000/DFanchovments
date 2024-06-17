@@ -1,6 +1,7 @@
 package org.pythonchik.dfanchovments;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,6 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 
@@ -39,14 +41,16 @@ public class dfchants implements CommandExecutor, TabCompleter {
                                 Player player = (Player) sender;
                                 ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
                                 for (CEnchantment enchs : DFanchovments.CEnchantments) {
-                                    if (enchs.getName().replace(" ", "_").equals(args[1])) {
-                                        book.addUnsafeEnchantment(enchs, Integer.valueOf(args[2]) <= enchs.getMaxLevel() ? Integer.valueOf(args[2]) : enchs.getStartLevel());
+                                    if (enchs.getName().replace(" ", "_").equals(args[1])) { //this checks if args[1] is a name
                                         ItemMeta tobeMeta = book.getItemMeta();
-                                        int lvl = book.getEnchantmentLevel(enchs);
+                                        tobeMeta.getPersistentDataContainer().set(enchs.getId(), PersistentDataType.INTEGER,Integer.valueOf(args[2]) <= enchs.getMaxLevel() && Integer.valueOf(args[2]) >= enchs.getStartLevel() ? Integer.valueOf(args[2]) : enchs.getStartLevel());
+                                        int lvl = tobeMeta.getPersistentDataContainer().get(enchs.getId(),PersistentDataType.INTEGER);
                                         List<String> lore = new ArrayList<String>();
                                         lore.add(message.hex(enchs.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-
                                         tobeMeta.setLore(lore);
+
+                                        tobeMeta.setEnchantmentGlintOverride(true);
+
                                         book.setItemMeta(tobeMeta);
                                         break;
                                     }
@@ -67,7 +71,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
                     }
                 } else {
                     plugin.reload5();
-                    message.send(sender, "Плагин не был неудачно.");
+                    message.send(sender, "Плагин не был неудач.");
                 }
             } else {
                 message.send(sender, "ха-ха, еще одно никому не нужнооееееее сообщение (-_o) -> https://www.youtube.com/watch?v=dQw4w9WgXcQ <-");

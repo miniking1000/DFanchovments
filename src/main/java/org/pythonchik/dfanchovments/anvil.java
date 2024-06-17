@@ -7,12 +7,13 @@ import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class anvil implements Listener {
-
     Message message = DFanchovments.getMessage();
     @EventHandler
     public void AnviListener(PrepareAnvilEvent event){
@@ -25,19 +26,26 @@ public class anvil implements Listener {
             ItemMeta meta = item.getItemMeta();
             List<String> lore = meta.getLore();
             for (CEnchantment ench : DFanchovments.CEnchantments) {
-                if (slot2.containsEnchantment(ench)) {
-                    int lvl = slot1.getEnchantmentLevel(ench) != slot2.getEnchantmentLevel(ench) ?
+                if (slot2.getItemMeta().getPersistentDataContainer().has(ench.getId())) {
+                    int num1 = slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()) ? slot1.getItemMeta().getPersistentDataContainer().get(ench.getId(),PersistentDataType.INTEGER) : 0;
+                    int num2 = slot2.getItemMeta().getPersistentDataContainer().has(ench.getId()) ? slot2.getItemMeta().getPersistentDataContainer().get(ench.getId(),PersistentDataType.INTEGER) : 0;
+                    int lvl = num1 != num2 ?
                             //1 and 2 different
-                            Math.max(slot1.getEnchantmentLevel(ench), slot2.getEnchantmentLevel(ench))
+                            Math.max(num1, num2)
                             //taking maximium of those
-                            : slot1.getEnchantmentLevel(ench) + 1 <= ench.getMaxLevel() ?
+                            : num1 + 1 <= ench.getMaxLevel() ?
                             //1 and 2 are equal AND (for example 2 with max 5) 2+1=3 <= 5
                             //will be 2+1=3 else, taking ench lvl
-                            slot1.getEnchantmentLevel(ench) + 1
-                            : slot1.getEnchantmentLevel(ench);
-                    if (!(slot1.containsEnchantment(ench)))
-                        meta.addEnchant(ench, slot2.getEnchantmentLevel(ench), false);
-                    else meta.addEnchant(ench, lvl, true);
+                            num1 + 1
+                            : num1;
+                    if (!(slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()))){
+                        meta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, num2);
+                        meta.setEnchantmentGlintOverride(true);
+                    }
+                    else {
+                        meta.getPersistentDataContainer().set(ench.getId(),PersistentDataType.INTEGER,lvl);
+                        meta.setEnchantmentGlintOverride(true);
+                    }
                     if (lore != null) {
                         if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V")))))) {
                             lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
@@ -71,10 +79,13 @@ public class anvil implements Listener {
             ItemMeta meta = item.getItemMeta();
             List<String> lore = meta.getLore();
             for (CEnchantment ench : DFanchovments.CEnchantments) {
-                if (slot1.containsEnchantment(ench)) {
-                    int lvl = slot1.getEnchantmentLevel(ench);
-                    if (!(slot1.containsEnchantment(ench)))
-                        meta.addEnchant(ench, slot1.getEnchantmentLevel(ench), false);
+                if (slot1.getItemMeta().getPersistentDataContainer().has(ench.getId())) {
+                    int num1 = slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()) ? slot1.getItemMeta().getPersistentDataContainer().get(ench.getId(),PersistentDataType.INTEGER) : 1;
+                    int lvl = num1;
+                    if (!(slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()))) {
+                        meta.getPersistentDataContainer().set(ench.getId(),PersistentDataType.INTEGER, num1);
+                        meta.setEnchantmentGlintOverride(true);
+                    }
                     if (lore != null) {
                         if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V")))))) {
                             lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
@@ -94,10 +105,9 @@ public class anvil implements Listener {
                     meta.setDisplayName(message.hex(event.getInventory().getRenameText()));
                     item.setItemMeta(meta);
                     event.setResult(item);
-                    event.getInventory().setRepairCost(3);
+                    event.getInventory().setRepairCost(30);
                 }
             }
         }
-
     }
 }

@@ -1,6 +1,5 @@
 name: DFanchovments
 version: '${version}'
-load: STARTUP
 main: org.pythonchik.dfanchovments.DFanchovments
 api-version: '1.21'
 commands:

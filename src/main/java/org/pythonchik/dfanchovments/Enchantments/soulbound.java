@@ -1,18 +1,13 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.pythonchik.dfanchovments.CEnchantment;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
@@ -21,30 +16,28 @@ import java.util.List;
 import java.util.Map;
 
 public class soulbound extends CEnchantment implements Listener {
-
-    DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
+    NamespacedKey id;
+    public soulbound(NamespacedKey id) {
+        this.id = id;
+    }
     private final static Map<Player, List<ItemStack>> itemsToKeep = new HashMap<Player, List<ItemStack>>();
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
-        Player k = e.getEntity().getKiller();
-        ItemStack imh = k == null ? null : k.getInventory().getItemInMainHand();
-        int lvl = 0;
-        if (imh != null && imh.getItemMeta() != null) {
-            lvl = imh.getItemMeta().getEnchantLevel(new soulbreak(new NamespacedKey(plugin,"soulbreak")));
-        }
         List<ItemStack> soulbound = new ArrayList<ItemStack>();
         for (ItemStack i : e.getDrops()) {
-            if (i.getItemMeta().hasEnchant(this)) {
-                if (lvl > 0){
-                    if (Math.random()>0.5){
-                        continue;
-                    }
-                }
+            if (i.getItemMeta().getPersistentDataContainer().has(id)) {
                 soulbound.add(i);
             }
         }
         e.getDrops().removeAll(soulbound);
         itemsToKeep.put(e.getEntity(), soulbound);
+    }
+    @EventHandler
+    public void onPlayerRes(PlayerRespawnEvent e){
+        if (itemsToKeep.containsKey(e.getPlayer())) {
+            for (ItemStack stack : itemsToKeep.get(e.getPlayer())) e.getPlayer().getInventory().addItem(stack);
+            itemsToKeep.remove(e.getPlayer());
+        }
     }
     @Override
     public List<String> getTragers() {
@@ -53,7 +46,14 @@ public class soulbound extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("CROSSBOW");
         retu.add("BOW");
+
+        //five very important items.
         retu.add("DEAD_FIRE_CORAL_FAN");
+        retu.add("COOKED_CHICKEN");
+        retu.add("WRITTEN_BOOK");
+        retu.add("YELLOW_GLAZED_TERRACOTTA");
+        retu.add("IRON_HOE");
+
         //swords
         retu.add("WOODEN_SWORD");
         retu.add("STONE_SWORD");
@@ -99,69 +99,10 @@ public class soulbound extends CEnchantment implements Listener {
     } // adding items swords/picks/armor
         return retu;
     }
-    @EventHandler
-    public void onPlayerRes(PlayerRespawnEvent e){
-        if (itemsToKeep.containsKey(e.getPlayer())) {
-            for (ItemStack stack : itemsToKeep.get(e.getPlayer())) e.getPlayer().getInventory().addItem(stack);
-            itemsToKeep.remove(e.getPlayer());
-        }
-    }
 
-    public soulbound(NamespacedKey id) {
-        super(id);
-    }
 
+    @Override
     public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"soulbound");
-    }
-    @Override
-    public String getName() {
-        return DFanchovments.getConfig1().getString("soulbound.name");
-    }
-
-    @Override
-    public int getMaxLevel() {
-        return 1;
-    }
-
-    @Override
-    public int getStartLevel() {
-        return 1;
-    }
-
-    @Override
-    public EnchantmentTarget getItemTarget() {
-        return null;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return false;
-    }
-
-    @Override
-    public boolean isCursed() {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(@NotNull Enchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(CEnchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean canEnchantItem(ItemStack item) {
-        return false;
-    }
-
-    @NotNull
-    @Override
-    public String getTranslationKey() {
-        return null;
+        return this.id;
     }
 }

@@ -1,30 +1,24 @@
 package org.pythonchik.dfanchovments;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pythonchik.dfanchovments.Enchantments.*;
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
+
 
 public final class DFanchovments extends JavaPlugin {
     private static FileConfiguration config;
     static DFanchovments plugin;
     public static ArrayList<CEnchantment> CEnchantments = new ArrayList<>();
     public static exp exp;
-    public static soulbreak soulbreak;
     public static soulbound soulbound;
     public static rain rain;
     public static shockwave shockwave;
     public static fireworks fireworks;
-    public static vampire vampire;
     public static potioness potioness;
     public static dodge dodge;
     public static bamboom bamboom;
@@ -51,11 +45,9 @@ public final class DFanchovments extends JavaPlugin {
         message = new Message(this);
         plugin = this;
 
-        soulbreak = new soulbreak(new NamespacedKey(plugin,"soulbreak"));
         soulbound = new soulbound(new NamespacedKey(plugin,"soulbound"));
         shockwave = new shockwave(new NamespacedKey(plugin,"shockwave"));
         fireworks = new fireworks(new NamespacedKey(plugin,"fireworks"));
-        vampire = new vampire(new NamespacedKey(plugin, "vampire"));
         potioness = new potioness(new NamespacedKey(plugin,"potioness"));
         dodge = new dodge(new NamespacedKey(plugin, "dodge"));
         rain = new rain(new NamespacedKey(plugin,"rain"));
@@ -67,11 +59,9 @@ public final class DFanchovments extends JavaPlugin {
         steveoshot = new steveoshot(new NamespacedKey(plugin,"steveoshot"));
         //add a line to ench
 
-        CEnchantments.add(soulbreak);
         CEnchantments.add(soulbound);
         CEnchantments.add(shockwave);
         CEnchantments.add(fireworks);
-        CEnchantments.add(vampire);
         CEnchantments.add(potioness);
         CEnchantments.add(dodge);
         CEnchantments.add(exp);
@@ -84,7 +74,6 @@ public final class DFanchovments extends JavaPlugin {
         //add a lint to ench
 
         loadConfig();
-        LoadEnchantments();
 
 
         getServer().getPluginManager().registerEvents(new fishing(),this);
@@ -93,7 +82,6 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(soulbound,this);
         getServer().getPluginManager().registerEvents(shockwave,this);
         getServer().getPluginManager().registerEvents(fireworks,this);
-        getServer().getPluginManager().registerEvents(vampire,this);
         getServer().getPluginManager().registerEvents(potioness,this);
         getServer().getPluginManager().registerEvents(dodge,this);
         getServer().getPluginManager().registerEvents(exp,this);
@@ -113,43 +101,7 @@ public final class DFanchovments extends JavaPlugin {
     public void onDisable() {
         CEnchantments = new ArrayList<>();
     }
-    private void LoadEnchantments(){
-        try {
-            Field f = Enchantment.class.getDeclaredField("acceptingNew");
-            f.setAccessible(true);
-            f.set(null, true);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        try {
-            //CustomEnchantHandler.unfreezeRegistry();
-            //Enchantment soulbound = Registry.register(BuiltInRegistries.ENCHANTMENT_PROVIDER_TYPE, soulbound.getName(), soulbound);
-            Enchantment.registerEnchantment(soulbound);
-            Enchantment.registerEnchantment(soulbreak);
-            Enchantment.registerEnchantment(shockwave);
-            Enchantment.registerEnchantment(fireworks);
-            Enchantment.registerEnchantment(vampire);
-            Enchantment.registerEnchantment(potioness);
-            Enchantment.registerEnchantment(dodge);
-            Enchantment.registerEnchantment(exp);
-            Enchantment.registerEnchantment(rain);
-            Enchantment.registerEnchantment(bamboom);
-            Enchantment.registerEnchantment(tntanon);
-            Enchantment.registerEnchantment(fish);
-            Enchantment.registerEnchantment(poshot);
-            Enchantment.registerEnchantment(steveoshot);
-            //add line to ench
 
-            //CustomEnchantHandler.freezeRegistry();
-
-        }
-        catch (IllegalArgumentException e){
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-    }
     public void loadConfig() {
         File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {

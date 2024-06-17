@@ -2,20 +2,14 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
 import org.bukkit.persistence.PersistentDataType;
-import org.pythonchik.dfanchovments.CEnchantment;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
+import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
@@ -25,6 +19,7 @@ import java.util.List;
 public class fireworks extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
+    NamespacedKey id;
 
     @EventHandler
     private void HAHAH(ProjectileHitEvent event){
@@ -34,36 +29,28 @@ public class fireworks extends CEnchantment implements Listener {
         if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null){
             return;
         }
-        if (!(event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin,"exploded"),PersistentDataType.BOOLEAN))){
+        if ((event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin,"exploded"),PersistentDataType.BOOLEAN))){
             return;
         }
-        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().hasEnchant(DFanchovments.fireworks)) {
-            if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*0.25){
-                final Collection<Entity> list = event.getEntity().getWorld().getNearbyEntities(event.getEntity().getLocation(), 2, 2, 2);
+        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
+            if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(id,PersistentDataType.INTEGER)*0.25){
+                final Collection<Entity> list = event.getEntity().getNearbyEntities(2,2,2);
                 for (final Entity entity : list)
                 {
                     if (!(entity instanceof Damageable))
-                        continue;
-                    EntityDamageEvent e = new EntityDamageEvent(entity, EntityDamageEvent.DamageCause.PROJECTILE, 0);
-                    Bukkit.getPluginManager().callEvent(e);
-                    if (e.isCancelled())
                         continue;
 
                     Damageable le = ((Damageable) entity);
                     event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 0F);
                     event.getEntity().getPersistentDataContainer().set(new NamespacedKey(plugin,"exploded"), PersistentDataType.BOOLEAN,true);
-                    le.damage(((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getEnchants().get(this).intValue()*2);
+                    le.damage(((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(id,PersistentDataType.INTEGER)*2);
                 }
             }
         }
     }
 
     public fireworks(NamespacedKey id) {
-        super(id);
-    }
-
-    public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"fireworks");
+        this.id = id;
     }
     @Override
     public List<String> getTragers(){
@@ -73,54 +60,8 @@ public class fireworks extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public String getName() {
-        return DFanchovments.getConfig1().getString("fireworks.name");
+    public NamespacedKey getId(){
+        return this.id;
     }
 
-    @Override
-    public int getMaxLevel() {
-        return 3;
-    }
-
-    @Override
-    public int getStartLevel() {
-        return 1;
-    }
-
-    @Override
-    public EnchantmentTarget getItemTarget() {
-        return null;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return false;
-    }
-
-    @Override
-    public boolean isCursed() {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(@NotNull Enchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(CEnchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean canEnchantItem(ItemStack item) {
-        return false;
-
-    }
-
-    @NotNull
-    @Override
-    public String getTranslationKey() {
-        return null;
-    }
 }

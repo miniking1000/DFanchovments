@@ -1,49 +1,40 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.AxolotlBucketMeta;
-import org.bukkit.inventory.meta.CrossbowMeta;
-import org.jetbrains.annotations.NotNull;
 import org.pythonchik.dfanchovments.CEnchantment;
-import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class tntanon extends CEnchantment implements Listener {
-
-    DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
-
+    NamespacedKey id;
     public tntanon(NamespacedKey id) {
-        super(id);
+        this.id = id;
     }
 
     @EventHandler
     public void CrossEvents(ProjectileLaunchEvent event){
         if (event.getEntity().getShooter() instanceof Player){
             Player player = (Player) event.getEntity().getShooter();
-            if (player.getInventory().getItemInMainHand().containsEnchantment(DFanchovments.tntanon)) {
-                if (player.getInventory().getItemInOffHand().getType().equals(Material.TNT)) {
-                    player.getInventory().getItemInOffHand().setAmount(player.getInventory().getItemInOffHand().getAmount()-1);
-                    player.getLocation().getWorld().spawnEntity(player.getLocation().add(0,1,0), EntityType.TNT).setVelocity(event.getEntity().getVelocity());
-                    event.getEntity().remove();
-                } 
+            if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
+                if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
+                    if (player.getInventory().getItemInOffHand().getType().equals(Material.TNT)) {
+                        player.getInventory().getItemInOffHand().setAmount(player.getInventory().getItemInOffHand().getAmount() - 1);
+                        player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.TNT).setVelocity(event.getEntity().getVelocity());
+                        event.getEntity().teleport(new Location(event.getEntity().getWorld(),0,-9999,0));
+                    }
+                }
             }
         }
     }
-    public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"tntanon");
-    }
+
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
@@ -51,55 +42,10 @@ public class tntanon extends CEnchantment implements Listener {
         retu.add("CROSSBOW");
         return retu;
     }
-    @Override
-    public String getName() {
-        return DFanchovments.getConfig1().getString("tntanon.name");
-    }
 
     @Override
-    public int getMaxLevel() {
-        return 1;
-    }
-
-    @Override
-    public int getStartLevel() {
-        return 1;
-    }
-
-    @Override
-    public EnchantmentTarget getItemTarget() {
-        return null;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return false;
-    }
-
-    @Override
-    public boolean isCursed() {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(@NotNull CEnchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(@NotNull Enchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean canEnchantItem(ItemStack item) {
-        return false;
-
-    }
-
-    @NotNull
-    @Override
-    public String getTranslationKey() {
-        return null;
+    public NamespacedKey getId(){
+        return this.id;
     }
 }
+

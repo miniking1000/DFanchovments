@@ -1,18 +1,14 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
-import org.pythonchik.dfanchovments.CEnchantment;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.jetbrains.annotations.NotNull;
+import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
@@ -20,7 +16,7 @@ import java.util.List;
 
 public class potioness extends CEnchantment implements Listener {
 
-    DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
+    NamespacedKey id;
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent event){
@@ -32,37 +28,34 @@ public class potioness extends CEnchantment implements Listener {
         }
         int lvl = 0;
         if (((Player) event.getEntity()).getInventory().getHelmet() != null){
-            if (((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().hasEnchant(DFanchovments.potioness)){
-                lvl = lvl +((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getEnchants().get(DFanchovments.potioness).intValue();
+            if (((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getPersistentDataContainer().has(id)){
+                lvl = lvl +((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
             }
         }
         if (((Player) event.getEntity()).getInventory().getChestplate() != null){
-            if (((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().hasEnchant(DFanchovments.potioness)){
-                lvl = lvl + ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getEnchants().get(DFanchovments.potioness).intValue();
+            if (((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)){
+                lvl = lvl + ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
             }
         }
         if (((Player) event.getEntity()).getInventory().getLeggings() != null){
-            if (((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().hasEnchant(DFanchovments.potioness)){
-                lvl = lvl + ((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getEnchants().get(DFanchovments.potioness).intValue();
+            if (((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getPersistentDataContainer().has(id)){
+                lvl = lvl + ((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
             }
         }
         if (((Player) event.getEntity()).getInventory().getBoots() != null){
-            if (((Player) event.getEntity()).getInventory().getBoots().getItemMeta().hasEnchant(DFanchovments.potioness)){
-                lvl = lvl +((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getEnchants().get(DFanchovments.potioness).intValue();
+            if (((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(id)){
+                lvl = lvl +((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
             }
         }
         if (lvl >0) {
-            ((Player) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.POISON,25*lvl,lvl==1?0:lvl==2||lvl==3? 1 : lvl==4||lvl==5||lvl==6? 2 : lvl==7||lvl==8||lvl==9||lvl==10 ? 4 : lvl==11||lvl==12||lvl==13||lvl==14||lvl==15 ? 6 : 7));
+            ((Player) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.POISON,20*lvl,lvl==1?0:lvl==2||lvl==3||lvl==4? 1 : lvl==5||lvl==6||lvl==7? 2 : lvl==8||lvl==9||lvl==10||lvl==11? 3 : lvl==12||lvl==13||lvl==14||lvl==15 ? 4 : 5));
         }
     }
 
     public potioness(NamespacedKey id) {
-        super(id);
+        this.id = id;
     }
 
-    public NamespacedKey getId(){
-        return new NamespacedKey(plugin,"potioness");
-    }
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
@@ -98,54 +91,7 @@ public class potioness extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public String getName() {
-        return DFanchovments.getConfig1().getString("potioness.name");
-    }
-
-    @Override
-    public int getMaxLevel() {
-        return 4;
-    }
-
-    @Override
-    public int getStartLevel() {
-        return 1;
-    }
-
-    @Override
-    public EnchantmentTarget getItemTarget() {
-        return null;
-    }
-
-    @Override
-    public boolean isTreasure() {
-        return false;
-    }
-
-    @Override
-    public boolean isCursed() {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(@NotNull Enchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean conflictsWith(CEnchantment other) {
-        return false;
-    }
-
-    @Override
-    public boolean canEnchantItem(ItemStack item) {
-        return false;
-
-    }
-
-    @NotNull
-    @Override
-    public String getTranslationKey() {
-        return null;
+    public NamespacedKey getId(){
+        return this.id;
     }
 }
