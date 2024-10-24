@@ -1,6 +1,7 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,7 +10,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.pythonchik.dfanchovments.CEnchantment;
-import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,23 +28,31 @@ public class potioness extends CEnchantment implements Listener {
         }
         int lvl = 0;
         if (((Player) event.getEntity()).getInventory().getHelmet() != null){
-            if (((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getPersistentDataContainer().has(id)){
-                lvl = lvl +((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+            if (((Player) event.getEntity()).getInventory().getHelmet().getItemMeta() != null){
+                if (((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getPersistentDataContainer().has(id)){
+                    lvl = lvl +((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+                }
             }
         }
         if (((Player) event.getEntity()).getInventory().getChestplate() != null){
-            if (((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)){
-                lvl = lvl + ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+            if (((Player) event.getEntity()).getInventory().getChestplate().getItemMeta() != null) {
+                if (((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+                }
             }
         }
         if (((Player) event.getEntity()).getInventory().getLeggings() != null){
-            if (((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getPersistentDataContainer().has(id)){
-                lvl = lvl + ((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+            if (((Player) event.getEntity()).getInventory().getLeggings().getItemMeta() != null) {
+                if (((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + ((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+                }
             }
         }
         if (((Player) event.getEntity()).getInventory().getBoots() != null){
-            if (((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(id)){
-                lvl = lvl +((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+            if (((Player) event.getEntity()).getInventory().getBoots().getItemMeta() != null) {
+                if (((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + ((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+                }
             }
         }
         if (lvl >0) {

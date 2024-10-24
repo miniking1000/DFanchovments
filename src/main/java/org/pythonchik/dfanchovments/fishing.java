@@ -1,6 +1,9 @@
 package org.pythonchik.dfanchovments;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -10,9 +13,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.checkerframework.checker.units.qual.N;
 import org.joml.Math;
 import org.joml.Random;
 
@@ -42,6 +47,9 @@ public class fishing implements Listener {
                                 ItemMeta tobeMeta = book.getItemMeta();
                                 tobeMeta.getPersistentDataContainer().set(enchs.getId(), PersistentDataType.INTEGER,Math.max(1, Math.min(new Random().nextInt(enchs.getMaxLevel() + 1), enchs.getMaxLevel())));
                                 int lvl = tobeMeta.getPersistentDataContainer().get(enchs.getId(),PersistentDataType.INTEGER);
+                                if (enchs.equals(DFanchovments.democracy)) {
+                                    tobeMeta.addAttributeModifier(Attribute.GENERIC_SCALE, new AttributeModifier(Attribute.GENERIC_SCALE.getKey(), 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
+                                }
                                 List<String> lore = new ArrayList<String>();
                                 lore.add(message.hex(enchs.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
                                 tobeMeta.setLore(lore);

@@ -2,12 +2,15 @@ package org.pythonchik.dfanchovments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -45,6 +48,9 @@ public class dfchants implements CommandExecutor, TabCompleter {
                                         ItemMeta tobeMeta = book.getItemMeta();
                                         tobeMeta.getPersistentDataContainer().set(enchs.getId(), PersistentDataType.INTEGER,Integer.valueOf(args[2]) <= enchs.getMaxLevel() && Integer.valueOf(args[2]) >= enchs.getStartLevel() ? Integer.valueOf(args[2]) : enchs.getStartLevel());
                                         int lvl = tobeMeta.getPersistentDataContainer().get(enchs.getId(),PersistentDataType.INTEGER);
+                                        if (enchs.equals(DFanchovments.democracy)) {
+                                            tobeMeta.addAttributeModifier(Attribute.GENERIC_SCALE, new AttributeModifier(Attribute.GENERIC_SCALE.getKey(), 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
+                                        }
                                         List<String> lore = new ArrayList<String>();
                                         lore.add(message.hex(enchs.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
                                         tobeMeta.setLore(lore);

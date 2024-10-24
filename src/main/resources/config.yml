@@ -70,3 +70,21 @@ steveoshot:
   chance: 0
   luck: 0
   maxlvl: 1
+antiholy:
+  name: "&7Осветленность"
+  biome: "THE_VOID"
+  chance: 0
+  luck: 0
+  maxlvl: 1
+neverended:
+  name: "&7Бескончаемость"
+  biome: "PLAINS"
+  chance: 100
+  luck: 0
+  maxlvl: 9999999
+democracy:
+  name: "&7Нормальность"
+  biome: "PLAINS"
+  chance: 100
+  luck: 0
+  maxlvl: 9999999

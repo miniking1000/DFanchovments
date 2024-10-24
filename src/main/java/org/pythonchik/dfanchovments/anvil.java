@@ -105,7 +105,6 @@ public class anvil implements Listener {
                     meta.setDisplayName(message.hex(event.getInventory().getRenameText()));
                     item.setItemMeta(meta);
                     event.setResult(item);
-                    event.getInventory().setRepairCost(30);
                 }
             }
         }

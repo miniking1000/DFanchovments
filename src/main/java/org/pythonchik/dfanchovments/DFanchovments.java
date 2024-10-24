@@ -26,6 +26,9 @@ public final class DFanchovments extends JavaPlugin {
     public static fish fish;
     public static poshot poshot;
     public static steveoshot steveoshot;
+    public static antiholy antiholy;
+    public static neverended neverended;
+    public static democracy democracy;
 
     //add a line to ench
 
@@ -57,6 +60,9 @@ public final class DFanchovments extends JavaPlugin {
         fish = new fish(new NamespacedKey(plugin,"fish"));
         poshot = new poshot(new NamespacedKey(plugin,"poshot"));
         steveoshot = new steveoshot(new NamespacedKey(plugin,"steveoshot"));
+        antiholy = new antiholy(new NamespacedKey(plugin,"antiholy"));
+        neverended = new neverended(new NamespacedKey(plugin,"neverended"));
+        democracy = new democracy(new NamespacedKey(plugin, "democracy"));
         //add a line to ench
 
         CEnchantments.add(soulbound);
@@ -71,6 +77,9 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(fish);
         CEnchantments.add(poshot);
         CEnchantments.add(steveoshot);
+        CEnchantments.add(antiholy);
+        CEnchantments.add(neverended);
+        CEnchantments.add(democracy);
         //add a lint to ench
 
         loadConfig();
@@ -91,6 +100,8 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(fish,this);
         getServer().getPluginManager().registerEvents(poshot,this);
         getServer().getPluginManager().registerEvents(steveoshot,this);
+        getServer().getPluginManager().registerEvents(antiholy,this);
+        getServer().getPluginManager().registerEvents(neverended,this);
         //any listeners to ench
 
         getCommand("dfchants").setExecutor(new dfchants(config,this));
