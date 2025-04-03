@@ -17,13 +17,12 @@ public class exp  extends CEnchantment implements Listener {
     NamespacedKey id;
 
     @EventHandler
-    public void ondKillEvent(EntityDeathEvent event){
-
-        if (event.getEntity().getKiller() == null){
+    public void ondKillEvent(EntityDeathEvent event) {
+        if (event.getEntity().getKiller() == null) {
             return;
         }
         Player player = event.getEntity().getKiller();
-        if (player.getInventory().getItemInMainHand().getItemMeta() == null){
+        if (player.getInventory().getItemInMainHand().getItemMeta() == null) {
             return;
         }
         if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {

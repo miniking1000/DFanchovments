@@ -21,4 +21,5 @@ public class democracy extends CEnchantment implements Listener {
     public NamespacedKey getId(){
         return this.id;
     }
+    //FOR future me, this book adds .5 to height using attributes, that's why nothing is here
 }

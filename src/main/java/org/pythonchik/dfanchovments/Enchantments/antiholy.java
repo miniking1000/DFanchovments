@@ -35,18 +35,19 @@ public class antiholy extends CEnchantment implements Listener {
 
     }
     @EventHandler
-    public void event(EntityPotionEffectEvent event){
-        if(!(event.getEntity() instanceof Player)){
-            return;
+    public void event(EntityPotionEffectEvent event) {
+        if (!(event.getEntity() instanceof Player)) return;
+        Player player = (Player) event.getEntity();
+        if (player.getInventory().getChestplate() == null) return;
+        if (!player.getInventory().getChestplate().hasItemMeta()) return;
+        if (!player.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)) return;
+        if (event.getNewEffect() == null) return;
+        // Cancel only if a bad effect is being applied or changed
+        if (badeffects.contains(event.getModifiedType())) {
+            event.setCancelled(true);
         }
-
-        if(((Player) event.getEntity()).getInventory().getChestplate() != null && ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)){
-            if (badeffects.contains(event.getModifiedType())){
-                event.setCancelled(true);
-            }
-        }
-
     }
+
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();

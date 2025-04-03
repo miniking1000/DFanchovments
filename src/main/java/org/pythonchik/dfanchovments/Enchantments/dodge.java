@@ -10,7 +10,7 @@ import org.pythonchik.dfanchovments.CEnchantment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class dodge  extends CEnchantment implements Listener {
+public class dodge extends CEnchantment implements Listener {
     NamespacedKey id;
 
     @EventHandler

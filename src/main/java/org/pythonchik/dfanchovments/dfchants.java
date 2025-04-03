@@ -49,7 +49,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
                                         tobeMeta.getPersistentDataContainer().set(enchs.getId(), PersistentDataType.INTEGER,Integer.valueOf(args[2]) <= enchs.getMaxLevel() && Integer.valueOf(args[2]) >= enchs.getStartLevel() ? Integer.valueOf(args[2]) : enchs.getStartLevel());
                                         int lvl = tobeMeta.getPersistentDataContainer().get(enchs.getId(),PersistentDataType.INTEGER);
                                         if (enchs.equals(DFanchovments.democracy)) {
-                                            tobeMeta.addAttributeModifier(Attribute.GENERIC_SCALE, new AttributeModifier(Attribute.GENERIC_SCALE.getKey(), 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
+                                            tobeMeta.addAttributeModifier(Attribute.SCALE, new AttributeModifier(Attribute.SCALE.getKey(), 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
                                         }
                                         List<String> lore = new ArrayList<String>();
                                         lore.add(message.hex(enchs.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));

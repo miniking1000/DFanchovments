@@ -48,7 +48,7 @@ public class fishing implements Listener {
                                 tobeMeta.getPersistentDataContainer().set(enchs.getId(), PersistentDataType.INTEGER,Math.max(1, Math.min(new Random().nextInt(enchs.getMaxLevel() + 1), enchs.getMaxLevel())));
                                 int lvl = tobeMeta.getPersistentDataContainer().get(enchs.getId(),PersistentDataType.INTEGER);
                                 if (enchs.equals(DFanchovments.democracy)) {
-                                    tobeMeta.addAttributeModifier(Attribute.GENERIC_SCALE, new AttributeModifier(Attribute.GENERIC_SCALE.getKey(), 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
+                                    tobeMeta.addAttributeModifier(Attribute.SCALE, new AttributeModifier(Attribute.SCALE.getKey(), 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
                                 }
                                 List<String> lore = new ArrayList<String>();
                                 lore.add(message.hex(enchs.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));

@@ -88,3 +88,15 @@ democracy:
   chance: 100
   luck: 0
   maxlvl: 9999999
+headless:
+  name: "&7Головосрез"
+  biome: "THE_VOID"
+  chance: 100
+  luck: 0
+  maxlvl: 1
+axicia:
+  name: "&7Ножницы"
+  biome: "FOREST"
+  chance: 100
+  luck: 0
+  maxlvl: 1

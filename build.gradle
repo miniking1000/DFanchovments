@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'org.pythonchik'
-version = '1.3'
+version = '1.5'
 
 repositories {
     mavenCentral()
@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly "org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT"
+    compileOnly "org.spigotmc:spigot-api:1.21.4-R0.1-SNAPSHOT"
     compileOnly 'org.jetbrains:annotations:24.0.1'
 }
 

@@ -29,6 +29,9 @@ public final class DFanchovments extends JavaPlugin {
     public static antiholy antiholy;
     public static neverended neverended;
     public static democracy democracy;
+    public static telepathy telepathy;
+    public static headless headless;
+    public static axicia axicia;
 
     //add a line to ench
 
@@ -63,6 +66,9 @@ public final class DFanchovments extends JavaPlugin {
         antiholy = new antiholy(new NamespacedKey(plugin,"antiholy"));
         neverended = new neverended(new NamespacedKey(plugin,"neverended"));
         democracy = new democracy(new NamespacedKey(plugin, "democracy"));
+        telepathy = new telepathy(new NamespacedKey(plugin, "telepathy"));
+        headless = new headless(new NamespacedKey(plugin, "headless"));
+        axicia = new axicia(new NamespacedKey(plugin, "axicia"));
         //add a line to ench
 
         CEnchantments.add(soulbound);
@@ -80,6 +86,9 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(antiholy);
         CEnchantments.add(neverended);
         CEnchantments.add(democracy);
+        CEnchantments.add(telepathy);
+        CEnchantments.add(headless);
+        CEnchantments.add(axicia);
         //add a lint to ench
 
         loadConfig();
@@ -102,6 +111,9 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(steveoshot,this);
         getServer().getPluginManager().registerEvents(antiholy,this);
         getServer().getPluginManager().registerEvents(neverended,this);
+        getServer().getPluginManager().registerEvents(telepathy, this);
+        getServer().getPluginManager().registerEvents(headless, this);
+        getServer().getPluginManager().registerEvents(axicia, this);
         //any listeners to ench
 
         getCommand("dfchants").setExecutor(new dfchants(config,this));

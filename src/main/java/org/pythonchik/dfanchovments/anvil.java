@@ -25,6 +25,7 @@ public class anvil implements Listener {
             ItemStack item = slot1.clone();
             ItemMeta meta = item.getItemMeta();
             List<String> lore = meta.getLore();
+            boolean isApplied = false;
             for (CEnchantment ench : DFanchovments.CEnchantments) {
                 if (slot2.getItemMeta().getPersistentDataContainer().has(ench.getId())) {
                     int num1 = slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()) ? slot1.getItemMeta().getPersistentDataContainer().get(ench.getId(),PersistentDataType.INTEGER) : 0;
@@ -38,38 +39,46 @@ public class anvil implements Listener {
                             //will be 2+1=3 else, taking ench lvl
                             num1 + 1
                             : num1;
-                    if (!(slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()))){
-                        meta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, num2);
-                        meta.setEnchantmentGlintOverride(true);
-                    }
-                    else {
-                        meta.getPersistentDataContainer().set(ench.getId(),PersistentDataType.INTEGER,lvl);
-                        meta.setEnchantmentGlintOverride(true);
-                    }
-                    if (lore != null) {
-                        if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V")))))) {
-                            lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                        } else {
-                            if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")))))) {
-                                lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
+                    // if the item supports the enchantment in the first place, then do it
+                    for (String gooditem : ench.getTragers()) {
+                        if ((Material.getMaterial(gooditem) != null ? Material.getMaterial(gooditem) : Material.BARRIER).equals(item.getType())) {
+                            isApplied = true;
+                            if (!(slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()))) {
+                                meta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, num2);
+                                meta.setEnchantmentGlintOverride(true);
+                            }
+                            else {
+                                meta.getPersistentDataContainer().set(ench.getId(),PersistentDataType.INTEGER,lvl);
+                                meta.setEnchantmentGlintOverride(true);
+                            }
+
+                            if (lore != null) {
+                                if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V")))))) {
+                                    lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
+                                } else {
+                                    if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")))))) {
+                                        lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
+                                    } else {
+                                        lore.add(0,message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
+                                    }
+                                }
                             } else {
+                                lore = new ArrayList<String>();
                                 lore.add(0,message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
                             }
                         }
-                    } else {
-                        lore = new ArrayList<String>();
-                        lore.add(0,message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
                     }
-
                     meta.setLore(lore);
                     meta.setDisplayName(message.hex(event.getInventory().getRenameText()));
                     item.setItemMeta(meta);
-                    for (String gooditem : ench.getTragers()) {
-                        if ((Material.getMaterial(gooditem) != null ? Material.getMaterial(gooditem) : Material.BARRIER).equals(item.getType())) {
-                            event.setResult(item);
-                            event.getInventory().setRepairCost(30);
-                        }
+                    //for (String gooditem : ench.getTragers()) {
+                    //    if ((Material.getMaterial(gooditem) != null ? Material.getMaterial(gooditem) : Material.BARRIER).equals(item.getType())) {
+                    if (isApplied) {
+                        event.setResult(item);
+                        event.getInventory().setRepairCost(30);
                     }
+                    //    }
+                    //}
 
                 }
             }
