@@ -37,7 +37,7 @@ public class headless extends CEnchantment implements Listener {
             ItemStack weapon = killer.getInventory().getItemInMainHand();
             if (weapon.getItemMeta() != null && weapon.getItemMeta().getPersistentDataContainer().has(id) && HEADS.containsKey(event.getEntityType())) {
                 double dropChance = 0.2;
-                int lootingLevel = weapon.getEnchantmentLevel(Enchantment.LOOTING);
+                int lootingLevel = weapon.getEnchantmentLevel(Enchantment.FORTUNE);
                 if (lootingLevel > 0) {
                     dropChance += lootingLevel * 0.05;
                 }

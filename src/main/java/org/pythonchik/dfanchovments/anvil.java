@@ -3,6 +3,8 @@ package org.pythonchik.dfanchovments;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
@@ -10,13 +12,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class anvil implements Listener {
     Message message = DFanchovments.getMessage();
     @EventHandler
-    public void AnviListener(PrepareAnvilEvent event){
+    public void AnviListener(PrepareAnvilEvent event) {
         AnvilInventory anvil = event.getInventory();
         if (!(anvil.getItem(0) == null || anvil.getItem(1) == null)) {
             if (anvil.getItem(0).getItemMeta() == null || anvil.getItem(1).getItemMeta() == null) return;
@@ -74,6 +77,7 @@ public class anvil implements Listener {
                     //for (String gooditem : ench.getTragers()) {
                     //    if ((Material.getMaterial(gooditem) != null ? Material.getMaterial(gooditem) : Material.BARRIER).equals(item.getType())) {
                     if (isApplied) {
+                        event.getView().setRepairItemCountCost(1);
                         event.setResult(item);
                         event.getInventory().setRepairCost(30);
                     }
