@@ -1,6 +1,7 @@
 package org.pythonchik.dfanchovments;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
@@ -14,6 +15,7 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 
 public class anvil implements Listener {
@@ -21,8 +23,8 @@ public class anvil implements Listener {
     @EventHandler
     public void AnviListener(PrepareAnvilEvent event) {
         AnvilInventory anvil = event.getInventory();
-        if (!(anvil.getItem(0) == null || anvil.getItem(1) == null)) {
-            if (anvil.getItem(0).getItemMeta() == null || anvil.getItem(1).getItemMeta() == null) return;
+        if ((anvil.getItem(0) != null && anvil.getItem(1) != null)) { // have both items
+            if (anvil.getItem(0).getItemMeta() == null || anvil.getItem(1).getItemMeta() == null) return; // both must have meta
             ItemStack slot1 = anvil.getItem(0);
             ItemStack slot2 = anvil.getItem(1);
             ItemStack item = slot1.clone();
@@ -38,7 +40,7 @@ public class anvil implements Listener {
                             Math.max(num1, num2)
                             //taking maximium of those
                             : num1 + 1 <= ench.getMaxLevel() ?
-                            //1 and 2 are equal AND (for example 2 with max 5) 2+1=3 <= 5
+                            //1 and 2 are equal AND (for example 2 with max 5) 2+1(static 1 bc +1 level)=3 <= 5
                             //will be 2+1=3 else, taking ench lvl
                             num1 + 1
                             : num1;
@@ -73,6 +75,11 @@ public class anvil implements Listener {
                     }
                     meta.setLore(lore);
                     meta.setDisplayName(message.hex(event.getInventory().getRenameText()));
+                    // after all custom we also need to move regular enchants to the new item from second slot(e.g. do regular anvil thing)
+                    for (Map.Entry<Enchantment, Integer> Entry : slot2.getItemMeta().getEnchants().entrySet()) {
+                        meta.addEnchant(Entry.getKey(), Math.max(meta.getEnchantLevel(Entry.getKey()), Entry.getValue()), false);
+                    }
+
                     item.setItemMeta(meta);
                     //for (String gooditem : ench.getTragers()) {
                     //    if ((Material.getMaterial(gooditem) != null ? Material.getMaterial(gooditem) : Material.BARRIER).equals(item.getType())) {

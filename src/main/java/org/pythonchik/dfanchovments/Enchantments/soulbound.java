@@ -46,14 +46,7 @@ public class soulbound extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("CROSSBOW");
         retu.add("BOW");
-
-        //five very important items.
-        retu.add("DEAD_FIRE_CORAL_FAN");
-        retu.add("COOKED_CHICKEN");
-        retu.add("WRITTEN_BOOK");
-        retu.add("YELLOW_GLAZED_TERRACOTTA");
-        retu.add("IRON_HOE");
-
+        
         //swords
         retu.add("WOODEN_SWORD");
         retu.add("STONE_SWORD");

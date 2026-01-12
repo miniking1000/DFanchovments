@@ -32,6 +32,7 @@ public final class DFanchovments extends JavaPlugin {
     public static telepathy telepathy;
     public static headless headless;
     public static axicia axicia;
+    public static log log;
 
     //add a line to ench
 
@@ -69,6 +70,8 @@ public final class DFanchovments extends JavaPlugin {
         telepathy = new telepathy(new NamespacedKey(plugin, "telepathy"));
         headless = new headless(new NamespacedKey(plugin, "headless"));
         axicia = new axicia(new NamespacedKey(plugin, "axicia"));
+        log = new log(new NamespacedKey(plugin, "log"));
+
         //add a line to ench
 
         CEnchantments.add(soulbound);
@@ -89,6 +92,7 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(telepathy);
         CEnchantments.add(headless);
         CEnchantments.add(axicia);
+        CEnchantments.add(log);
         //add a lint to ench
 
         loadConfig();
@@ -114,6 +118,7 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(telepathy, this);
         getServer().getPluginManager().registerEvents(headless, this);
         getServer().getPluginManager().registerEvents(axicia, this);
+        getServer().getPluginManager().registerEvents(log, this);
         //any listeners to ench
 
         getCommand("dfchants").setExecutor(new dfchants(config,this));

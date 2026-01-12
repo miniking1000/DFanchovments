@@ -18,7 +18,7 @@ public class dodge extends CEnchantment implements Listener {
         if(!(event.getEntity() instanceof Player)){
             return;
         }
-        if(((Player) event.getEntity()).getInventory().getChestplate() != null && ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)){
+        if(((Player) event.getEntity()).getInventory().getChestplate() != null && ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta() != null && ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)){
             if (Math.random() <0.15) {
                 event.setDamage(0);
             }
