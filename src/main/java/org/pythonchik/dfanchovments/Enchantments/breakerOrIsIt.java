@@ -15,29 +15,30 @@ import org.pythonchik.dfanchovments.CEnchantment;
 
 import java.util.*;
 
-public class log extends CEnchantment implements Listener {
+public class breakerOrIsIt extends CEnchantment implements Listener {
     NamespacedKey id;
-    public log(NamespacedKey id) {
+    public breakerOrIsIt(NamespacedKey id) {
         this.id = id;
     }
 
-    private static final Set<Material> LOGS = EnumSet.of(
-            Material.OAK_LOG, Material.SPRUCE_LOG, Material.BIRCH_LOG,
-            Material.JUNGLE_LOG, Material.ACACIA_LOG, Material.DARK_OAK_LOG,
-            Material.MANGROVE_LOG, Material.CHERRY_LOG, Material.CRIMSON_STEM,
-            Material.WARPED_STEM, Material.PALE_OAK_LOG
+    private static final Set<Material> ORES = EnumSet.of(
+            Material.COAL_ORE, Material.DEEPSLATE_COAL_ORE, Material.IRON_ORE, Material.DEEPSLATE_IRON_ORE,
+            Material.COPPER_ORE, Material.DEEPSLATE_COPPER_ORE, Material.GOLD_ORE, Material.DEEPSLATE_GOLD_ORE,
+            Material.REDSTONE_ORE, Material.DEEPSLATE_REDSTONE_ORE, Material.EMERALD_ORE, Material.DEEPSLATE_EMERALD_ORE,
+            Material.LAPIS_ORE, Material.DEEPSLATE_LAPIS_ORE, Material.DIAMOND_ORE, Material.DEEPSLATE_DIAMOND_ORE,
+            Material.NETHER_GOLD_ORE, Material.NETHER_QUARTZ_ORE, Material.ANCIENT_DEBRIS, Material.RAW_IRON_BLOCK,
+            Material.RAW_COPPER_BLOCK, Material.RAW_GOLD_BLOCK, Material.GLOWSTONE, Material.AMETHYST_CLUSTER
     );
 
-
     @EventHandler
-    public void onPlayerChopALog(BlockBreakEvent event) {
+    public void onPlayerChopAnOre(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block start = event.getBlock();
         if (player.isSneaking()) return;
-        if (!LOGS.contains(start.getType())) return;
+        if (!ORES.contains(start.getType())) return;
 
-        ItemStack axe = player.getInventory().getItemInMainHand();
-        if (!(axe.getItemMeta() instanceof Damageable meta)) return;
+        ItemStack pickaxe = player.getInventory().getItemInMainHand();
+        if (!(pickaxe.getItemMeta() instanceof Damageable meta)) return;
         if (!meta.getPersistentDataContainer().has(this.id)) return; // не зачарованный топор
 
         event.setCancelled(true);
@@ -48,17 +49,17 @@ public class log extends CEnchantment implements Listener {
 
         while (!queue.isEmpty()) {
             Block b = queue.poll();
-            if (!LOGS.contains(b.getType()) || !visited.add(b)) continue;
-            if (visited.size() >= 200) break;
+            if (!ORES.contains(b.getType()) || !visited.add(b)) continue;
+            if (visited.size() >= 64) break;
 
             for (BlockFace face : Arrays.asList(
                     BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH,
-                    BlockFace.EAST, BlockFace.WEST,
+                    BlockFace.EAST, BlockFace.WEST, BlockFace.DOWN,
                     BlockFace.NORTH_EAST, BlockFace.NORTH_WEST,
                     BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST
             )) {
                 Block rel = b.getRelative(face);
-                if (!visited.contains(rel) && LOGS.contains(rel.getType())) queue.add(rel);
+                if (!visited.contains(rel) && ORES.contains(rel.getType())) queue.add(rel);
             }
         }
         if (visited.size() == 1) {
@@ -67,9 +68,9 @@ public class log extends CEnchantment implements Listener {
         }
         // Проверяем доступную прочность
 
-        double multiplier = 1.0 / (1 + axe.getEnchantmentLevel(Enchantment.UNBREAKING));
+        double multiplier = 1.0 / (1 + pickaxe.getEnchantmentLevel(Enchantment.UNBREAKING));
         int cost = (int) Math.ceil(visited.size() * 2 * multiplier);
-        int remaining = meta.hasMaxDamage() ? meta.getMaxDamage() : axe.getType().getMaxDurability() - meta.getDamage();
+        int remaining = meta.hasMaxDamage() ? meta.getMaxDamage() : pickaxe.getType().getMaxDurability() - meta.getDamage();
 
         if (remaining <= 1) return; // топор почти сломан, ничего не делаем
 
@@ -87,10 +88,10 @@ public class log extends CEnchantment implements Listener {
 
         // Применяем урон топору
         meta.setDamage(meta.getDamage() + cost);
-        axe.setItemMeta(meta);
+        pickaxe.setItemMeta(meta);
 
         // Ломаем собранные блоки
-        for (Block b : visited) b.breakNaturally(axe);
+        for (Block b : visited) b.breakNaturally(pickaxe);
     }
 
 
@@ -99,13 +100,14 @@ public class log extends CEnchantment implements Listener {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
 
-        //axes
-        retu.add("WOODEN_AXE");
-        retu.add("STONE_AXE");
-        retu.add("IRON_AXE");
-        retu.add("DIAMOND_AXE");
-        retu.add("GOLDEN_AXE");
-        retu.add("NETHERITE_AXE");
+        // all pickaxes
+        retu.add("WOODEN_PICKAXE");
+        retu.add("STONE_PICKAXE");
+        retu.add("IRON_PICKAXE");
+        retu.add("DIAMOND_PICKAXE");
+        retu.add("GOLDEN_PICKAXE");
+        retu.add("NETHERITE_PICKAXE");
+
         return retu;
     }
     @Override

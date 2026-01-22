@@ -1,5 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +30,24 @@ public class poshot extends CEnchantment implements Listener {
             if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
                 if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
                     if (player.getInventory().getItemInOffHand().getType().equals(Material.SPLASH_POTION) || player.getInventory().getItemInOffHand().getType().equals(Material.LINGERING_POTION)) {
-                        ThrownPotion potion = (ThrownPotion) player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.POTION);
+                        ThrownPotion potion;
+                        if (player.getInventory().getItemInOffHand().getType().equals(Material.SPLASH_POTION)) {
+                            potion = (ThrownPotion) player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.SPLASH_POTION);
+                        } else if (player.getInventory().getItemInOffHand().getType().equals(Material.LINGERING_POTION)) {
+                            potion = (ThrownPotion) player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.LINGERING_POTION);
+                        } else {
+                            return; // never happens
+                        }
                         potion.setItem(player.getInventory().getItemInOffHand());
                         potion.setVelocity(event.getEntity().getVelocity());
                         player.getInventory().getItemInOffHand().setAmount(player.getInventory().getItemInOffHand().getAmount() - 1);
-                        event.getEntity().teleport(new Location(event.getEntity().getWorld(),0,-9999,0));
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
                     }
                 }
             }
         }
     }
+
     @Override
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();

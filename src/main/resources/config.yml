@@ -100,3 +100,21 @@ axicia:
   chance: 100
   luck: 0
   maxlvl: 1
+breakerorisit:
+  name: "&7Рудолом"
+  biome: "BASALT_DELTAS"
+  chance: 2
+  luck: 1
+  maxlvl: 1
+stunning:
+  name: "&7Оглушающий удар"
+  biome: "FROZEN_PEAKS"
+  chance: 0.08
+  luck: 0.4
+  maxlvl: 3
+myolner:
+  name: "&7Искромётность"
+  biome: "DEEP_COLD_OCEAN"
+  chance: 0.5
+  luck: 0.05
+  maxlvl: 3

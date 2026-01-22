@@ -89,6 +89,7 @@ public class neverended extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("ROTTEN_FLESH");
         retu.add("ENCHANTED_GOLDEN_APPLE");
+        retu.add("WIND_CHARGE");
         retu.add("TOTEM_OF_UNDYING");
         retu.add("CHORUS_FLOWER");
         return retu;

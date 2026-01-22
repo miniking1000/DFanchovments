@@ -74,7 +74,7 @@ public class anvil implements Listener {
                         }
                     }
                     meta.setLore(lore);
-                    meta.setDisplayName(message.hex(event.getInventory().getRenameText()));
+                    meta.setDisplayName(message.hex(event.getView().getRenameText())); // event.getInventory().getRenameText()
                     // after all custom we also need to move regular enchants to the new item from second slot(e.g. do regular anvil thing)
                     for (Map.Entry<Enchantment, Integer> Entry : slot2.getItemMeta().getEnchants().entrySet()) {
                         meta.addEnchant(Entry.getKey(), Math.max(meta.getEnchantLevel(Entry.getKey()), Entry.getValue()), false);
@@ -86,7 +86,8 @@ public class anvil implements Listener {
                     if (isApplied) {
                         event.getView().setRepairItemCountCost(1);
                         event.setResult(item);
-                        event.getInventory().setRepairCost(30);
+                        event.getView().setRepairCost(30);
+                        //event.getInventory().setRepairCost(30);
                     }
                     //    }
                     //}
@@ -122,7 +123,7 @@ public class anvil implements Listener {
                     }
 
                     meta.setLore(lore);
-                    meta.setDisplayName(message.hex(event.getInventory().getRenameText()));
+                    meta.setDisplayName(message.hex(event.getView().getRenameText()));
                     item.setItemMeta(meta);
                     event.setResult(item);
                 }

@@ -1,5 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.*;
@@ -26,12 +27,12 @@ public class steveoshot extends CEnchantment implements Listener {
         }
         Player player = (Player) event.getEntity().getShooter();
         if (player.getInventory().getItemInMainHand().getItemMeta() != null){
-            if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)){
+            if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
                 Entity guy = sendFlying(player.getPassengers(),null);
                 if (guy != null) {
                     guy.getVehicle().eject();
                     guy.setVelocity(event.getEntity().getVelocity().multiply(2));
-                    event.getEntity().teleport(new Location(event.getEntity().getWorld(), 0, -9999, 0));
+                    Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
                 }
             }
         }
@@ -39,7 +40,7 @@ public class steveoshot extends CEnchantment implements Listener {
 
     private Entity sendFlying(List<Entity> list, Entity result){
         for (Entity entity : list){
-            if (entity instanceof Player){
+            if (entity instanceof Player) {
                 return entity;
             } else {
                 result = sendFlying(entity.getPassengers(), result);

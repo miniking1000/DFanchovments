@@ -20,43 +20,43 @@ public class potioness extends CEnchantment implements Listener {
 
     @EventHandler
     public void onHit(EntityDamageByEntityEvent event){
-        if (!(event.getEntity() instanceof Player)){
+        if (!(event.getEntity() instanceof Player player)){
             return;
         }
-        if (!(event.getDamager() instanceof Player)){
+        if (!(event.getDamager() instanceof LivingEntity entity)){
             return;
         }
         int lvl = 0;
-        if (((Player) event.getEntity()).getInventory().getHelmet() != null){
-            if (((Player) event.getEntity()).getInventory().getHelmet().getItemMeta() != null){
-                if (((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getPersistentDataContainer().has(id)){
-                    lvl = lvl +((Player) event.getEntity()).getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+        if (player.getInventory().getHelmet() != null){
+            if (player.getInventory().getHelmet().getItemMeta() != null){
+                if (player.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().has(id)){
+                    lvl = lvl +player.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
                 }
             }
         }
-        if (((Player) event.getEntity()).getInventory().getChestplate() != null){
-            if (((Player) event.getEntity()).getInventory().getChestplate().getItemMeta() != null) {
-                if (((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)) {
-                    lvl = lvl + ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+        if (player.getInventory().getChestplate() != null){
+            if (player.getInventory().getChestplate().getItemMeta() != null) {
+                if (player.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + player.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
                 }
             }
         }
-        if (((Player) event.getEntity()).getInventory().getLeggings() != null){
-            if (((Player) event.getEntity()).getInventory().getLeggings().getItemMeta() != null) {
-                if (((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getPersistentDataContainer().has(id)) {
-                    lvl = lvl + ((Player) event.getEntity()).getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+        if (player.getInventory().getLeggings() != null){
+            if (player.getInventory().getLeggings().getItemMeta() != null) {
+                if (player.getInventory().getLeggings().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + player.getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
                 }
             }
         }
-        if (((Player) event.getEntity()).getInventory().getBoots() != null){
-            if (((Player) event.getEntity()).getInventory().getBoots().getItemMeta() != null) {
-                if (((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(id)) {
-                    lvl = lvl + ((Player) event.getEntity()).getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+        if (player.getInventory().getBoots() != null){
+            if (player.getInventory().getBoots().getItemMeta() != null) {
+                if (player.getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + player.getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
                 }
             }
         }
         if (lvl >0) {
-            ((Player) event.getDamager()).addPotionEffect(new PotionEffect(PotionEffectType.POISON,20*lvl,lvl==1?0:lvl==2||lvl==3||lvl==4? 1 : lvl==5||lvl==6||lvl==7? 2 : lvl==8||lvl==9||lvl==10||lvl==11? 3 : lvl==12||lvl==13||lvl==14||lvl==15 ? 4 : 5));
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON,20*lvl,lvl==1?0:lvl==2||lvl==3||lvl==4? 1 : lvl==5||lvl==6||lvl==7? 2 : lvl==8||lvl==9||lvl==10||lvl==11? 3 : lvl==12||lvl==13||lvl==14||lvl==15 ? 4 : 5));
         }
     }
 

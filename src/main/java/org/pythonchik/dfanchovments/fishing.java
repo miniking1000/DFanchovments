@@ -1,7 +1,6 @@
 package org.pythonchik.dfanchovments;
 
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Biome;
@@ -17,7 +16,6 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.checkerframework.checker.units.qual.N;
 import org.joml.Math;
 import org.joml.Random;
 

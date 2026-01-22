@@ -62,11 +62,8 @@ public class telepathy extends CEnchantment implements Listener {
     @EventHandler
     public void onBlockDropItem(BlockDropItemEvent event) {
         Player player = event.getPlayer();
-        if (player == null) {
-            return;
-        }
         ItemStack toolInHand = player.getInventory().getItemInMainHand();
-        if (toolInHand == null || toolInHand.getItemMeta() == null || !toolInHand.getItemMeta().getPersistentDataContainer().has(id)) {
+        if (toolInHand.getItemMeta() == null || !toolInHand.getItemMeta().getPersistentDataContainer().has(id)) {
             return;
         }
         Iterator<Item> dropIterator = event.getItems().iterator();

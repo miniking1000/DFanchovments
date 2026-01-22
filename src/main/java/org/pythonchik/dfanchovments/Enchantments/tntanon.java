@@ -1,5 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -9,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,7 @@ public class tntanon extends CEnchantment implements Listener {
                     if (player.getInventory().getItemInOffHand().getType().equals(Material.TNT)) {
                         player.getInventory().getItemInOffHand().setAmount(player.getInventory().getItemInOffHand().getAmount() - 1);
                         player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.TNT).setVelocity(event.getEntity().getVelocity());
-                        event.getEntity().teleport(new Location(event.getEntity().getWorld(),0,-9999,0));
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
                     }
                 }
             }

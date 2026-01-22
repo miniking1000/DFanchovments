@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public final class DFanchovments extends JavaPlugin {
     private static FileConfiguration config;
-    static DFanchovments plugin;
+    public static DFanchovments plugin;
     public static ArrayList<CEnchantment> CEnchantments = new ArrayList<>();
     public static exp exp;
     public static soulbound soulbound;
@@ -33,6 +33,9 @@ public final class DFanchovments extends JavaPlugin {
     public static headless headless;
     public static axicia axicia;
     public static log log;
+    public static breakerOrIsIt breakerOrIsIt;
+    public static stunning stunning;
+    public static myolner myolner;
 
     //add a line to ench
 
@@ -71,7 +74,9 @@ public final class DFanchovments extends JavaPlugin {
         headless = new headless(new NamespacedKey(plugin, "headless"));
         axicia = new axicia(new NamespacedKey(plugin, "axicia"));
         log = new log(new NamespacedKey(plugin, "log"));
-
+        breakerOrIsIt = new breakerOrIsIt(new NamespacedKey(plugin, "breakerorisit"));
+        stunning = new stunning(new NamespacedKey(plugin, "stunning"));
+        myolner = new myolner(new NamespacedKey(plugin, "myolner"));
         //add a line to ench
 
         CEnchantments.add(soulbound);
@@ -93,6 +98,9 @@ public final class DFanchovments extends JavaPlugin {
         CEnchantments.add(headless);
         CEnchantments.add(axicia);
         CEnchantments.add(log);
+        CEnchantments.add(breakerOrIsIt);
+        CEnchantments.add(stunning);
+        CEnchantments.add(myolner);
         //add a lint to ench
 
         loadConfig();
@@ -119,6 +127,10 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(headless, this);
         getServer().getPluginManager().registerEvents(axicia, this);
         getServer().getPluginManager().registerEvents(log, this);
+        getServer().getPluginManager().registerEvents(breakerOrIsIt, this);
+        getServer().getPluginManager().registerEvents(stunning, this);
+        getServer().getPluginManager().registerEvents(myolner, this);
+
         //any listeners to ench
 
         getCommand("dfchants").setExecutor(new dfchants(config,this));

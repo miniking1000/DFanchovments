@@ -1,5 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -12,6 +13,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.AxolotlBucketMeta;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,23 +37,23 @@ public class fish  extends CEnchantment implements Listener {
                         Axolotl entity = (Axolotl) player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.AXOLOTL);
                         entity.setVelocity(event.getEntity().getVelocity());
                         entity.setVariant(meta.getVariant());
-                        event.getEntity().teleport(new Location(event.getEntity().getWorld(),0,-9999,0));
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
                     } else if (player.getInventory().getItemInOffHand().getType().equals(Material.PUFFERFISH_BUCKET)) {
                         player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
                         player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.PUFFERFISH).setVelocity(event.getEntity().getVelocity());
-                        event.getEntity().teleport(new Location(event.getEntity().getWorld(),0,-9999,0));
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
                     } else if (player.getInventory().getItemInOffHand().getType().equals(Material.SALMON_BUCKET)) {
                         player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
                         player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.SALMON).setVelocity(event.getEntity().getVelocity());
-                        event.getEntity().teleport(new Location(event.getEntity().getWorld(),0,-9999,0));
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
                     } else if (player.getInventory().getItemInOffHand().getType().equals(Material.COD_BUCKET)) {
                         player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
                         player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.COD).setVelocity(event.getEntity().getVelocity());
-                        event.getEntity().teleport(new Location(event.getEntity().getWorld(),0,-9999,0));
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
                     } else if (player.getInventory().getItemInOffHand().getType().equals(Material.TROPICAL_FISH_BUCKET)) {
                         player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
                         player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.TROPICAL_FISH).setVelocity(event.getEntity().getVelocity());
-                        event.getEntity().teleport(new Location(event.getEntity().getWorld(),0,-9999,0));
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
                     }
                 }
             }
