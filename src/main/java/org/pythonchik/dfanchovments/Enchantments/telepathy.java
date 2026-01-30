@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,34 +25,7 @@ public class telepathy extends CEnchantment implements Listener {
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
-
-        retu.add("WOODEN_PICKAXE");
-        retu.add("STONE_PICKAXE");
-        retu.add("IRON_PICKAXE");
-        retu.add("DIAMOND_PICKAXE");
-        retu.add("GOLDEN_PICKAXE");
-        retu.add("NETHERITE_PICKAXE");
-
-        retu.add("WOODEN_SHOVEL");
-        retu.add("STONE_SHOVEL");
-        retu.add("IRON_SHOVEL");
-        retu.add("DIAMOND_SHOVEL");
-        retu.add("GOLDEN_SHOVEL");
-        retu.add("NETHERITE_SHOVEL");
-
-        retu.add("WOODEN_AXE");
-        retu.add("STONE_AXE");
-        retu.add("IRON_AXE");
-        retu.add("DIAMOND_AXE");
-        retu.add("GOLDEN_AXE");
-        retu.add("NETHERITE_AXE");
-
-        retu.add("WOODEN_HOE");
-        retu.add("STONE_HOE");
-        retu.add("IRON_HOE");
-        retu.add("DIAMOND_HOE");
-        retu.add("GOLDEN_HOE");
-        retu.add("NETHERITE_HOE");
+        retu.addAll(Util.instruments());
         return retu;
     }
     @Override

@@ -10,6 +10,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,34 +69,8 @@ public class potioness extends CEnchantment implements Listener {
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
-        //hellmets
-        retu.add("LEATHER_HELMET");
-        retu.add("CHAINMAIL_HELMET");
-        retu.add("IRON_HELMET");
-        retu.add("DIAMOND_HELMET");
-        retu.add("GOLDEN_HELMET");
-        retu.add("NETHERITE_HELMET");
-        //chestplates
-        retu.add("LEATHER_CHESTPLATE");
-        retu.add("CHAINMAIL_CHESTPLATE");
-        retu.add("IRON_CHESTPLATE");
-        retu.add("DIAMOND_CHESTPLATE");
-        retu.add("GOLDEN_CHESTPLATE");
-        retu.add("NETHERITE_CHESTPLATE");
-        //laggings
-        retu.add("LEATHER_LEGGINGS");
-        retu.add("CHAINMAIL_LEGGINGS");
-        retu.add("IRON_LEGGINGS");
-        retu.add("DIAMOND_LEGGINGS");
-        retu.add("GOLDEN_LEGGINGS");
-        retu.add("NETHERITE_LEGGINGS");
-        //bots
-        retu.add("LEATHER_BOOTS");
-        retu.add("CHAINMAIL_BOOTS");
-        retu.add("IRON_BOOTS");
-        retu.add("DIAMOND_BOOTS");
-        retu.add("GOLDEN_BOOTS");
-        retu.add("NETHERITE_BOOTS");
+
+        retu.addAll(Util.armors());
         return retu;
     }
     @Override

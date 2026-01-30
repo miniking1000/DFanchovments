@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 import org.pythonchik.dfanchovments.XP;
 
 import java.util.ArrayList;
@@ -39,12 +40,7 @@ public class exp  extends CEnchantment implements Listener {
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
-        retu.add("WOODEN_SWORD");
-        retu.add("STONE_SWORD");
-        retu.add("IRON_SWORD");
-        retu.add("DIAMOND_SWORD");
-        retu.add("GOLDEN_SWORD");
-        retu.add("NETHERITE_SWORD");
+        retu.addAll(Util.swords());
         return retu;
     }
     @Override

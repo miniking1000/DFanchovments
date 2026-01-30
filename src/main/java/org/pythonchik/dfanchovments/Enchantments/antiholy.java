@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,13 +53,8 @@ public class antiholy extends CEnchantment implements Listener {
     public List<String> getTragers(){
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
-        //chestplates
-        retu.add("LEATHER_CHESTPLATE");
-        retu.add("CHAINMAIL_CHESTPLATE");
-        retu.add("IRON_CHESTPLATE");
-        retu.add("DIAMOND_CHESTPLATE");
-        retu.add("GOLDEN_CHESTPLATE");
-        retu.add("NETHERITE_CHESTPLATE");
+
+        retu.addAll(Util.chestplates());
         return retu;
     }
     @Override

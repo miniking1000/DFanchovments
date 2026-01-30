@@ -7,24 +7,20 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
-import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class dfchants implements CommandExecutor, TabCompleter {
     Message message = DFanchovments.getMessage();
-    FileConfiguration config;
     DFanchovments plugin;
-    public dfchants(FileConfiguration config,DFanchovments plugin){
-        this.config=config;
+    public dfchants(DFanchovments plugin){
         this.plugin=plugin;
     }
 

@@ -1,5 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,6 +10,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
+import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,54 +44,24 @@ public class soulbound extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
-        {
+
         retu.add("ENCHANTED_BOOK");
         retu.add("CROSSBOW");
         retu.add("BOW");
-        
-        //swords
-        retu.add("WOODEN_SWORD");
-        retu.add("STONE_SWORD");
-        retu.add("IRON_SWORD");
-        retu.add("DIAMOND_SWORD");
-        retu.add("GOLDEN_SWORD");
-        retu.add("NETHERITE_SWORD");
-        //picks
-        retu.add("WOODEN_PICKAXE");
-        retu.add("STONE_PICKAXE");
-        retu.add("IRON_PICKAXE");
-        retu.add("DIAMOND_PICKAXE");
-        retu.add("GOLDEN_PICKAXE");
-        retu.add("NETHERITE_PICKAXE");
-        //hellmets
-        retu.add("LEATHER_HELMET");
-        retu.add("CHAINMAIL_HELMET");
-        retu.add("IRON_HELMET");
-        retu.add("DIAMOND_HELMET");
-        retu.add("GOLDEN_HELMET");
-        retu.add("NETHERITE_HELMET");
-        //chestplaTES
-        retu.add("LEATHER_CHESTPLATE");
-        retu.add("CHAINMAIL_CHESTPLATE");
-        retu.add("IRON_CHESTPLATE");
-        retu.add("DIAMOND_CHESTPLATE");
-        retu.add("GOLDEN_CHESTPLATE");
-        retu.add("NETHERITE_CHESTPLATE");
-        //laggings
-        retu.add("LEATHER_LEGGINGS");
-        retu.add("CHAINMAIL_LEGGINGS");
-        retu.add("IRON_LEGGINGS");
-        retu.add("DIAMOND_LEGGINGS");
-        retu.add("GOLDEN_LEGGINGS");
-        retu.add("NETHERITE_LEGGINGS");
-        //bots
-        retu.add("LEATHER_BOOTS");
-        retu.add("CHAINMAIL_BOOTS");
-        retu.add("IRON_BOOTS");
-        retu.add("DIAMOND_BOOTS");
-        retu.add("GOLDEN_BOOTS");
-        retu.add("NETHERITE_BOOTS");
-    } // adding items swords/picks/armor
+        retu.add("MACE");
+        retu.add("TRIDENT");
+        retu.add("TURTLE_HELMET");
+
+
+        retu.addAll(Util.swords());
+        retu.addAll(Util.spears());
+        retu.addAll(Util.pickaxes());
+        retu.addAll(Util.axes());
+        retu.addAll(Util.shovels());
+        retu.addAll(Util.hoes());
+
+        retu.addAll(Util.armors());
+        // adding items swords/picks/armor
         return retu;
     }
 

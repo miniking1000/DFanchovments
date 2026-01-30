@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 
 import java.util.*;
 
@@ -101,13 +102,7 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
 
         // all pickaxes
-        retu.add("WOODEN_PICKAXE");
-        retu.add("STONE_PICKAXE");
-        retu.add("IRON_PICKAXE");
-        retu.add("DIAMOND_PICKAXE");
-        retu.add("GOLDEN_PICKAXE");
-        retu.add("NETHERITE_PICKAXE");
-
+        retu.addAll(Util.pickaxes());
         return retu;
     }
     @Override

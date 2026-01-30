@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +46,7 @@ public class axicia extends CEnchantment implements Listener {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
 
-        //bots
-        retu.add("LEATHER_BOOTS");
-        retu.add("CHAINMAIL_BOOTS");
-        retu.add("IRON_BOOTS");
-        retu.add("DIAMOND_BOOTS");
-        retu.add("GOLDEN_BOOTS");
-        retu.add("NETHERITE_BOOTS");
+        retu.addAll(Util.boots());
         return retu;
     }
     @Override

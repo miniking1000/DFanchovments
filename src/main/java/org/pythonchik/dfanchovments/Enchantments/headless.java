@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 
 import java.util.*;
 
@@ -65,12 +66,8 @@ public class headless extends CEnchantment implements Listener {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
 
-        retu.add("WOODEN_AXE");
-        retu.add("STONE_AXE");
-        retu.add("IRON_AXE");
-        retu.add("DIAMOND_AXE");
-        retu.add("GOLDEN_AXE");
-        retu.add("NETHERITE_AXE");
+
+        retu.addAll(Util.axes());
 
         return retu;
     }

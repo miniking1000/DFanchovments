@@ -1,6 +1,7 @@
 package org.pythonchik.dfanchovments;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -8,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.pythonchik.dfanchovments.Enchantments.*;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public final class DFanchovments extends JavaPlugin {
@@ -43,8 +45,7 @@ public final class DFanchovments extends JavaPlugin {
     public static Message getMessage(){return message;}
 
     public void reload5(){
-        Bukkit.getPluginManager().disablePlugin(plugin);
-        Bukkit.getPluginManager().enablePlugin(plugin);
+        loadConfig();
     }
     public static FileConfiguration getConfig1(){
         return config;
@@ -123,6 +124,7 @@ public final class DFanchovments extends JavaPlugin {
         getServer().getPluginManager().registerEvents(steveoshot,this);
         getServer().getPluginManager().registerEvents(antiholy,this);
         getServer().getPluginManager().registerEvents(neverended,this);
+        getServer().getPluginManager().registerEvents(democracy,this);
         getServer().getPluginManager().registerEvents(telepathy, this);
         getServer().getPluginManager().registerEvents(headless, this);
         getServer().getPluginManager().registerEvents(axicia, this);
@@ -133,8 +135,8 @@ public final class DFanchovments extends JavaPlugin {
 
         //any listeners to ench
 
-        getCommand("dfchants").setExecutor(new dfchants(config,this));
-        getCommand("dfchants").setTabCompleter(new dfchants(config,this));
+        getCommand("dfchants").setExecutor(new dfchants(this));
+        getCommand("dfchants").setTabCompleter(new dfchants(this));
     }
 
     @Override
