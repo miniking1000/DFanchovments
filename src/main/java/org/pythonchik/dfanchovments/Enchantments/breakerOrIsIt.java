@@ -5,6 +5,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -92,8 +94,32 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
         pickaxe.setItemMeta(meta);
 
         // Ломаем собранные блоки
-        for (Block b : visited) b.breakNaturally(pickaxe);
+        int xp = 0;
+        for (Block b : visited) {
+            xp += pickaxe.getEnchantmentLevel(Enchantment.SILK_TOUCH) == 0 ? getVanillaXP(b.getType()) : 0;
+            b.breakNaturally(pickaxe);
+        }
+        if (xp > 0) {
+            ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
+            orb.setExperience(xp);
+        }
     }
+
+    public static int getVanillaXP(Material type) {
+        return switch (type) {
+            case COAL_ORE, DEEPSLATE_COAL_ORE -> random(0, 2);
+            case REDSTONE_ORE, DEEPSLATE_REDSTONE_ORE -> random(1, 5);
+            case EMERALD_ORE, DEEPSLATE_EMERALD_ORE, DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE -> random(3, 7);
+            case LAPIS_ORE, DEEPSLATE_LAPIS_ORE, NETHER_QUARTZ_ORE -> random(2, 5);
+            case NETHER_GOLD_ORE -> random(0, 1);
+            default -> 0;
+        };
+    }
+
+    private static int random(int min, int max) {
+        return min + (int)(Math.random() * (max - min + 1));
+    }
+
 
 
     @Override

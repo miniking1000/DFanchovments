@@ -64,27 +64,27 @@ public class dfchants implements CommandExecutor, TabCompleter {
             return;
         }
 
-        // === /command give <name> <level> ===
-        if (args.length < 3) {
-            message.send(player, "Команда не полная");
-            return;
-        }
-
         String enchName = args[1];
-        int level;
-
-        try {
-            level = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            message.send(player, "Уровень должен быть числом");
-            return;
-        }
-
         CEnchantment enchantment = findEnchantment(enchName);
         if (enchantment == null) {
             message.send(player, "Зачарование не найдено");
             return;
         }
+
+        int level;
+
+        // === /command give <name> (<level> or max level) ===
+        if (args.length == 2) {
+            level = enchantment.getMaxLevel();
+        } else {
+            try {
+                level = Integer.parseInt(args[2]);
+            } catch (NumberFormatException e) {
+                message.send(player, "Уровень должен быть числом");
+                return;
+            }
+        }
+
 
         ItemStack book = createBook(enchantment, level);
 

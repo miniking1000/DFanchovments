@@ -106,7 +106,6 @@ public final class DFanchovments extends JavaPlugin {
 
         loadConfig();
 
-
         getServer().getPluginManager().registerEvents(new fishing(),this);
         getServer().getPluginManager().registerEvents(new anvil(),this);
 

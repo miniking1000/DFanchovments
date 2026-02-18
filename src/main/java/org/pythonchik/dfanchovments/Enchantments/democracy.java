@@ -19,7 +19,7 @@ public class democracy extends CEnchantment implements Listener {
         this.id = id;
     }
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         return retu;
     }

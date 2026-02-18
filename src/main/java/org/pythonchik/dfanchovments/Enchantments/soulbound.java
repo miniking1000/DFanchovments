@@ -1,6 +1,5 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -9,7 +8,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.pythonchik.dfanchovments.CEnchantment;
-import org.pythonchik.dfanchovments.DFanchovments;
 import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -38,7 +37,7 @@ public class steveoshot extends CEnchantment implements Listener {
         }
     }
 
-    private Entity sendFlying(List<Entity> list, Entity result){
+    private Entity sendFlying(List<Entity> list, Entity result) {
         for (Entity entity : list){
             if (entity instanceof Player) {
                 return entity;
