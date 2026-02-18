@@ -7,8 +7,7 @@ import java.util.regex.Pattern;
 
 public class Message {
 
-    private final DFanchovments bad;
-    public Message(DFanchovments bad) {this.bad = bad;}
+    public Message() {}
     public void send(CommandSender sender,String message) {
         sender.sendMessage(recreator(message));
     }

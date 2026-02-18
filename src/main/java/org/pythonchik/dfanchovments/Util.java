@@ -17,6 +17,19 @@ public class Util {
         };
     }
 
+    private static final double LUCK_SOFTCAP_K = 1.5;
+    public static double softcapLuck(double luck) {
+        if (luck <= 0.0) return 0.0;
+        return luck / (LUCK_SOFTCAP_K + luck);
+    }
+
+    public static double clamp01(double v) {
+        if (v < 0.0) return 0.0;
+        if (v >= 1.0) return Math.nextDown(1.0);
+        return v;
+    }
+
+
     public static List<String> helmets() {
         List<Material> retu = new ArrayList<>();
         retu.add(Material.LEATHER_HELMET);

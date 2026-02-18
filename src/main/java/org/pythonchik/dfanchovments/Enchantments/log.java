@@ -17,9 +17,8 @@ import org.pythonchik.dfanchovments.Util;
 import java.util.*;
 
 public class log extends CEnchantment implements Listener {
-    NamespacedKey id;
     public log(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     private static final Set<Material> LOGS = EnumSet.of(

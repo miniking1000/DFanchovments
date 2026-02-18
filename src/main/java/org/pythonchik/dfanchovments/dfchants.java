@@ -125,7 +125,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
         meta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, finalLevel);
 
         // special case
-        if (ench.equals(DFanchovments.democracy)) {
+        if (DFanchovments.isEnchantment(ench, "democracy")) {
             meta.addAttributeModifier(
                     Attribute.SCALE,
                     new AttributeModifier(

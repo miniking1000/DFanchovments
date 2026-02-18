@@ -18,11 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class fish  extends CEnchantment implements Listener {
-
-    NamespacedKey id;
-
     public fish(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
     @EventHandler
     public void CrossEvents(ProjectileLaunchEvent event){
@@ -66,6 +63,17 @@ public class fish  extends CEnchantment implements Listener {
         retu.add("CROSSBOW");
         return retu;
     }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Рыбный заряд");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
+    }
+
     @Override
     public NamespacedKey getId(){
         return this.id;

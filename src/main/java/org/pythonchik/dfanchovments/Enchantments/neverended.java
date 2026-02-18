@@ -19,9 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class neverended extends CEnchantment implements Listener {
-    NamespacedKey id;
     public neverended(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     @EventHandler
@@ -130,6 +129,16 @@ public class neverended extends CEnchantment implements Listener {
         retu.add("CHORUS_FLOWER");
         retu.add("END_CRYSTAL");
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Бескончаемость");
+        defaults.put("biome", "PLAINS");
+        defaults.put("chance", 100);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 9999999);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

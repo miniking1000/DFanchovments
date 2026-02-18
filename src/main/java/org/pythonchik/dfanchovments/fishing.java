@@ -2,6 +2,7 @@ package org.pythonchik.dfanchovments;
 
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -30,69 +31,56 @@ public class fishing implements Listener {
     public void onFish(PlayerFishEvent event) {
         if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH)
             return;
-        if (event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.FISHING_ROD)) {
-            Entity entity = event.getCaught();
-            if (!(entity instanceof Item))
-                return;
-            Player player = event.getPlayer();
-            FileConfiguration config = DFanchovments.getConfig1();
-            for (String cfg : config.getKeys(false)) {
-                if (player.getLocation().getWorld().getBiome(player.getLocation()).equals(Biome.valueOf(config.getString(cfg + ".biome")))) {
-                    if (Math.random() * 100 < config.getDouble(cfg + ".chance") + (config.getDouble(cfg + ".luck") * ((player.getInventory().getItemInMainHand().getItemMeta() != null) ? (player.getInventory().getItemInMainHand().getItemMeta().hasEnchant(Enchantment.LUCK_OF_THE_SEA) ? player.getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK_OF_THE_SEA) : 0) : 0))) {
-                        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
-                        for (CEnchantment enchs : DFanchovments.CEnchantments) {
-                            if (enchs.getName().equals(config.getString(cfg + ".name"))) {
-                                ItemMeta tobeMeta = book.getItemMeta();
-                                tobeMeta.getPersistentDataContainer().set(enchs.getId(), PersistentDataType.INTEGER,Math.max(1, Math.min(new Random().nextInt(enchs.getMaxLevel() + 1), enchs.getMaxLevel())));
-                                int lvl = tobeMeta.getPersistentDataContainer().get(enchs.getId(),PersistentDataType.INTEGER);
-                                if (enchs.equals(DFanchovments.democracy)) {
-                                    tobeMeta.addAttributeModifier(Attribute.SCALE, new AttributeModifier(Attribute.SCALE.getKey(), 0.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
-                                }
-                                List<String> lore = new ArrayList<String>();
-                                lore.add(message.hex(enchs.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                                tobeMeta.setLore(lore);
+        if (event.getHand() == null)
+            return; // should never happen
+        Player player = event.getPlayer();
+        ItemStack rod = player.getInventory().getItem(event.getHand());
+        if (rod == null)
+            return;
+        Biome biome = player.getWorld().getBiome(player.getLocation());
+        if (!DFanchovments.allBiomes.contains(biome))
+            return; // no enchants has this biome, so just skip everything
+        Entity entity = event.getCaught();
+        if (!(entity instanceof Item item))
+            return;
+        double luck = 0;
+        ItemMeta meta = rod.getItemMeta();
+        //Add enchantment luck
+        if (meta != null) {
+            if (meta.hasEnchant(Enchantment.LUCK_OF_THE_SEA)) {
+                luck += meta.getEnchantLevel(Enchantment.LUCK_OF_THE_SEA);
+            }
+        }
 
-                                tobeMeta.setEnchantmentGlintOverride(true);
-                                book.setItemMeta(tobeMeta);
+        //Add attribute luck
+        AttributeInstance attr = player.getAttribute(Attribute.LUCK);
+        if (attr != null) {
+            luck += attr.getValue();
+        }
 
-                                Item item = (Item) entity;
-                                item.setItemStack(book);
-                                break;
-                            }
-                        }
-                    }
+        CEnchantment candidate = null;
+        for (CEnchantment enchantmentCandidate : DFanchovments.CEnchantments) {
+            if (!enchantmentCandidate.isInBiome(biome)) {
+                // we cant fish it here.
+                continue;
+            }
+            if (candidate == null) {
+                // we did not yet catch anything - just try and if yes - good!
+                if (enchantmentCandidate.roll(luck)) {
+                    // success !
+                    candidate = enchantmentCandidate;
+                }
+            } else {
+                // we DID fish something, but now, maybe, we can fish bigger!
+                if (candidate.getDropChance(luck) < enchantmentCandidate.getDropChance(luck)
+                        && enchantmentCandidate.roll(luck)) {
+                    // we caught something bigger!
+                    candidate = enchantmentCandidate;
                 }
             }
-        } else if (event.getPlayer().getInventory().getItemInOffHand().getType().equals(Material.FISHING_ROD)) {
-            Entity entity = event.getCaught();
-            if (!(entity instanceof Item))
-                return;
-            Player player = event.getPlayer();
-            FileConfiguration config = DFanchovments.getConfig1();
-            for (String cfg : config.getKeys(false)) {
-                if (player.getLocation().getWorld().getBiome(player.getLocation()).equals(Biome.valueOf(config.getString(cfg + ".biome")))) {
-                    if (Math.random() * 100 < config.getDouble(cfg + ".chance") + (config.getInt(cfg + ".luck") * ((player.getInventory().getItemInOffHand().getItemMeta() != null) ? (player.getInventory().getItemInOffHand().getItemMeta().hasEnchant(Enchantment.LUCK_OF_THE_SEA) ? player.getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK_OF_THE_SEA) : 0) : 0))) {
-                        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
-                        for (CEnchantment enchs : DFanchovments.CEnchantments) {
-                            if (enchs.getName().equals(config.getString(cfg + ".name"))) {
-                                ItemMeta tobeMeta = book.getItemMeta();
-                                tobeMeta.getPersistentDataContainer().set(enchs.getId(), PersistentDataType.INTEGER,Math.max(1, Math.min(new Random().nextInt(enchs.getMaxLevel() + 1), enchs.getMaxLevel())));
-                                int lvl = tobeMeta.getPersistentDataContainer().get(enchs.getId(),PersistentDataType.INTEGER);
-                                List<String> lore = new ArrayList<String>();
-                                lore.add(message.hex(enchs.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                                tobeMeta.setLore(lore);
-
-                                tobeMeta.setEnchantmentGlintOverride(true);
-                                book.setItemMeta(tobeMeta);
-
-                                Item item = (Item) entity;
-                                item.setItemStack(book);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+        }
+        if (candidate != null) {
+            item.setItemStack(candidate.createRandomBook(luck));
         }
     }
 }

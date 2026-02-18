@@ -20,9 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class stunning extends CEnchantment implements Listener {
-    NamespacedKey id;
     public stunning(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     @EventHandler
@@ -51,6 +50,16 @@ public class stunning extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("MACE");
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Оглушающий удар");
+        defaults.put("biome", "FROZEN_PEAKS");
+        defaults.put("chance", 0.08);
+        defaults.put("luck", 0.4);
+        defaults.put("maxlvl", 3);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

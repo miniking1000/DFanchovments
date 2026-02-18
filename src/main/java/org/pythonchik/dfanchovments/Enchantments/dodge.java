@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class dodge extends CEnchantment implements Listener {
-    NamespacedKey id;
-
     @EventHandler
     public void DbtxHxRvieptrLyoLwdzVpjTdXTYTVTYR(EntityDamageByEntityEvent event){ //this name is not random btw
         if(!(event.getEntity() instanceof Player)){
@@ -26,7 +24,7 @@ public class dodge extends CEnchantment implements Listener {
     }
 
     public dodge(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
     @Override
     public List<String> getTragers(){
@@ -40,6 +38,16 @@ public class dodge extends CEnchantment implements Listener {
         retu.add("GOLDEN_CHESTPLATE");
         retu.add("NETHERITE_CHESTPLATE");
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Уклонение");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

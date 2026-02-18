@@ -16,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class potioness extends CEnchantment implements Listener {
-
-    NamespacedKey id;
-
     @EventHandler
     public void onHit(EntityDamageByEntityEvent event){
         if (!(event.getEntity() instanceof Player player)){
@@ -62,7 +59,7 @@ public class potioness extends CEnchantment implements Listener {
     }
 
     public potioness(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     @Override
@@ -72,6 +69,16 @@ public class potioness extends CEnchantment implements Listener {
 
         retu.addAll(Util.armors());
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Отравленность");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 4);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

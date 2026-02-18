@@ -18,9 +18,8 @@ import java.util.List;
 
 public class axicia extends CEnchantment implements Listener {
     //название это ножницы на латыни
-    NamespacedKey id;
     public axicia(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     @EventHandler
@@ -48,6 +47,16 @@ public class axicia extends CEnchantment implements Listener {
 
         retu.addAll(Util.boots());
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Ножницы");
+        defaults.put("biome", "FOREST");
+        defaults.put("chance", 100);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

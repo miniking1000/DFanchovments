@@ -22,9 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class myolner extends CEnchantment implements Listener {
-    NamespacedKey id;
     public myolner(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
     private HashMap<Entity, BukkitTask> tasks = new HashMap<>();
 
@@ -82,6 +81,16 @@ public class myolner extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("MACE");
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Искромётность");
+        defaults.put("biome", "DEEP_COLD_OCEAN");
+        defaults.put("chance", 0.5);
+        defaults.put("luck", 0.05);
+        defaults.put("maxlvl", 3);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

@@ -17,10 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class poshot extends CEnchantment implements Listener {
-    NamespacedKey id;
-
     public poshot(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     @EventHandler
@@ -54,6 +52,16 @@ public class poshot extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("CROSSBOW");
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Зельестрел");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

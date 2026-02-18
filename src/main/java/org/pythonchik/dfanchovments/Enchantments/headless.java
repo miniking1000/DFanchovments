@@ -16,9 +16,8 @@ import org.pythonchik.dfanchovments.Util;
 import java.util.*;
 
 public class headless extends CEnchantment implements Listener {
-    NamespacedKey id;
     public headless(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
     private static final Map<EntityType, Material> HEADS = new HashMap<>();
     private static final Random RANDOM = new Random();
@@ -70,6 +69,16 @@ public class headless extends CEnchantment implements Listener {
         retu.addAll(Util.axes());
 
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Головосрез");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 100);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

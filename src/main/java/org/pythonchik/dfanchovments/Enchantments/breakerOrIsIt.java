@@ -19,9 +19,8 @@ import org.pythonchik.dfanchovments.Util;
 import java.util.*;
 
 public class breakerOrIsIt extends CEnchantment implements Listener {
-    NamespacedKey id;
     public breakerOrIsIt(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     private static final Set<Material> ORES = EnumSet.of(
@@ -130,6 +129,16 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
         // all pickaxes
         retu.addAll(Util.pickaxes());
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Рудолом");
+        defaults.put("biome", "BASALT_DELTAS");
+        defaults.put("chance", 2);
+        defaults.put("luck", 1);
+        defaults.put("maxlvl", 1);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

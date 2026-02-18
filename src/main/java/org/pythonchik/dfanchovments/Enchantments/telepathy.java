@@ -17,9 +17,8 @@ import java.util.Iterator;
 import java.util.List;
 
 public class telepathy extends CEnchantment implements Listener {
-    NamespacedKey id;
     public telepathy(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
     @Override
     public List<String> getTragers(){

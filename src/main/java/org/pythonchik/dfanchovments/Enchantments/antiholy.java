@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class antiholy extends CEnchantment implements Listener {
-    NamespacedKey id;
     ArrayList<PotionEffectType> badeffects = new ArrayList<>();
     public antiholy(NamespacedKey id) {
+        super(id);
         this.id = id;
         badeffects.add(PotionEffectType.SLOWNESS);
         badeffects.add(PotionEffectType.MINING_FATIGUE);
@@ -33,7 +33,6 @@ public class antiholy extends CEnchantment implements Listener {
         badeffects.add(PotionEffectType.OOZING);
         badeffects.add(PotionEffectType.WITHER);
         badeffects.add(PotionEffectType.DARKNESS);
-
     }
     @EventHandler
     public void event(EntityPotionEffectEvent event) {
@@ -56,6 +55,16 @@ public class antiholy extends CEnchantment implements Listener {
 
         retu.addAll(Util.chestplates());
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Осветленность");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

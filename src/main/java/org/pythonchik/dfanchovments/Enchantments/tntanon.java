@@ -14,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class tntanon extends CEnchantment implements Listener {
-    NamespacedKey id;
     public tntanon(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     @EventHandler
@@ -43,6 +42,16 @@ public class tntanon extends CEnchantment implements Listener {
         return retu;
     }
 
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Взрывной заряд");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
+    }
     @Override
     public NamespacedKey getId(){
         return this.id;

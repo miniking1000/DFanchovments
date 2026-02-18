@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class exp  extends CEnchantment implements Listener {
-
-    NamespacedKey id;
-
     @EventHandler
     public void ondKillEvent(EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) {
@@ -34,7 +31,7 @@ public class exp  extends CEnchantment implements Listener {
     }
 
     public exp(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
     @Override
     public List<String> getTragers(){
@@ -43,6 +40,17 @@ public class exp  extends CEnchantment implements Listener {
         retu.addAll(Util.swords());
         return retu;
     }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Образование");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 5);
+        return defaults;
+    }
+
     @Override
     public NamespacedKey getId(){
         return this.id;

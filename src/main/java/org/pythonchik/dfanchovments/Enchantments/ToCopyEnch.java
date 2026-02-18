@@ -8,9 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ToCopyEnch extends CEnchantment implements Listener {
-    NamespacedKey id;
     public ToCopyEnch(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
     @Override
     public List<String> getTragers(){

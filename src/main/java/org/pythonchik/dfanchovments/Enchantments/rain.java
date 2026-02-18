@@ -19,9 +19,8 @@ import java.util.List;
 public class rain extends CEnchantment implements Listener {
 
     DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
-    NamespacedKey id;
     public rain(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
 
@@ -58,6 +57,16 @@ public class rain extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("BOW");
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Шквал Стрел");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 5);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){

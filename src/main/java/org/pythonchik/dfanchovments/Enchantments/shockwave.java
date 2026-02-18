@@ -17,8 +17,6 @@ import java.util.Collection;
 import java.util.List;
 
 public class shockwave extends CEnchantment implements Listener {
-    NamespacedKey id;
-
     @EventHandler
     private void AHAHA(ProjectileHitEvent event){
         if (event.getHitBlock() == null){
@@ -47,7 +45,7 @@ public class shockwave extends CEnchantment implements Listener {
     }
 
     public shockwave(NamespacedKey id) {
-        this.id = id;
+        super(id);
     }
 
     @Override
@@ -56,6 +54,16 @@ public class shockwave extends CEnchantment implements Listener {
         retu.add("ENCHANTED_BOOK");
         retu.add("BOW");
         return retu;
+    }
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Тяжелая стрела");
+        defaults.put("biome", "THE_VOID");
+        defaults.put("chance", 0);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 4);
+        return defaults;
     }
     @Override
     public NamespacedKey getId(){
