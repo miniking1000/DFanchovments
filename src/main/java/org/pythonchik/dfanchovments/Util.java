@@ -7,14 +7,22 @@ import java.util.*;
 public class Util {
 
     public static String toRoman(int lvl) {
-        return switch (lvl) {
-            case 1 -> "I";
-            case 2 -> "II";
-            case 3 -> "III";
-            case 4 -> "IV";
-            case 5 -> "V";
-            default -> String.valueOf(lvl);
-        };
+        if (lvl <= 0 || lvl > 255) return String.valueOf(lvl);
+
+        int[] values = {100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] numerals = {"C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+
+        StringBuilder roman = new StringBuilder();
+        int remaining = lvl;
+
+        for (int i = 0; i < values.length; i++) {
+            while (remaining >= values[i]) {
+                roman.append(numerals[i]);
+                remaining -= values[i];
+            }
+        }
+
+        return roman.toString();
     }
 
     private static final double LUCK_SOFTCAP_K = 1.5;

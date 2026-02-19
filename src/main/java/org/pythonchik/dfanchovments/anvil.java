@@ -1,5 +1,6 @@
 package org.pythonchik.dfanchovments;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -27,11 +28,14 @@ public class anvil implements Listener {
         ItemStack left = anvil.getItem(0);
         if (left == null || left.getItemMeta() == null) return;
 
+        ItemStack right = anvil.getItem(1);
+        if (!hasCustomEnchant(left.getItemMeta()) && (right == null || right.getItemMeta() == null || !hasCustomEnchant(right.getItemMeta()))) {
+            return;
+        }
+
         ItemStack result = left.clone();
         ItemMeta resultMeta = result.getItemMeta();
         if (resultMeta == null) return;
-
-        ItemStack right = anvil.getItem(1);
         boolean changed = false;
 
         if (right != null && right.getItemMeta() != null) {
@@ -68,29 +72,47 @@ public class anvil implements Listener {
         applyRename(event, resultMeta);
         updateCustomLore(resultMeta);
 
-        if (changed || hasRename(event)) {
+        if (changed) { //  || hasRename(event)
             result.setItemMeta(resultMeta);
-            event.getView().setRepairItemCountCost(right != null ? 1 : 0);
+            //event.getView().setRepairItemCountCost(right != null ? 1 : 0);
             event.getView().setRepairCost(30);
             event.setResult(result);
         }
     }
 
     private void updateCustomLore(ItemMeta meta) {
-        List<String> lore = new ArrayList<>();
+        List<String> customLore = new ArrayList<>();
         DFanchovments.CEnchantments.stream()
                 .filter(ench -> meta.getPersistentDataContainer().has(ench.getId(), PersistentDataType.INTEGER))
                 .sorted(Comparator.comparing(ench -> ench.getName() == null ? ench.getId().getKey() : ench.getName()))
                 .forEach(ench -> {
                     int level = meta.getPersistentDataContainer().getOrDefault(ench.getId(), PersistentDataType.INTEGER, ench.getStartLevel());
-                    lore.add(message.hex(ench.getName() + " " + Util.toRoman(level)));
+                    customLore.add(message.hex(ench.getName() + " " + Util.toRoman(level)));
                 });
+
+        List<String> lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
+        lore.removeIf(this::isCustomEnchantLoreLine);
+        lore.addAll(customLore);
 
         if (lore.isEmpty()) {
             meta.setLore(null);
         } else {
             meta.setLore(lore);
         }
+    }
+
+    private boolean isCustomEnchantLoreLine(String loreLine) {
+        String strippedLore = ChatColor.stripColor(loreLine);
+        if (strippedLore == null) return false;
+
+        for (CEnchantment ench : DFanchovments.CEnchantments) {
+            String enchantName = ench.getName() == null ? ench.getId().getKey() : ench.getName();
+            String strippedName = ChatColor.stripColor(message.hex(enchantName));
+            if (strippedName != null && strippedLore.startsWith(strippedName + " ")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void applyRename(PrepareAnvilEvent event, ItemMeta meta) {
@@ -144,6 +166,15 @@ public class anvil implements Listener {
         for (Enchantment existing : meta.getEnchants().keySet()) {
             NamespacedKey existingKey = existing.getKey();
             if (incoming.conflictsWith(existingKey) || incoming.conflictsWith(existingKey.getKey())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasCustomEnchant(ItemMeta meta) {
+        for (CEnchantment ench : DFanchovments.CEnchantments) {
+            if (meta.getPersistentDataContainer().has(ench.getId(), PersistentDataType.INTEGER)) {
                 return true;
             }
         }
