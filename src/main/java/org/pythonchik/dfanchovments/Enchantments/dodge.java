@@ -7,8 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.pythonchik.dfanchovments.CEnchantment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class dodge extends CEnchantment implements Listener {
     @EventHandler
@@ -40,12 +39,12 @@ public class dodge extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+      Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Уклонение");
-        defaults.put("biome", "THE_VOID");
-        defaults.put("chance", 0);
-        defaults.put("luck", 0);
+        defaults.put("biomes", List.of("CHERRY_GROVE"));
+        defaults.put("chance", 1);
+        defaults.put("luck", 2);
         defaults.put("maxlvl", 1);
         return defaults;
     }

@@ -1,120 +1,154 @@
 soulbound:
   name: "&7Связь Души"
-  biome: "THE_VOID"
-  chance: 0
+  biomes:
+    - "SOUL_SAND_VALLEY"
+  chance: 0.55
   luck: 0
   maxlvl: 1
 shockwave:
   name: "&7Тяжелая стрела"
-  biome: "THE_VOID"
-  chance: 0
-  luck: 0
+  biomes:
+    - "STONY_SHORE"
+  chance: 2
+  luck: 2
   maxlvl: 4
 fireworks:
   name: "&7Пороховой заряд"
-  biome: "THE_VOID"
-  chance: 0
-  luck: 0
+  biomes:
+    - "BADLANDS"
+  chance: 2
+  luck: 2
   maxlvl: 3
 potioness:
   name: "&7Отравленность"
-  biome: "THE_VOID"
-  chance: 0
-  luck: 0
+  biomes:
+    - "SPARSE_JUNGLE"
+  chance: 3
+  luck: 2
   maxlvl: 4
 dodge:
   name: "&7Уклонение"
-  biome: "THE_VOID"
-  chance: 0
-  luck: 0
+  biomes:
+    - "CHERRY_GROVE"
+  chance: 1
+  luck: 2
   maxlvl: 1
 rain:
   name: "&7Шквал Стрел"
-  biome: "THE_VOID"
-  chance: 0
-  luck: 0
+  biomes:
+    - "WOODED_BADLANDS"
+  chance: 1
+  luck: 2
   maxlvl: 5
 exp:
   name: "&7Образование"
-  biome: "THE_VOID"
-  chance: 0
+  biomes:
+    - "JAGGED_PEAKS"
+  chance: 0.4
   luck: 0
   maxlvl: 5
 bamboom:
   name: "&7Звуковой заряд"
-  biome: "THE_VOID"
-  chance: 0
-  luck: 0
+  biomes:
+    - "DEEP_DARK"
+  chance: 1
+  luck: 3
   maxlvl: 3
 tntanon:
   name: "&7Взрывной заряд"
-  biome: "THE_VOID"
+  biomes:
+    - "THE_VOID"
   chance: 0
   luck: 0
   maxlvl: 1
 fish:
   name: "&7Рыбный заряд"
-  biome: "THE_VOID"
-  chance: 0
-  luck: 0
+  biomes:
+    - "BEACH"
+  chance: 2
+  luck: 3
   maxlvl: 1
 poshot:
   name: "&7Зельестрел"
-  biome: "THE_VOID"
+  biomes:
+    - "THE_VOID"
   chance: 0
   luck: 0
   maxlvl: 1
 steveoshot:
   name: "&7Стиво-стрел"
-  biome: "THE_VOID"
-  chance: 0
+  biomes:
+    - "DESERT"
+  chance: 0.45
   luck: 0
   maxlvl: 1
 antiholy:
-  name: "&7Осветленность"
-  biome: "THE_VOID"
-  chance: 0
+  name: "&6Освещённость"
+  biomes:
+    - "PALE_GARDEN"
+  chance: 0.01
   luck: 0
   maxlvl: 1
 neverended:
   name: "&7Бескончаемость"
-  biome: "PLAINS"
-  chance: 100
+  biomes:
+    - "THE_VOID"
+  chance: 0
   luck: 0
-  maxlvl: 9999999
+  maxlvl: 1
 democracy:
   name: "&7Нормальность"
-  biome: "PLAINS"
-  chance: 100
+  biomes:
+    - "THE_END"
+  chance: 30
   luck: 0
-  maxlvl: 9999999
+  maxlvl: 1
+telepathy:
+  name: "&7Сбор"
+  biomes:
+    - "SHATTERED_SAVANNA"
+  chance: 0.5
+  luck: 0
+  maxlvl: 1
 headless:
-  name: "&7Головосрез"
-  biome: "THE_VOID"
-  chance: 100
+  name: "&7Головорез"
+  biomes:
+    - "END_HIGHLANDS"
+  chance: 0.5
   luck: 0
   maxlvl: 1
 axicia:
-  name: "&7Ножницы"
-  biome: "FOREST"
-  chance: 100
+  name: "&7Связь пустоты"
+  biomes:
+    - "WARPED_FOREST"
+  chance: 0.4
+  luck: 0
+  maxlvl: 1
+log:
+  name: "&7Быстроруб"
+  biomes:
+    - "CRIMSON_FOREST"
+  chance: 0.25
   luck: 0
   maxlvl: 1
 breakerorisit:
   name: "&7Рудолом"
-  biome: "BASALT_DELTAS"
+  biomes:
+    - "BASALT_DELTAS"
   chance: 2
   luck: 1
   maxlvl: 1
 stunning:
   name: "&7Оглушающий удар"
-  biome: "FROZEN_PEAKS"
+  biomes:
+    - "FROZEN_PEAKS"
   chance: 0.08
   luck: 0.4
   maxlvl: 3
 myolner:
   name: "&7Искромётность"
-  biome: "DEEP_COLD_OCEAN"
+  biomes:
+    - "DEEP_COLD_OCEAN"
   chance: 0.5
   luck: 0.05
-  maxlvl: 3
+  maxlvl: 5

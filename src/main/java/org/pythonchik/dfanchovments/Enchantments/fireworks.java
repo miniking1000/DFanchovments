@@ -12,9 +12,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class fireworks extends CEnchantment implements Listener {
 
@@ -59,11 +57,11 @@ public class fireworks extends CEnchantment implements Listener {
     }
     @Override
     public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Пороховой заряд");
-        defaults.put("biome", "THE_VOID");
-        defaults.put("chance", 0);
-        defaults.put("luck", 0);
+        defaults.put("biomes", List.of("BADLANDS"));
+        defaults.put("chance", 2);
+        defaults.put("luck", 2);
         defaults.put("maxlvl", 3);
         return defaults;
     }

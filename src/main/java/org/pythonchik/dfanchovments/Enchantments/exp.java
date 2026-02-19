@@ -10,8 +10,7 @@ import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 import org.pythonchik.dfanchovments.XP;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class exp  extends CEnchantment implements Listener {
     @EventHandler
@@ -41,11 +40,11 @@ public class exp  extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Образование");
-        defaults.put("biome", "THE_VOID");
-        defaults.put("chance", 0);
+        defaults.put("biomes", List.of("JAGGED_PEAKS"));
+        defaults.put("chance", 0.4);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 5);
         return defaults;

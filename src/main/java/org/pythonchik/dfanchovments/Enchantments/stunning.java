@@ -16,8 +16,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.pythonchik.dfanchovments.CEnchantment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class stunning extends CEnchantment implements Listener {
     public stunning(NamespacedKey id) {
@@ -52,13 +51,14 @@ public class stunning extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Оглушающий удар");
-        defaults.put("biome", "FROZEN_PEAKS");
+        defaults.put("biomes", List.of("FROZEN_PEAKS"));
         defaults.put("chance", 0.08);
         defaults.put("luck", 0.4);
         defaults.put("maxlvl", 3);
+        defaults.put("conflicts", List.of("myolner"));
         return defaults;
     }
     @Override

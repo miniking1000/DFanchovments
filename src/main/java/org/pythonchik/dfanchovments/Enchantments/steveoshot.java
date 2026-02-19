@@ -9,8 +9,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class steveoshot extends CEnchantment implements Listener {
     public steveoshot(NamespacedKey id) {
@@ -54,11 +53,11 @@ public class steveoshot extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Стиво-стрел");
-        defaults.put("biome", "THE_VOID");
-        defaults.put("chance", 0);
+        defaults.put("biomes", List.of("DESERT"));
+        defaults.put("chance", 0.45);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
         return defaults;

@@ -63,6 +63,8 @@ public final class DFanchovments extends JavaPlugin {
         new breakerOrIsIt(new NamespacedKey(plugin,"breakerorisit"));
         new stunning(     new NamespacedKey(plugin,"stunning"));
         new myolner(      new NamespacedKey(plugin,"myolner"));
+        new handover(     new NamespacedKey(plugin,"handover"));
+        new phishing(     new NamespacedKey(plugin,"phishing"));
 
         loadConfig();
 

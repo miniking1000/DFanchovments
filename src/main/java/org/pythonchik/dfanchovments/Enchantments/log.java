@@ -2,6 +2,7 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -90,7 +91,10 @@ public class log extends CEnchantment implements Listener {
         axe.setItemMeta(meta);
 
         // Ломаем собранные блоки
-        for (Block b : visited) b.breakNaturally(axe);
+        for (Block b : visited) {
+            b.breakNaturally(axe);
+        }
+
     }
 
 
@@ -102,6 +106,18 @@ public class log extends CEnchantment implements Listener {
         retu.addAll(Util.axes());
         return retu;
     }
+
+    @Override
+    public java.util.Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Быстроруб");
+        defaults.put("biomes", java.util.List.of("CRIMSON_FOREST"));
+        defaults.put("chance", 0.25);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
+    }
+
     @Override
     public NamespacedKey getId(){
         return this.id;

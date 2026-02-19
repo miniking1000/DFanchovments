@@ -10,8 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class bamboom extends CEnchantment implements Listener {
     public bamboom(NamespacedKey id) {
@@ -47,11 +46,11 @@ public class bamboom extends CEnchantment implements Listener {
     }
     @Override
     public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        Map<String, Object> defaults = new java.util.LinkedHashMap<>();
         defaults.put("name", "&7Звуковой заряд");
-        defaults.put("biome", "THE_VOID");
-        defaults.put("chance", 0);
-        defaults.put("luck", 0);
+        defaults.put("biomes", java.util.List.of("DEEP_DARK"));
+        defaults.put("chance", 1);
+        defaults.put("luck", 3);
         defaults.put("maxlvl", 3);
         return defaults;
     }

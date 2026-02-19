@@ -1,6 +1,7 @@
 package org.pythonchik.dfanchovments;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,121 +12,141 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
+import java.util.regex.Pattern;
 
 public class anvil implements Listener {
     Message message = DFanchovments.getMessage();
+    private static final Pattern COLOR_PATTERN = Pattern.compile("(?i)(#[0-9a-f]{6}|&[0-9a-fk-or]|§[0-9a-fk-or])");
 
     @EventHandler
     public void AnviListener(PrepareAnvilEvent event) {
         AnvilInventory anvil = event.getInventory();
-        if ((anvil.getItem(0) != null && anvil.getItem(1) != null)) { // have both items
-            if (anvil.getItem(0).getItemMeta() == null || anvil.getItem(1).getItemMeta() == null) return; // both must have meta
-            ItemStack slot1 = anvil.getItem(0);
-            ItemStack slot2 = anvil.getItem(1);
-            ItemStack item = slot1.clone();
-            ItemMeta meta = item.getItemMeta();
-            List<String> lore = meta.getLore();
-            boolean isApplied = false;
-            for (CEnchantment ench : DFanchovments.CEnchantments) {
-                if (slot2.getItemMeta().getPersistentDataContainer().has(ench.getId())) {
-                    int num1 = slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()) ? slot1.getItemMeta().getPersistentDataContainer().get(ench.getId(),PersistentDataType.INTEGER) : 0;
-                    int num2 = slot2.getItemMeta().getPersistentDataContainer().has(ench.getId()) ? slot2.getItemMeta().getPersistentDataContainer().get(ench.getId(),PersistentDataType.INTEGER) : 0;
-                    int lvl = num1 != num2 ?
-                            //1 and 2 different
-                            Math.max(num1, num2)
-                            //taking maximium of those
-                            : num1 + 1 <= ench.getMaxLevel() ?
-                            //1 and 2 are equal AND (for example 2 with max 5) 2+1(static 1 bc +1 level)=3 <= 5
-                            //will be 2+1=3 else, taking ench lvl
-                            num1 + 1
-                            : num1;
-                    // if the item supports the enchantment in the first place, then do it
-                    for (String gooditem : ench.getTragers()) {
-                        if ((Material.getMaterial(gooditem) != null ? Material.getMaterial(gooditem) : Material.BARRIER).equals(item.getType())) {
-                            isApplied = true;
-                            if (!(slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()))) {
-                                meta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, num2);
-                                meta.setEnchantmentGlintOverride(true);
-                            }
-                            else {
-                                meta.getPersistentDataContainer().set(ench.getId(),PersistentDataType.INTEGER,lvl);
-                                meta.setEnchantmentGlintOverride(true);
-                            }
+        ItemStack left = anvil.getItem(0);
+        if (left == null || left.getItemMeta() == null) return;
 
-                            if (lore != null) {
-                                if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V")))))) {
-                                    lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                                } else {
-                                    if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")))))) {
-                                        lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                                    } else {
-                                        lore.add(0,message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                                    }
-                                }
-                            } else {
-                                lore = new ArrayList<String>();
-                                lore.add(0,message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                            }
-                        }
-                    }
-                    meta.setLore(lore);
-                    meta.setDisplayName(message.hex(event.getView().getRenameText())); // event.getInventory().getRenameText()
-                    // after all custom we also need to move regular enchants to the new item from second slot(e.g. do regular anvil thing)
-                    for (Map.Entry<Enchantment, Integer> Entry : slot2.getItemMeta().getEnchants().entrySet()) {
-                        meta.addEnchant(Entry.getKey(), Math.max(meta.getEnchantLevel(Entry.getKey()), Entry.getValue()), false);
-                    }
+        ItemStack result = left.clone();
+        ItemMeta resultMeta = result.getItemMeta();
+        if (resultMeta == null) return;
 
-                    item.setItemMeta(meta);
-                    //for (String gooditem : ench.getTragers()) {
-                    //    if ((Material.getMaterial(gooditem) != null ? Material.getMaterial(gooditem) : Material.BARRIER).equals(item.getType())) {
-                    if (isApplied) {
-                        event.getView().setRepairItemCountCost(1);
-                        event.setResult(item);
-                        event.getView().setRepairCost(30);
-                        //event.getInventory().setRepairCost(30);
-                    }
-                    //    }
-                    //}
+        ItemStack right = anvil.getItem(1);
+        boolean changed = false;
 
-                }
+        if (right != null && right.getItemMeta() != null) {
+            ItemMeta rightMeta = right.getItemMeta();
+
+            for (Map.Entry<Enchantment, Integer> entry : rightMeta.getEnchants().entrySet()) {
+                Enchantment incoming = entry.getKey();
+                int incomingLevel = entry.getValue();
+                if (hasVanillaConflict(resultMeta, incoming)) continue;
+                int finalLevel = Math.max(resultMeta.getEnchantLevel(incoming), incomingLevel);
+                resultMeta.addEnchant(incoming, finalLevel, false);
+                changed = true;
             }
-        } else if (anvil.getItem(0) != null && anvil.getItem(1) == null) {
-            ItemStack slot1 = anvil.getItem(0);
-            ItemStack item = slot1.clone();
-            ItemMeta meta = item.getItemMeta();
-            List<String> lore = meta.getLore();
-            for (CEnchantment ench : DFanchovments.CEnchantments) {
-                if (slot1.getItemMeta().getPersistentDataContainer().has(ench.getId())) {
-                    int num1 = slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()) ? slot1.getItemMeta().getPersistentDataContainer().get(ench.getId(),PersistentDataType.INTEGER) : 1;
-                    int lvl = num1;
-                    if (!(slot1.getItemMeta().getPersistentDataContainer().has(ench.getId()))) {
-                        meta.getPersistentDataContainer().set(ench.getId(),PersistentDataType.INTEGER, num1);
-                        meta.setEnchantmentGlintOverride(true);
-                    }
-                    if (lore != null) {
-                        if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V")))))) {
-                            lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl - 1 == 1 ? "I" : lvl - 1 == 2 ? "II" : lvl - 1 == 3 ? "III" : lvl - 1 == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                        } else {
-                            if (lore.contains(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")))))) {
-                                lore.set(lore.lastIndexOf(message.hex(ench.getName() + (lvl == 0 ? "" : (" " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V"))))), message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                            } else {
-                                lore.add(0,message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                            }
-                        }
-                    } else {
-                        lore = new ArrayList<String>();
-                        lore.add(0,message.hex(ench.getName() + " " + (lvl == 1 ? "I" : lvl == 2 ? "II" : lvl == 3 ? "III" : lvl == 4 ? "IV" : "V")));
-                    }
 
-                    meta.setLore(lore);
-                    meta.setDisplayName(message.hex(event.getView().getRenameText()));
-                    item.setItemMeta(meta);
-                    event.setResult(item);
-                }
+            for (CEnchantment ench : DFanchovments.CEnchantments) {
+                Integer rightLevel = rightMeta.getPersistentDataContainer().get(ench.getId(), PersistentDataType.INTEGER);
+                if (rightLevel == null) continue;
+                if (!isApplicableTo(result.getType(), ench)) continue;
+                if (hasCustomConflict(resultMeta, ench)) continue;
+
+                int leftLevel = resultMeta.getPersistentDataContainer().getOrDefault(ench.getId(), PersistentDataType.INTEGER, 0);
+                int level = leftLevel != rightLevel
+                        ? Math.max(leftLevel, rightLevel)
+                        : Math.min(leftLevel + 1, ench.getMaxLevel());
+                level = Math.max(ench.getStartLevel(), Math.min(level, ench.getMaxLevel()));
+
+                resultMeta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, level);
+                ench.applyAttributeEnchantments(resultMeta, level);
+                resultMeta.setEnchantmentGlintOverride(true);
+                changed = true;
             }
         }
+
+        applyRename(event, resultMeta);
+        updateCustomLore(resultMeta);
+
+        if (changed || hasRename(event)) {
+            result.setItemMeta(resultMeta);
+            event.getView().setRepairItemCountCost(right != null ? 1 : 0);
+            event.getView().setRepairCost(30);
+            event.setResult(result);
+        }
+    }
+
+    private void updateCustomLore(ItemMeta meta) {
+        List<String> lore = new ArrayList<>();
+        DFanchovments.CEnchantments.stream()
+                .filter(ench -> meta.getPersistentDataContainer().has(ench.getId(), PersistentDataType.INTEGER))
+                .sorted(Comparator.comparing(ench -> ench.getName() == null ? ench.getId().getKey() : ench.getName()))
+                .forEach(ench -> {
+                    int level = meta.getPersistentDataContainer().getOrDefault(ench.getId(), PersistentDataType.INTEGER, ench.getStartLevel());
+                    lore.add(message.hex(ench.getName() + " " + Util.toRoman(level)));
+                });
+
+        if (lore.isEmpty()) {
+            meta.setLore(null);
+        } else {
+            meta.setLore(lore);
+        }
+    }
+
+    private void applyRename(PrepareAnvilEvent event, ItemMeta meta) {
+        String rename = event.getView().getRenameText();
+        if (rename == null || rename.isBlank()) return;
+        if (COLOR_PATTERN.matcher(rename).find()) {
+            meta.setDisplayName(message.hex(rename));
+        } else {
+            meta.setDisplayName(rename);
+        }
+    }
+
+    private boolean hasRename(PrepareAnvilEvent event) {
+        String rename = event.getView().getRenameText();
+        return rename != null && !rename.isBlank();
+    }
+
+    private boolean isApplicableTo(Material material, CEnchantment ench) {
+        for (String goodItem : ench.getTragers()) {
+            Material accepted = Material.matchMaterial(goodItem);
+            if (accepted == material) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasVanillaConflict(ItemMeta meta, Enchantment incoming) {
+        for (Enchantment existing : meta.getEnchants().keySet()) {
+            if (existing.conflictsWith(incoming) || incoming.conflictsWith(existing)) {
+                return true;
+            }
+        }
+        for (CEnchantment custom : DFanchovments.CEnchantments) {
+            if (!meta.getPersistentDataContainer().has(custom.getId(), PersistentDataType.INTEGER)) continue;
+            if (custom.conflictsWith(incoming.getKey().getKey()) || custom.conflictsWith(incoming.getKey())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasCustomConflict(ItemMeta meta, CEnchantment incoming) {
+        for (CEnchantment existing : DFanchovments.CEnchantments) {
+            if (!meta.getPersistentDataContainer().has(existing.getId(), PersistentDataType.INTEGER)) continue;
+            if (existing.getId().equals(incoming.getId())) continue;
+            if (existing.conflictsWith(incoming) || incoming.conflictsWith(existing)) {
+                return true;
+            }
+        }
+        for (Enchantment existing : meta.getEnchants().keySet()) {
+            NamespacedKey existingKey = existing.getKey();
+            if (incoming.conflictsWith(existingKey) || incoming.conflictsWith(existingKey.getKey())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

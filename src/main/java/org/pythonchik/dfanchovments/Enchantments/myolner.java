@@ -7,19 +7,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitTask;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class myolner extends CEnchantment implements Listener {
     public myolner(NamespacedKey id) {
@@ -83,13 +78,14 @@ public class myolner extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Искромётность");
-        defaults.put("biome", "DEEP_COLD_OCEAN");
+        defaults.put("biomes", List.of("DEEP_COLD_OCEAN"));
         defaults.put("chance", 0.5);
         defaults.put("luck", 0.05);
-        defaults.put("maxlvl", 3);
+        defaults.put("maxlvl", 5);
+        defaults.put("conflicts", List.of("stunning"));
         return defaults;
     }
     @Override

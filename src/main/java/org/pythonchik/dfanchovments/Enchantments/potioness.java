@@ -12,8 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class potioness extends CEnchantment implements Listener {
     @EventHandler
@@ -71,12 +70,12 @@ public class potioness extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Отравленность");
-        defaults.put("biome", "THE_VOID");
-        defaults.put("chance", 0);
-        defaults.put("luck", 0);
+        defaults.put("biomes", List.of("SPARSE_JUNGLE"));
+        defaults.put("chance", 3);
+        defaults.put("luck", 2);
         defaults.put("maxlvl", 4);
         return defaults;
     }

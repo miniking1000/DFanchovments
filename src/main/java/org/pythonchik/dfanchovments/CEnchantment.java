@@ -2,26 +2,22 @@ package org.pythonchik.dfanchovments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Biome;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CEnchantment {
     protected NamespacedKey id;
     protected CEnchantment(NamespacedKey id) {
         this.id = id;
-        try {
-            this.getBiomes();
-        } catch (Exception e) {
-            DFanchovments.plugin.getLogger().warning("Enchantment " + id + " failed to load biomes: " + e);
-        }
         DFanchovments.CEnchantments.add(this);
         if (this instanceof Listener listener && DFanchovments.plugin != null) {
             DFanchovments.plugin.getServer().getPluginManager().registerEvents(listener, DFanchovments.plugin);
@@ -35,26 +31,36 @@ public class CEnchantment {
         retu.add(Material.ENCHANTED_BOOK.name());
         return retu;
     }
+    public List<String> getConflictKeys() {
+        return DFanchovments.config.getStringList(this.getId().getKey() + ".conflicts").stream()
+                .map(conflict -> {
+                    NamespacedKey key = NamespacedKey.fromString(conflict, DFanchovments.plugin);
+                    return key != null ? key.getKey() : conflict;
+                })
+                .toList();
+    }
     public List<NamespacedKey> getConflicts() {
-        return DFanchovments.config.getStringList(this.getId().getKey() + ".conflicts").stream().map(ceid -> NamespacedKey.fromString(ceid, DFanchovments.plugin)).toList();
+        return getConflictKeys().stream()
+                .map(key -> new NamespacedKey(DFanchovments.plugin, key))
+                .toList();
     }
     public boolean conflictsWith(CEnchantment cEnchantment) {
-        return this.conflictsWith(cEnchantment.getId());
+        return cEnchantment != null && this.conflictsWith(cEnchantment.getId());
     }
     public boolean conflictsWith(NamespacedKey namespacedKey) {
-        return this.conflictsWith(namespacedKey.getKey());
+        return namespacedKey != null && this.conflictsWith(namespacedKey.getKey());
     }
     public boolean conflictsWith(String key) {
-        return this.getConflicts().contains(key);
+        return key != null && this.getConflictKeys().contains(key);
     }
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7" + this.getId().getKey()); // string
-        defaults.put("biomes", List.of()); // list<NamespacedKey of biomes, e.g. strings>
+        defaults.put("biomes", List.of("THE_VOID")); // list<NamespacedKey of biomes>
         defaults.put("chance", 0); // double
         defaults.put("luck", 0); // double
         defaults.put("maxlvl", 1); // int
-        defaults.put("conflicts", List.of()); // list<String> (id of enchant, not namespaced key
+        defaults.put("conflicts", List.of()); // list<String> (id of enchant, not namespaced key)
         return defaults;
     }
     public NamespacedKey getId() {
@@ -79,16 +85,71 @@ public class CEnchantment {
         return this.getDropChance(luck) > Math.random() * 100;
     }
     public List<NamespacedKey> getBiomes() {
-        return DFanchovments.config.getStringList(this.getId().getKey() + ".biomes").stream().map(NamespacedKey::fromString).toList();
+        List<String> biomes = DFanchovments.config.getStringList(this.getId().getKey() + ".biomes");
+        if (biomes.isEmpty()) {
+            String singleBiome = DFanchovments.config.getString(this.getId().getKey() + ".biome");
+            if (singleBiome != null && !singleBiome.isBlank()) {
+                biomes = List.of(singleBiome);
+            } else {
+                return List.of();
+            }
+        }
+        return biomes.stream()
+                .map(s -> {
+                    NamespacedKey key = NamespacedKey.fromString(s.toLowerCase());
+                    if (key == null || Registry.BIOME.get(key) == null) {
+                        DFanchovments.plugin.getLogger()
+                                .warning("Invalid biome key in config for " + getId() + ": '" + s + "'");
+                    }
+                    return key;
+                })
+                .filter(Objects::nonNull)
+                .toList();
     }
     public boolean isInBiome(Biome biome) {
-        return this.getBiomes().contains(biome.getKeyOrNull());
+        return this.getBiomes().contains(biome.getKey());
     }
     public boolean isInBiome(NamespacedKey biome) {
         return this.getBiomes().contains(biome);
     }
     public void onDisable() {
         // intentionally empty
+    }
+
+    public record EnchantmentAttribute(Attribute attribute,
+                                       double amountPerLevel,
+                                       AttributeModifier.Operation operation,
+                                       EquipmentSlotGroup slotGroup) {}
+
+    public List<EnchantmentAttribute> getAttributeEnchantments() {
+        return List.of();
+    }
+
+    public void applyAttributeEnchantments(ItemMeta meta, int level) {
+        for (EnchantmentAttribute attributeEnchantment : this.getAttributeEnchantments()) {
+            if (attributeEnchantment == null || attributeEnchantment.attribute() == null || attributeEnchantment.operation() == null || attributeEnchantment.slotGroup() == null) {
+                continue;
+            }
+            if (meta.hasAttributeModifiers()) {
+                var modifiers = meta.getAttributeModifiers(attributeEnchantment.attribute());
+                if (modifiers != null) {
+                    for (AttributeModifier modifier : modifiers) {
+                        if (modifier.getKey().equals(this.getId())) {
+                            meta.removeAttributeModifier(attributeEnchantment.attribute(), modifier);
+                        }
+                    }
+                }
+            }
+            meta.addAttributeModifier(
+                    attributeEnchantment.attribute(),
+                    new AttributeModifier(
+                            this.getId(),
+                            attributeEnchantment.amountPerLevel() * level,
+                            attributeEnchantment.operation(),
+                            attributeEnchantment.slotGroup()
+                    )
+            );
+        }
     }
 
     /**
@@ -157,6 +218,7 @@ public class CEnchantment {
         );
 
         meta.getPersistentDataContainer().set(this.getId(), PersistentDataType.INTEGER, finalLevel);
+        this.applyAttributeEnchantments(meta, finalLevel);
 
         meta.setLore(List.of(DFanchovments.message.hex(this.getName() + " " + Util.toRoman(finalLevel))));
 

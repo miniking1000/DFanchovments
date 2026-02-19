@@ -11,10 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class telepathy extends CEnchantment implements Listener {
     public telepathy(NamespacedKey id) {
@@ -27,6 +24,18 @@ public class telepathy extends CEnchantment implements Listener {
         retu.addAll(Util.instruments());
         return retu;
     }
+
+    @Override
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
+        defaults.put("name", "&7Сбор");
+        defaults.put("biomes", List.of("SHATTERED_SAVANNA"));
+        defaults.put("chance", 0.5);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 1);
+        return defaults;
+    }
+
     @Override
     public NamespacedKey getId(){
         return this.id;

@@ -2,6 +2,7 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -132,9 +133,9 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
     }
     @Override
     public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+      Map<String, Object> defaults = new java.util.LinkedHashMap<>();
         defaults.put("name", "&7Рудолом");
-        defaults.put("biome", "BASALT_DELTAS");
+        defaults.put("biomes", java.util.List.of("BASALT_DELTAS"));
         defaults.put("chance", 2);
         defaults.put("luck", 1);
         defaults.put("maxlvl", 1);

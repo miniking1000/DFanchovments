@@ -5,12 +5,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class antiholy extends CEnchantment implements Listener {
     ArrayList<PotionEffectType> badeffects = new ArrayList<>();
@@ -38,9 +38,10 @@ public class antiholy extends CEnchantment implements Listener {
     public void event(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player)) return;
         Player player = (Player) event.getEntity();
-        if (player.getInventory().getChestplate() == null) return;
-        if (!player.getInventory().getChestplate().hasItemMeta()) return;
-        if (!player.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)) return;
+        ItemStack chestplate = player.getInventory().getChestplate();
+        if (chestplate == null) return;
+        if (!chestplate.hasItemMeta()) return;
+        if (!chestplate.getItemMeta().getPersistentDataContainer().has(id)) return;
         if (event.getNewEffect() == null) return;
         // Cancel only if a bad effect is being applied or changed
         if (badeffects.contains(event.getModifiedType())) {
@@ -58,10 +59,10 @@ public class antiholy extends CEnchantment implements Listener {
     }
     @Override
     public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
-        defaults.put("name", "&7Осветленность");
-        defaults.put("biome", "THE_VOID");
-        defaults.put("chance", 0);
+        Map<String, Object> defaults = new LinkedHashMap<>();
+        defaults.put("name", "&6Освещённость");
+        defaults.put("biomes", java.util.List.of("minecraft:pale_garden"));
+        defaults.put("chance", 0.01);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
         return defaults;

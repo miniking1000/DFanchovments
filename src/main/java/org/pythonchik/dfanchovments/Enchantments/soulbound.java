@@ -72,11 +72,10 @@ public class soulbound extends CEnchantment implements Listener {
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Связь Души");
-        defaults.put("biomes", List.of("SOUL_SAND_VALLEY"));
+        defaults.put("biomes", java.util.List.of("SOUL_SAND_VALLEY"));
         defaults.put("chance", 0.55);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
-        defaults.put("conflicts", List.of());
         return defaults;
     }
 }

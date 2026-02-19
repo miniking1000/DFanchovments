@@ -1,17 +1,11 @@
 package org.pythonchik.dfanchovments;
 
-import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -112,37 +106,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
     }
 
     private ItemStack createBook(CEnchantment ench, int level) {
-        ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
-        ItemMeta meta = book.getItemMeta();
-
-        if (meta == null) return book;
-
-        int finalLevel = Math.max(
-                ench.getStartLevel(),
-                Math.min(level, ench.getMaxLevel())
-        );
-
-        meta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, finalLevel);
-
-        // special case
-        if (DFanchovments.isEnchantment(ench, "democracy")) {
-            meta.addAttributeModifier(
-                    Attribute.SCALE,
-                    new AttributeModifier(
-                            Attribute.SCALE.getKey(),
-                            0.5,
-                            AttributeModifier.Operation.ADD_NUMBER,
-                            EquipmentSlotGroup.HEAD
-                    )
-            );
-        }
-
-        meta.setLore(List.of(message.hex(ench.getName() + " " + Util.toRoman(finalLevel))));
-
-        meta.setEnchantmentGlintOverride(true);
-        book.setItemMeta(meta);
-
-        return book;
+        return ench.createBook(level);
     }
 
     private CEnchantment findEnchantment(String input) {

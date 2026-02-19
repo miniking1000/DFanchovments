@@ -72,10 +72,10 @@ public class headless extends CEnchantment implements Listener {
     }
     @Override
     public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
-        defaults.put("name", "&7Головосрез");
-        defaults.put("biome", "THE_VOID");
-        defaults.put("chance", 100);
+        Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        defaults.put("name", "&7Головорез");
+        defaults.put("biomes", java.util.List.of("END_HIGHLANDS"));
+        defaults.put("chance", 0.5);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
         return defaults;

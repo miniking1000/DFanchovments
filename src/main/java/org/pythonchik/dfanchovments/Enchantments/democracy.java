@@ -2,16 +2,18 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class democracy extends CEnchantment implements Listener {
     public democracy(NamespacedKey id) {
@@ -20,23 +22,30 @@ public class democracy extends CEnchantment implements Listener {
     @Override
     public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
+        retu.add(Material.ENCHANTED_BOOK.name());
+        retu.addAll(Util.helmets());
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Нормальность");
-        defaults.put("biome", "PLAINS");
-        defaults.put("chance", 100);
+        defaults.put("biomes", List.of("THE_END"));
+        defaults.put("chance", 30);
         defaults.put("luck", 0);
-        defaults.put("maxlvl", 9999999);
+        defaults.put("maxlvl", 3);
         return defaults;
     }
+
+    @Override
+    public List<EnchantmentAttribute> getAttributeEnchantments() {
+        return List.of(new EnchantmentAttribute(Attribute.SCALE, 0.25D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
+    }
+
     @Override
     public NamespacedKey getId(){
         return this.id;
     }
-    //FOR future me, this book adds .5 to height using attributes, that's why nothing is here
 
     //this event handler is used NOT as part of this enchantment, but rather as a way to create 'upgradable' items
     @EventHandler

@@ -15,8 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.pythonchik.dfanchovments.CEnchantment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class neverended extends CEnchantment implements Listener {
     public neverended(NamespacedKey id) {
@@ -131,13 +130,13 @@ public class neverended extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        java.util.Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Бескончаемость");
-        defaults.put("biome", "PLAINS");
-        defaults.put("chance", 100);
+        defaults.put("biomes", List.of("THE_VOID"));
+        defaults.put("chance", 0);
         defaults.put("luck", 0);
-        defaults.put("maxlvl", 9999999);
+        defaults.put("maxlvl", 1);
         return defaults;
     }
     @Override
