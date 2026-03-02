@@ -1,21 +1,19 @@
 package org.pythonchik.dfanchovments;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class anvil implements Listener {
@@ -33,22 +31,52 @@ public class anvil implements Listener {
             return;
         }
 
+        boolean leftIsBook = left.getType() == Material.ENCHANTED_BOOK;
+        boolean rightIsBook = right != null && right.getType() == Material.ENCHANTED_BOOK;
+
+        boolean leftHasCustom = hasCustomEnchant(left.getItemMeta());
+        boolean rightHasCustom = right != null && right.getItemMeta() != null && hasCustomEnchant(right.getItemMeta());
+
+        if (leftIsBook && !rightIsBook && (leftHasCustom || rightHasCustom)) {
+            //event.setResult(new ItemStack(Material.AIR));
+            //event.getView().setRepairCost(0);
+            return;
+        }
+
         ItemStack result = left.clone();
         ItemMeta resultMeta = result.getItemMeta();
-        if (resultMeta == null) return;
+        assert resultMeta != null;
+        Map<Enchantment, Integer> enchantments = new HashMap<>(getAllEnchants(resultMeta));
+
         boolean changed = false;
 
         if (right != null && right.getItemMeta() != null) {
             ItemMeta rightMeta = right.getItemMeta();
 
-            for (Map.Entry<Enchantment, Integer> entry : rightMeta.getEnchants().entrySet()) {
+            for (Map.Entry<Enchantment, Integer> entry : getAllEnchants(rightMeta).entrySet()) {
                 Enchantment incoming = entry.getKey();
                 int incomingLevel = entry.getValue();
-                if (hasVanillaConflict(resultMeta, incoming)) continue;
-                int finalLevel = Math.max(resultMeta.getEnchantLevel(incoming), incomingLevel);
-                resultMeta.addEnchant(incoming, finalLevel, false);
-                changed = true;
+                int currentLevel = enchantments.getOrDefault(incoming, 0);
+                int finalLevel = incomingLevel == currentLevel ? currentLevel + 1 : Math.max(currentLevel, incomingLevel);
+                finalLevel = Math.clamp(finalLevel, incoming.getStartLevel(), incoming.getMaxLevel());
+
+                boolean canEnchant = isVanillaApplicableTo(incoming, result);
+                for (Map.Entry<Enchantment, Integer> originalEnchantment: enchantments.entrySet()) {
+                    if (originalEnchantment.getKey() != incoming && (incoming.conflictsWith(originalEnchantment.getKey()) || originalEnchantment.getKey().conflictsWith(incoming))) {
+                        canEnchant = false;
+                        break;
+                    }
+                }
+
+                if (canEnchant) {
+                    enchantments.put(incoming, finalLevel);
+                    changed = true;
+                }
             }
+            if (changed) {
+                applyVanillaEnchants(resultMeta, enchantments);
+            }
+
 
             for (CEnchantment ench : DFanchovments.CEnchantments) {
                 Integer rightLevel = rightMeta.getPersistentDataContainer().get(ench.getId(), PersistentDataType.INTEGER);
@@ -57,10 +85,10 @@ public class anvil implements Listener {
                 if (hasCustomConflict(resultMeta, ench)) continue;
 
                 int leftLevel = resultMeta.getPersistentDataContainer().getOrDefault(ench.getId(), PersistentDataType.INTEGER, 0);
-                int level = leftLevel != rightLevel
-                        ? Math.max(leftLevel, rightLevel)
-                        : Math.min(leftLevel + 1, ench.getMaxLevel());
-                level = Math.max(ench.getStartLevel(), Math.min(level, ench.getMaxLevel()));
+                int level = leftLevel == rightLevel
+                        ? leftLevel + 1
+                        : Math.max(leftLevel, rightLevel);
+                level = Math.clamp(level, ench.getStartLevel(), ench.getMaxLevel());
 
                 resultMeta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, level);
                 ench.applyAttributeEnchantments(resultMeta, level);
@@ -72,11 +100,36 @@ public class anvil implements Listener {
         applyRename(event, resultMeta);
         updateCustomLore(resultMeta);
 
-        if (changed) { //  || hasRename(event)
+        if (changed) {
             result.setItemMeta(resultMeta);
-            //event.getView().setRepairItemCountCost(right != null ? 1 : 0);
             event.getView().setRepairCost(30);
             event.setResult(result);
+        }
+    }
+
+    private Map<Enchantment, Integer> getAllEnchants(ItemMeta meta) {
+        if (meta instanceof EnchantmentStorageMeta storageMeta) {
+            return new HashMap<>(storageMeta.getStoredEnchants());
+        }
+        return new HashMap<>(meta.getEnchants());
+    }
+
+    private void applyVanillaEnchants(ItemMeta meta, Map<Enchantment, Integer> enchants) {
+        if (meta instanceof EnchantmentStorageMeta storage) {
+            // removeStoredEnchant нельзя делать по keySet() напрямую — поэтому копия ключей
+            for (Enchantment e : new ArrayList<>(storage.getStoredEnchants().keySet())) {
+                storage.removeStoredEnchant(e);
+            }
+            for (Map.Entry<Enchantment, Integer> e : enchants.entrySet()) {
+                storage.addStoredEnchant(e.getKey(), e.getValue(), false);
+            }
+        } else {
+            for (Enchantment e : new ArrayList<>(meta.getEnchants().keySet())) {
+                meta.removeEnchant(e);
+            }
+            for (Map.Entry<Enchantment, Integer> e : enchants.entrySet()) {
+                meta.addEnchant(e.getKey(), e.getValue(), false);
+            }
         }
     }
 
@@ -131,13 +184,7 @@ public class anvil implements Listener {
     }
 
     private boolean isApplicableTo(Material material, CEnchantment ench) {
-        for (String goodItem : ench.getTragers()) {
-            Material accepted = Material.matchMaterial(goodItem);
-            if (accepted == material) {
-                return true;
-            }
-        }
-        return false;
+        return ench.getTragers().contains(material.name().toUpperCase());
     }
 
     private boolean hasVanillaConflict(ItemMeta meta, Enchantment incoming) {
@@ -153,6 +200,14 @@ public class anvil implements Listener {
             }
         }
         return false;
+    }
+
+    private boolean isVanillaApplicableTo(Enchantment enchantment, ItemStack result) {
+        Material material = result.getType();
+        if (material == Material.ENCHANTED_BOOK) {
+            return true;
+        } 
+        return enchantment.canEnchantItem(result);
     }
 
     private boolean hasCustomConflict(ItemMeta meta, CEnchantment incoming) {

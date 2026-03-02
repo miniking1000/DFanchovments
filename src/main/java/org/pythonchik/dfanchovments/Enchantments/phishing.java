@@ -37,7 +37,6 @@ public class phishing extends CEnchantment implements Listener {
         int chance = 5 * level;
         Entity caught = event.getCaught();
         if (!(caught instanceof Item caughtItem)) return;
-
         ItemStack caughtStack = caughtItem.getItemStack();
         if (caughtStack.getType().isAir()) return;
         if (!(Math.random() * 100 <= chance)) return;
