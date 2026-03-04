@@ -1,10 +1,15 @@
 package org.pythonchik.dfanchovments;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
 
 public class Util {
+
+    public static Message message = DFanchovments.getMessage();
 
     public static String toRoman(int lvl) {
         if (lvl <= 0 || lvl > 255) return String.valueOf(lvl);
@@ -37,6 +42,40 @@ public class Util {
         return v;
     }
 
+    public static void updateCustomLore(ItemMeta meta) {
+        List<String> customLore = new ArrayList<>();
+        DFanchovments.CEnchantments.stream()
+                .filter(ench -> meta.getPersistentDataContainer().has(ench.getId(), PersistentDataType.INTEGER))
+                .sorted(Comparator.comparing(ench -> ench.getName() == null ? ench.getId().getKey() : ench.getName()))
+                .forEach(ench -> {
+                    int level = meta.getPersistentDataContainer().getOrDefault(ench.getId(), PersistentDataType.INTEGER, ench.getStartLevel());
+                    customLore.add(message.hex(ench.getName() + " " + Util.toRoman(level)));
+                });
+
+        List<String> lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
+        lore.removeIf(Util::isCustomEnchantLoreLine);
+        lore.addAll(customLore);
+
+        if (lore.isEmpty()) {
+            meta.setLore(null);
+        } else {
+            meta.setLore(lore);
+        }
+    }
+
+    public static boolean isCustomEnchantLoreLine(String loreLine) {
+        String strippedLore = ChatColor.stripColor(loreLine);
+        if (strippedLore == null) return false;
+
+        for (CEnchantment ench : DFanchovments.CEnchantments) {
+            String enchantName = ench.getName() == null ? ench.getId().getKey() : ench.getName();
+            String strippedName = ChatColor.stripColor(message.hex(enchantName));
+            if (strippedName != null && strippedLore.startsWith(strippedName + " ")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static List<String> helmets() {
         List<Material> retu = new ArrayList<>();
@@ -47,6 +86,7 @@ public class Util {
         retu.add(Material.GOLDEN_HELMET);
         retu.add(Material.DIAMOND_HELMET);
         retu.add(Material.NETHERITE_HELMET);
+        retu.add(Material.TURTLE_HELMET);
         return retu.stream()
                 .map(Material::name)
                 .toList();

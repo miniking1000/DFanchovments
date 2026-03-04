@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
@@ -22,26 +23,54 @@ public class phishing extends CEnchantment implements Listener {
 
     @EventHandler(priority = EventPriority.LOW)
     public void onPhishing(PlayerFishEvent event) {
-        if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH)
-            return;
-        if (event.getHand() == null)
-            return; // should never happen
+        if (event.getState() != PlayerFishEvent.State.CAUGHT_FISH) return;
+        if (event.getHand() == null) return;
+
         Player player = event.getPlayer();
         ItemStack rod = player.getInventory().getItem(event.getHand());
-        if (rod == null)
-            return;
+        if (rod == null) return;
+
         ItemMeta meta = rod.getItemMeta();
-        if (meta == null || !meta.getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER))
-            return;
-        int level = meta.getPersistentDataContainer().get(this.id, PersistentDataType.INTEGER);
+        if (meta == null) return;
+
+        var pdc = meta.getPersistentDataContainer();
+        Integer levelObj = pdc.get(this.id, PersistentDataType.INTEGER);
+        if (levelObj == null) return;
+
+        int level = levelObj;
         int chance = 5 * level;
         Entity caught = event.getCaught();
         if (!(caught instanceof Item caughtItem)) return;
         ItemStack caughtStack = caughtItem.getItemStack();
         if (caughtStack.getType().isAir()) return;
-        if (!(Math.random() * 100 <= chance)) return;
-        caughtStack.setAmount(caughtStack.getAmount()+1);
-        caughtItem.setItemStack(caughtStack);
+
+        if (!(Math.random() * 100.0 <= chance)) return;
+
+        addOneMoreCaughtItem(caughtItem, caughtStack, caught);
+    }
+
+
+    private void addOneMoreCaughtItem(Item caughtItem, ItemStack caughtStack, Entity caught) {
+        int max = caughtStack.getMaxStackSize();
+        int amt = caughtStack.getAmount();
+
+        // Если можно увеличить количество в этом entity-стаке — увеличиваем.
+        if (max > 1 && amt < max) {
+            caughtStack.setAmount(amt + 1);
+            caughtItem.setItemStack(caughtStack);
+            return;
+        }
+
+        // Иначе (нестакается ИЛИ стак переполнен) — спавним вторую сущность с 1 штукой.
+        ItemStack extra = caughtStack.clone();
+        extra.setAmount(1);
+
+        var loc = caughtItem.getLocation();
+        Item spawned = loc.getWorld().dropItemNaturally(loc, extra);
+
+        spawned.setPickupDelay(caughtItem.getPickupDelay());
+        spawned.setOwner(caughtItem.getOwner());
+        caught.addPassenger(spawned);
     }
 
     @Override

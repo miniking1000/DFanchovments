@@ -65,6 +65,7 @@ public final class DFanchovments extends JavaPlugin {
         new myolner(      new NamespacedKey(plugin,"myolner"));
         new handover(     new NamespacedKey(plugin,"handover"));
         new phishing(     new NamespacedKey(plugin,"phishing"));
+        new victor(       new NamespacedKey(plugin,"victor"));
 
         loadConfig();
 

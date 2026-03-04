@@ -12,8 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 public class anvil implements Listener {
@@ -98,7 +96,7 @@ public class anvil implements Listener {
         }
 
         applyRename(event, resultMeta);
-        updateCustomLore(resultMeta);
+        Util.updateCustomLore(resultMeta);
 
         if (changed) {
             result.setItemMeta(resultMeta);
@@ -133,40 +131,6 @@ public class anvil implements Listener {
         }
     }
 
-    private void updateCustomLore(ItemMeta meta) {
-        List<String> customLore = new ArrayList<>();
-        DFanchovments.CEnchantments.stream()
-                .filter(ench -> meta.getPersistentDataContainer().has(ench.getId(), PersistentDataType.INTEGER))
-                .sorted(Comparator.comparing(ench -> ench.getName() == null ? ench.getId().getKey() : ench.getName()))
-                .forEach(ench -> {
-                    int level = meta.getPersistentDataContainer().getOrDefault(ench.getId(), PersistentDataType.INTEGER, ench.getStartLevel());
-                    customLore.add(message.hex(ench.getName() + " " + Util.toRoman(level)));
-                });
-
-        List<String> lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
-        lore.removeIf(this::isCustomEnchantLoreLine);
-        lore.addAll(customLore);
-
-        if (lore.isEmpty()) {
-            meta.setLore(null);
-        } else {
-            meta.setLore(lore);
-        }
-    }
-
-    private boolean isCustomEnchantLoreLine(String loreLine) {
-        String strippedLore = ChatColor.stripColor(loreLine);
-        if (strippedLore == null) return false;
-
-        for (CEnchantment ench : DFanchovments.CEnchantments) {
-            String enchantName = ench.getName() == null ? ench.getId().getKey() : ench.getName();
-            String strippedName = ChatColor.stripColor(message.hex(enchantName));
-            if (strippedName != null && strippedLore.startsWith(strippedName + " ")) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private void applyRename(PrepareAnvilEvent event, ItemMeta meta) {
         String rename = event.getView().getRenameText();
