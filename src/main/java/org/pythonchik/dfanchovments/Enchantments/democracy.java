@@ -24,6 +24,7 @@ public class democracy extends CEnchantment implements Listener {
         List<String> retu = new ArrayList<>();
         retu.add(Material.ENCHANTED_BOOK.name());
         retu.addAll(Util.helmets());
+        retu.add(Material.CARVED_PUMPKIN.name());
         return retu;
     }
     @Override
