@@ -45,8 +45,8 @@ public class bamboom extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-        Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Звуковой заряд");
         defaults.put("biomes", java.util.List.of("DEEP_DARK"));
         defaults.put("chance", 1);

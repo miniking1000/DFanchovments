@@ -23,7 +23,7 @@ public class exp  extends CEnchantment implements Listener {
             return;
         }
         if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
-            int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER)*15);
+            int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(id, PersistentDataType.INTEGER, 0)*15);
             XP.setTotalExperience(player, a);
         }
 

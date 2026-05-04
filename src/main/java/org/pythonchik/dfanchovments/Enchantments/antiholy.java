@@ -58,10 +58,10 @@ public class antiholy extends CEnchantment implements Listener {
         return retu;
     }
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
+    public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&6Освещённость");
-        defaults.put("biomes", java.util.List.of("minecraft:pale_garden"));
+        defaults.put("biomes", List.of("pale_garden"));
         defaults.put("chance", 0.01);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);

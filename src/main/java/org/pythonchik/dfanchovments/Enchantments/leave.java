@@ -2,12 +2,9 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,29 +17,28 @@ import org.pythonchik.dfanchovments.Util;
 
 import java.util.*;
 
-public class breakerOrIsIt extends CEnchantment implements Listener {
-    public breakerOrIsIt(NamespacedKey id) {
+public class leave extends CEnchantment implements Listener {
+    public leave(NamespacedKey id) {
         super(id);
     }
 
-    private static final Set<Material> ORES = EnumSet.of(
-            Material.COAL_ORE, Material.DEEPSLATE_COAL_ORE, Material.IRON_ORE, Material.DEEPSLATE_IRON_ORE,
-            Material.COPPER_ORE, Material.DEEPSLATE_COPPER_ORE, Material.GOLD_ORE, Material.DEEPSLATE_GOLD_ORE,
-            Material.REDSTONE_ORE, Material.DEEPSLATE_REDSTONE_ORE, Material.EMERALD_ORE, Material.DEEPSLATE_EMERALD_ORE,
-            Material.LAPIS_ORE, Material.DEEPSLATE_LAPIS_ORE, Material.DIAMOND_ORE, Material.DEEPSLATE_DIAMOND_ORE,
-            Material.NETHER_GOLD_ORE, Material.NETHER_QUARTZ_ORE, Material.ANCIENT_DEBRIS, Material.RAW_IRON_BLOCK,
-            Material.RAW_COPPER_BLOCK, Material.RAW_GOLD_BLOCK, Material.GLOWSTONE, Material.AMETHYST_CLUSTER
+    private static final Set<Material> LOGS = EnumSet.of(
+            Material.OAK_LEAVES, Material.SPRUCE_LEAVES, Material.BIRCH_LEAVES,
+            Material.JUNGLE_LEAVES, Material.ACACIA_LEAVES, Material.DARK_OAK_LEAVES,
+            Material.MANGROVE_LEAVES, Material.CHERRY_LEAVES, Material.AZALEA_LEAVES,
+            Material.FLOWERING_AZALEA_LEAVES, Material.PALE_OAK_LEAVES
     );
 
+
     @EventHandler
-    public void onPlayerChopAnOre(BlockBreakEvent event) {
+    public void onPlayerChopALeave(BlockBreakEvent event) {
         Player player = event.getPlayer();
         Block start = event.getBlock();
         if (player.isSneaking()) return;
-        if (!ORES.contains(start.getType())) return;
+        if (!LOGS.contains(start.getType())) return;
 
-        ItemStack pickaxe = player.getInventory().getItemInMainHand();
-        if (!(pickaxe.getItemMeta() instanceof Damageable meta)) return;
+        ItemStack axe = player.getInventory().getItemInMainHand();
+        if (!(axe.getItemMeta() instanceof Damageable meta)) return;
         if (!meta.getPersistentDataContainer().has(this.id)) return; // не зачарованный топор
 
         int level = meta.getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);
@@ -55,8 +51,8 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
 
         while (!queue.isEmpty()) {
             Block b = queue.poll();
-            if (!ORES.contains(b.getType()) || !visited.add(b)) continue;
-            if (visited.size() >= 64 * level) break;
+            if (!LOGS.contains(b.getType()) || !visited.add(b)) continue;
+            if (visited.size() >= 128*level) break;
 
             for (BlockFace face : Arrays.asList(
                     BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH,
@@ -65,7 +61,7 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
                     BlockFace.SOUTH_EAST, BlockFace.SOUTH_WEST
             )) {
                 Block rel = b.getRelative(face);
-                if (!visited.contains(rel) && ORES.contains(rel.getType())) queue.add(rel);
+                if (!visited.contains(rel) && LOGS.contains(rel.getType())) queue.add(rel);
             }
         }
         if (visited.size() == 1) {
@@ -74,9 +70,9 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
         }
         // Проверяем доступную прочность
 
-        double multiplier = 1.0 / (1 + pickaxe.getEnchantmentLevel(Enchantment.UNBREAKING));
+        double multiplier = 1.0 / (1 + axe.getEnchantmentLevel(Enchantment.UNBREAKING));
         int cost = (int) Math.ceil(visited.size() * 2 * multiplier);
-        int remaining = meta.hasMaxDamage() ? meta.getMaxDamage() : pickaxe.getType().getMaxDurability() - meta.getDamage();
+        int remaining = meta.hasMaxDamage() ? meta.getMaxDamage() : axe.getType().getMaxDurability() - meta.getDamage();
 
         if (remaining <= 1) return; // топор почти сломан, ничего не делаем
 
@@ -96,35 +92,15 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
         if (!meta.isUnbreakable()) {
             meta.setDamage(meta.getDamage() + cost);
         }
-        pickaxe.setItemMeta(meta);
+
+        axe.setItemMeta(meta);
 
         // Ломаем собранные блоки
-        int xp = 0;
         for (Block b : visited) {
-            xp += pickaxe.getEnchantmentLevel(Enchantment.SILK_TOUCH) == 0 ? getVanillaXP(b.getType()) : 0;
-            b.breakNaturally(pickaxe);
+            b.breakNaturally(axe);
         }
-        if (xp > 0) {
-            ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
-            orb.setExperience(xp);
-        }
-    }
 
-    public static int getVanillaXP(Material type) {
-        return switch (type) {
-            case COAL_ORE, DEEPSLATE_COAL_ORE -> random(0, 2);
-            case REDSTONE_ORE, DEEPSLATE_REDSTONE_ORE -> random(1, 5);
-            case EMERALD_ORE, DEEPSLATE_EMERALD_ORE, DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE -> random(3, 7);
-            case LAPIS_ORE, DEEPSLATE_LAPIS_ORE, NETHER_QUARTZ_ORE -> random(2, 5);
-            case NETHER_GOLD_ORE -> random(0, 1);
-            default -> 0;
-        };
     }
-
-    private static int random(int min, int max) {
-        return min + (int)(Math.random() * (max - min + 1));
-    }
-
 
 
     @Override
@@ -132,20 +108,21 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
 
-        // all pickaxes
-        retu.addAll(Util.pickaxes());
+        retu.addAll(Util.hoes());
         return retu;
     }
+
     @Override
-    public java.util.Map<String, Object> getDefaultConfig() {
-      Map<String, Object> defaults = new java.util.LinkedHashMap<>();
-        defaults.put("name", "&7Рудолом");
-        defaults.put("biomes", java.util.List.of("BASALT_DELTAS"));
-        defaults.put("chance", 2);
-        defaults.put("luck", 1);
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
+        defaults.put("name", "&7Листопад");
+        defaults.put("biomes", List.of("jungle"));
+        defaults.put("chance", 0.1);
+        defaults.put("luck", 0.05);
         defaults.put("maxlvl", 1);
         return defaults;
     }
+
     @Override
     public NamespacedKey getId(){
         return this.id;

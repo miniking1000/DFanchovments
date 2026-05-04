@@ -5,18 +5,22 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
 
 import java.util.*;
 
 public class dodge extends CEnchantment implements Listener {
     @EventHandler
-    public void DbtxHxRvieptrLyoLwdzVpjTdXTYTVTYR(EntityDamageByEntityEvent event){ //this name is not random btw
-        if(!(event.getEntity() instanceof Player)){
+    public void DbtxHxRvieptrLyoLwdzVpjTdXTYTVTYR(EntityDamageByEntityEvent event) { //this name is not random btw
+        if(!(event.getEntity() instanceof Player player)){
             return;
         }
-        if(((Player) event.getEntity()).getInventory().getChestplate() != null && ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta() != null && ((Player) event.getEntity()).getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)){
-            if (Math.random() <0.15) {
+        ItemStack chestplate = player.getInventory().getChestplate();
+        if(chestplate != null && chestplate.getItemMeta() != null && chestplate.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) {
+            int level = chestplate.getItemMeta().getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);
+            if (Math.random() < (0.10 + (0.5 * level))) {
                 event.setDamage(0);
             }
         }

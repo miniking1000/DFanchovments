@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -41,6 +42,8 @@ public class log extends CEnchantment implements Listener {
         if (!(axe.getItemMeta() instanceof Damageable meta)) return;
         if (!meta.getPersistentDataContainer().has(this.id)) return; // не зачарованный топор
 
+        int level = meta.getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);
+
         event.setCancelled(true);
 
         Set<Block> visited = new HashSet<>();
@@ -50,7 +53,7 @@ public class log extends CEnchantment implements Listener {
         while (!queue.isEmpty()) {
             Block b = queue.poll();
             if (!LOGS.contains(b.getType()) || !visited.add(b)) continue;
-            if (visited.size() >= 200) break;
+            if (visited.size() >= 192 * level) break;
 
             for (BlockFace face : Arrays.asList(
                     BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH,
@@ -87,7 +90,9 @@ public class log extends CEnchantment implements Listener {
         }
 
         // Применяем урон топору
-        meta.setDamage(meta.getDamage() + cost);
+        if (!meta.isUnbreakable()) {
+            meta.setDamage(meta.getDamage() + cost);
+        }
         axe.setItemMeta(meta);
 
         // Ломаем собранные блоки

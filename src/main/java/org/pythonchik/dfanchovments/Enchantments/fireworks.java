@@ -16,20 +16,19 @@ import java.util.*;
 
 public class fireworks extends CEnchantment implements Listener {
 
-    DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
     @EventHandler
     private void HAHAH(ProjectileHitEvent event){
-        if (!(event.getEntity().getShooter() instanceof Player)) {
+        if (!(event.getEntity().getShooter() instanceof Player player)) {
             return;
         }
-        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null){
+        if (player.getInventory().getItemInMainHand().getItemMeta() == null){
             return;
         }
-        if ((event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin,"exploded"),PersistentDataType.BOOLEAN))){
+        if ((event.getEntity().getPersistentDataContainer().has(new NamespacedKey(DFanchovments.plugin,"exploded"), PersistentDataType.BOOLEAN))){
             return;
         }
-        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
-            if (Math.random() <= ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(id,PersistentDataType.INTEGER)*0.25){
+        if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id, PersistentDataType.INTEGER)) {
+            if (Math.random() <= player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(id, PersistentDataType.INTEGER, 0)*0.25){
                 final Collection<Entity> list = event.getEntity().getNearbyEntities(2,2,2);
                 for (final Entity entity : list)
                 {
@@ -38,8 +37,8 @@ public class fireworks extends CEnchantment implements Listener {
 
                     Damageable le = ((Damageable) entity);
                     event.getEntity().getWorld().createExplosion(event.getEntity().getLocation(), 0F);
-                    event.getEntity().getPersistentDataContainer().set(new NamespacedKey(plugin,"exploded"), PersistentDataType.BOOLEAN,true);
-                    le.damage(((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().get(id,PersistentDataType.INTEGER)*2);
+                    event.getEntity().getPersistentDataContainer().set(new NamespacedKey(DFanchovments.plugin,"exploded"), PersistentDataType.BOOLEAN,true);
+                    le.damage(player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(id, PersistentDataType.INTEGER, 0)*2);
                 }
             }
         }

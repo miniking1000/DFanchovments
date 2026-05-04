@@ -31,7 +31,7 @@ public class myolner extends CEnchantment implements Listener {
 
         ItemMeta meta = item.getItemMeta();
         if (meta == null || !meta.getPersistentDataContainer().has(this.id)) return;
-        int level = meta.getPersistentDataContainer().get(this.id, PersistentDataType.INTEGER);
+        int level = meta.getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);
         Entity target = event.getEntity();
         Location hitLocation = target.getLocation().clone();
         World world = hitLocation.getWorld();

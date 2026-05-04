@@ -87,6 +87,7 @@ public class Util {
         retu.add(Material.DIAMOND_HELMET);
         retu.add(Material.NETHERITE_HELMET);
         retu.add(Material.TURTLE_HELMET);
+        retu.add(Material.CARVED_PUMPKIN);
         return retu.stream()
                 .map(Material::name)
                 .toList();

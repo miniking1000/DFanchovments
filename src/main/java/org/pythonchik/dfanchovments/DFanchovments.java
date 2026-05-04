@@ -66,6 +66,12 @@ public final class DFanchovments extends JavaPlugin {
         new handover(     new NamespacedKey(plugin,"handover"));
         new phishing(     new NamespacedKey(plugin,"phishing"));
         new victor(       new NamespacedKey(plugin,"victor"));
+        new frut(         new NamespacedKey(plugin,"frut"));
+        new leave(        new NamespacedKey(plugin,"leave"));
+        new adblock(      new NamespacedKey(plugin,"adblock"));
+        new ebow(         new NamespacedKey(plugin,"ebow"));
+        new humanizer(    new NamespacedKey(plugin,"humanizer"));
+        new xxxxxxxxxx(   new NamespacedKey(plugin,"xxxxxxxxxx"));
 
         loadConfig();
 
@@ -127,8 +133,4 @@ public final class DFanchovments extends JavaPlugin {
         }
     }
 
-    public static boolean isEnchantment(CEnchantment enchantment, String key) {
-        return enchantment != null && enchantment.getId() != null
-                && enchantment.getId().getKey().equals(key);
-    }
 }
