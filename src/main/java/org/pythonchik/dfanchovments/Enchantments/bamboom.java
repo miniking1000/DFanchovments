@@ -30,7 +30,7 @@ public class bamboom extends CEnchantment implements Listener {
             ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
             assert meta != null;
             if (meta.getPersistentDataContainer().has(id)){
-                if (Math.random() <= meta.getPersistentDataContainer().get(id, PersistentDataType.INTEGER)*0.05) {
+                if (Math.random() <= meta.getPersistentDataContainer().get(id, PersistentDataType.INTEGER)*0.1) {
                     ((Player) event.getEntity().getShooter()).getLocation().getWorld().spawnParticle(Particle.SONIC_BOOM, event.getEntity().getLocation(), 1);
                     ((Arrow) event.getEntity()).setVelocity(event.getEntity().getVelocity().multiply(1 + (0.5 * meta.getPersistentDataContainer().get(id, PersistentDataType.INTEGER))));
                 }

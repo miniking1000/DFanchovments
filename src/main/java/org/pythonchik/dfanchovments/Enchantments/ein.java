@@ -3,6 +3,7 @@ package org.pythonchik.dfanchovments.Enchantments;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -44,7 +45,7 @@ public class ein extends CEnchantment implements Listener {
 
         if (level == null || level <= 0) return;
 
-        double chance = 0.025 * level; // 2.5% * level
+        double chance = 0.1 * level; // 2.5% * level
         if (Math.random() >= chance) return;
 
         double damage = event.getDamage();
@@ -55,6 +56,7 @@ public class ein extends CEnchantment implements Listener {
 
             target.setMetadata(EXTRA_HIT_META, new FixedMetadataValue(DFanchovments.plugin, true));
             target.damage(damage, player);
+            target.getWorld().spawnParticle(Particle.SWEEP_ATTACK, target.getLocation().add(0,2,0), 1);
         }, 11L);
     }
 

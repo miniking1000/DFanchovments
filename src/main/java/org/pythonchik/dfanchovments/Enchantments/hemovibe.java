@@ -2,6 +2,7 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -35,12 +36,12 @@ public class hemovibe extends CEnchantment implements Listener {
         if (level == null || level <= 0) return;
 
         // 2.5% chance per level
-        double chance = 0.025 * level;
+        double chance = 0.05 * level;
         if (Math.random() >= chance) return;
 
         double damageDealt = event.getFinalDamage();
 
-        // 1% of damage dealt
+        // 20% of damage dealt
         double healAmount = damageDealt * (0.04 * level);
 
         if (healAmount <= 0) return;
@@ -50,7 +51,7 @@ public class hemovibe extends CEnchantment implements Listener {
 
         double maxHealth = maxHealthAttr.getValue();
         double newHealth = Math.min(player.getHealth() + healAmount, maxHealth);
-
+        player.getWorld().spawnParticle(Particle.HEART, player.getLocation().add(0,1,0), 1);
         player.setHealth(newHealth);
     }
 

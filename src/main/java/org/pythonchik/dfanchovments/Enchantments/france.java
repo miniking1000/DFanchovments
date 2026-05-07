@@ -1,9 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -39,8 +36,8 @@ public class france extends CEnchantment implements Listener {
 
         if (level == null || level <= 0) return;
 
-        // 7% chance on shot
-        if (Math.random() >= 0.07 * level) return;
+        // 15% chance on shot
+        if (Math.random() >= 0.15 * level) return;
 
         arrow.getPersistentDataContainer().set(this.id,PersistentDataType.BYTE, (byte) 1);
     }
@@ -60,6 +57,8 @@ public class france extends CEnchantment implements Listener {
 
         Location loc = target.getLocation();
         World world = target.getWorld();
+
+        world.playSound(loc, Sound.ITEM_WOLF_ARMOR_DAMAGE, 1, 1);
 
         dropAndClear(world, loc, eq.getItemInMainHand(), () -> eq.setItemInMainHand(null));
         dropAndClear(world, loc, eq.getItemInOffHand(), () -> eq.setItemInOffHand(null));
