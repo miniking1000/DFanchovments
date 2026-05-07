@@ -49,7 +49,11 @@ public class Util {
                 .sorted(Comparator.comparing(ench -> ench.getName() == null ? ench.getId().getKey() : ench.getName()))
                 .forEach(ench -> {
                     int level = meta.getPersistentDataContainer().getOrDefault(ench.getId(), PersistentDataType.INTEGER, ench.getStartLevel());
-                    customLore.add(message.hex(ench.getName() + " " + Util.toRoman(level)));
+                    if (level == 1) {
+                        customLore.add(message.hex(ench.getName()));
+                    } else {
+                        customLore.add(message.hex(ench.getName() + " " + Util.toRoman(level)));
+                    }
                 });
 
         List<String> lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();

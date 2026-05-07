@@ -212,16 +212,11 @@ public class CEnchantment {
 
         if (meta == null) return book;
 
-        int finalLevel = Math.max(
-                this.getStartLevel(),
-                Math.min(level, this.getMaxLevel())
-        );
+        int finalLevel = Math.max(this.getStartLevel(), level);
 
         meta.getPersistentDataContainer().set(this.getId(), PersistentDataType.INTEGER, finalLevel);
         this.applyAttributeEnchantments(meta, finalLevel);
-
-        meta.setLore(List.of(DFanchovments.message.hex(this.getName() + " " + Util.toRoman(finalLevel))));
-
+        Util.updateCustomLore(meta);
         meta.setEnchantmentGlintOverride(true);
         book.setItemMeta(meta);
 

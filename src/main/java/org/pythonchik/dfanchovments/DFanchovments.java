@@ -72,6 +72,11 @@ public final class DFanchovments extends JavaPlugin {
         new ebow(         new NamespacedKey(plugin,"ebow"));
         new humanizer(    new NamespacedKey(plugin,"humanizer"));
         new xxxxxxxxxx(   new NamespacedKey(plugin,"xxxxxxxxxx"));
+        new ein(          new NamespacedKey(plugin,"ein"));
+        new oganesson(    new NamespacedKey(plugin,"oganesson"));
+        new hemovibe(     new NamespacedKey(plugin,"hemovibe"));
+        new france(       new NamespacedKey(plugin,"france"));
+
 
         loadConfig();
 
