@@ -9,6 +9,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
 
 import java.util.*;
 
@@ -39,12 +40,7 @@ public class dodge extends CEnchantment implements Listener {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         //chestplates
-        retu.add("LEATHER_CHESTPLATE");
-        retu.add("CHAINMAIL_CHESTPLATE");
-        retu.add("IRON_CHESTPLATE");
-        retu.add("DIAMOND_CHESTPLATE");
-        retu.add("GOLDEN_CHESTPLATE");
-        retu.add("NETHERITE_CHESTPLATE");
+        retu.addAll(Util.chestplates());
         return retu;
     }
     @Override
