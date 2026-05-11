@@ -2,8 +2,11 @@ package org.pythonchik.dfanchovments;
 
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
@@ -17,8 +20,10 @@ import java.util.regex.Pattern;
 public class anvil implements Listener {
     Message message = DFanchovments.getMessage();
     private static final Pattern COLOR_PATTERN = Pattern.compile("(?i)(#[0-9a-f]{6}|&[0-9a-fk-or]|§[0-9a-fk-or])");
+    private final NamespacedKey CUSTOM_ANVIL_RESULT =
+            new NamespacedKey(DFanchovments.plugin, "custom_anvil_result");
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void AnviListener(PrepareAnvilEvent event) {
         AnvilInventory anvil = event.getInventory();
         ItemStack left = anvil.getItem(0);
@@ -99,9 +104,48 @@ public class anvil implements Listener {
         Util.updateCustomLore(resultMeta);
 
         if (changed) {
+            resultMeta.getPersistentDataContainer().set(
+                    CUSTOM_ANVIL_RESULT,
+                    PersistentDataType.BYTE,
+                    (byte) 1
+            );
+
             result.setItemMeta(resultMeta);
             event.getView().setRepairCost(30);
             event.setResult(result);
+        }
+    }
+
+    @EventHandler
+    public void onAnvilTake(InventoryClickEvent event) {
+        if (!(event.getInventory() instanceof AnvilInventory anvil)) return;
+        if (event.getRawSlot() != 2) return; // result slot
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+        ItemStack result = event.getCurrentItem();
+        if (result == null || !result.hasItemMeta()) return;
+
+        ItemMeta meta = result.getItemMeta();
+        if (meta == null || !meta.getPersistentDataContainer().has(CUSTOM_ANVIL_RESULT, PersistentDataType.BYTE)) {
+            return;
+        }
+
+        ItemStack right = anvil.getItem(1);
+        if (right == null || right.getType().isAir()) return;
+
+        if (player.getGameMode().equals(GameMode.CREATIVE) || XP.getTotalExperience(player) >= XP.getTotalXpForLevel(30)) {
+            // if one of those is not true - craft fails
+
+            meta.getPersistentDataContainer().remove(CUSTOM_ANVIL_RESULT);
+            result.setItemMeta(meta);
+
+            Bukkit.getScheduler().runTaskLater(DFanchovments.plugin, () -> {
+                if (right.getAmount() <= 1) {
+                    anvil.setItem(1, null);
+                } else {
+                    right.setAmount(right.getAmount() - 1);
+                    anvil.setItem(1, right);
+                }
+            }, 1);
         }
     }
 
@@ -130,7 +174,6 @@ public class anvil implements Listener {
             }
         }
     }
-
 
     private void applyRename(PrepareAnvilEvent event, ItemMeta meta) {
         String rename = event.getView().getRenameText();

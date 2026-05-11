@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -15,6 +16,7 @@ import org.pythonchik.dfanchovments.Util;
 import java.util.*;
 
 public class potioness extends CEnchantment implements Listener {
+
     @EventHandler
     public void onHit(EntityDamageByEntityEvent event){
         if (!(event.getEntity() instanceof Player player)){
@@ -23,6 +25,11 @@ public class potioness extends CEnchantment implements Listener {
         if (!(event.getDamager() instanceof LivingEntity entity)){
             return;
         }
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
+                && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
+            return;
+        }
+
         int lvl = 0;
         if (player.getInventory().getHelmet() != null){
             if (player.getInventory().getHelmet().getItemMeta() != null){

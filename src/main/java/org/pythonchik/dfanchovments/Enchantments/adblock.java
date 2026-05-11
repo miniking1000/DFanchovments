@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -34,6 +35,10 @@ public class adblock extends CEnchantment implements Listener {
         int level = meta.getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);
 
         if (!(event.getDamager() instanceof LivingEntity attacker)) return;
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
+                && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
+            return;
+        }
 
         Vector knockback = attacker
                 .getLocation()

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
@@ -38,6 +39,10 @@ public class ein extends CEnchantment implements Listener {
 
         if (target.hasMetadata(EXTRA_HIT_META)) {
             target.removeMetadata(EXTRA_HIT_META, DFanchovments.plugin);
+            return;
+        }
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
+                && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
             return;
         }
 

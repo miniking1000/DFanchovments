@@ -3,12 +3,12 @@ package org.pythonchik.dfanchovments.Enchantments;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -29,6 +29,10 @@ public class stunning extends CEnchantment implements Listener {
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getType() != Material.MACE) return;
         if (player.getFallDistance() <= 5.0f) return;
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
+                && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
+            return;
+        }
 
         ItemMeta meta = item.getItemMeta();
         if (meta == null || !meta.getPersistentDataContainer().has(this.id)) return;

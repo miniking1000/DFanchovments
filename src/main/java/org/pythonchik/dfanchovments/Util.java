@@ -74,7 +74,7 @@ public class Util {
         for (CEnchantment ench : DFanchovments.CEnchantments) {
             String enchantName = ench.getName() == null ? ench.getId().getKey() : ench.getName();
             String strippedName = ChatColor.stripColor(message.hex(enchantName));
-            if (strippedName != null && strippedLore.startsWith(strippedName + " ")) {
+            if (strippedName != null && strippedLore.startsWith(strippedName)) {
                 return true;
             }
         }

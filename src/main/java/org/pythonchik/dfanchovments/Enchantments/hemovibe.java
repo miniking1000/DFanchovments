@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
@@ -30,6 +31,11 @@ public class hemovibe extends CEnchantment implements Listener {
 
         ItemStack item = player.getInventory().getItemInMainHand();
         if (item.getItemMeta() == null) return;
+
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
+                && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
+            return;
+        }
 
         Integer level = item.getItemMeta().getPersistentDataContainer().get(this.id, PersistentDataType.INTEGER);
 

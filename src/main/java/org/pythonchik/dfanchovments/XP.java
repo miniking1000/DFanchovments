@@ -8,6 +8,16 @@ public class XP {
 
     public XP(){}
 
+    public static int getTotalXpForLevel(int level) {
+        if (level <= 15) {
+            return level * level + 6 * level;
+        } else if (level <= 30) {
+            return (int) (2.5 * level * level - 40.5 * level + 360);
+        } else {
+            return (int) (4.5 * level * level - 162.5 * level + 2220);
+        }
+    }
+
     public static int getTotalExperience(Player player) {
         int experience = 0;
         int level = player.getLevel();
