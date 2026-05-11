@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
@@ -19,14 +18,10 @@ public class dodge extends CEnchantment implements Listener {
         if(!(event.getEntity() instanceof Player player)){
             return;
         }
-        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
-                && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
-            return;
-        }
         ItemStack chestplate = player.getInventory().getChestplate();
         if(chestplate != null && chestplate.getItemMeta() != null && chestplate.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) {
             int level = chestplate.getItemMeta().getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);
-            if (Math.random() < (0.10 + (0.5 * level))) {
+            if (Math.random() < (0.10 + (0.05 * level))) {
                 event.setDamage(0);
             }
         }
