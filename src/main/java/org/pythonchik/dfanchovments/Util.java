@@ -49,7 +49,7 @@ public class Util {
                 .sorted(Comparator.comparing(ench -> ench.getName() == null ? ench.getId().getKey() : ench.getName()))
                 .forEach(ench -> {
                     int level = meta.getPersistentDataContainer().getOrDefault(ench.getId(), PersistentDataType.INTEGER, ench.getStartLevel());
-                    if (level == 1) {
+                    if (level == 1 && ench.getMaxLevel() == 1) {
                         customLore.add(message.hex(ench.getName()));
                     } else {
                         customLore.add(message.hex(ench.getName() + " " + Util.toRoman(level)));

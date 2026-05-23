@@ -4,8 +4,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
@@ -16,26 +20,30 @@ public class steveoshot extends CEnchantment implements Listener {
         super(id);
     }
 
-    @EventHandler
-    public void onCrossShoot(ProjectileLaunchEvent event){
-        if (!(event.getEntity().getShooter() instanceof Player)){
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onCrossShoot(ProjectileLaunchEvent event) {
+        Projectile projectile = event.getEntity();
+
+        if (!(projectile.getShooter() instanceof Player player)) {
             return;
         }
-        Player player = (Player) event.getEntity().getShooter();
-        if (player.getInventory().getItemInMainHand().getItemMeta() != null){
-            if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
-                Entity guy = sendFlying(player.getPassengers(),null);
-                if (guy != null) {
-                    guy.getVehicle().eject();
-                    guy.setVelocity(event.getEntity().getVelocity().multiply(2));
-                    Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
-                }
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        if (mainHand.getType().isAir() || !mainHand.hasItemMeta()) {
+            return;
+        }
+        ItemMeta meta = mainHand.getItemMeta();
+        if (meta.getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) {
+            Entity guy = sendFlying(player.getPassengers(), null);
+            if (guy != null && guy.getVehicle() != null) {
+                guy.getVehicle().eject();
+                guy.setVelocity(projectile.getVelocity().multiply(2));
+                Bukkit.getScheduler().runTask(DFanchovments.plugin, projectile::remove);
             }
         }
     }
 
     private Entity sendFlying(List<Entity> list, Entity result) {
-        for (Entity entity : list){
+        for (Entity entity : list) {
             if (entity instanceof Player) {
                 return entity;
             } else {

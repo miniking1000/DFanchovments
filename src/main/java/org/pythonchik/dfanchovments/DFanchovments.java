@@ -76,6 +76,15 @@ public final class DFanchovments extends JavaPlugin {
         new oganesson(    new NamespacedKey(plugin,"oganesson"));
         new hemovibe(     new NamespacedKey(plugin,"hemovibe"));
         new france(       new NamespacedKey(plugin,"france"));
+        new frostbite(    new NamespacedKey(plugin,"frostbite"));
+        new gorgon(       new NamespacedKey(plugin,"gorgon"));
+        new harvester(    new NamespacedKey(plugin,"harvester"));
+        new hawkeye(      new NamespacedKey(plugin,"hawkeye"));
+        new shotgun(      new NamespacedKey(plugin,"shotgun"));
+        new smelting(     new NamespacedKey(plugin,"smelting"));
+        new spider(       new NamespacedKey(plugin,"spider"));
+        new spring(       new NamespacedKey(plugin,"spring"));
+        new updraft(      new NamespacedKey(plugin,"updraft"));
 
 
         loadConfig();

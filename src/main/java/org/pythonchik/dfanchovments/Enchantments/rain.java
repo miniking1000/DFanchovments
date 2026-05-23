@@ -1,51 +1,131 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class rain extends CEnchantment implements Listener {
 
-    DFanchovments plugin = (DFanchovments) Bukkit.getPluginManager().getPlugin("DFanchovments");
+    private final NamespacedKey rainedKey;
+    private final NamespacedKey bypassKey;
+
     public rain(NamespacedKey id) {
         super(id);
+        this.rainedKey = new NamespacedKey(DFanchovments.plugin, id.getKey() + "_is_rain");
+        this.bypassKey = new NamespacedKey(DFanchovments.plugin, id.getKey() + "_bypass");
     }
 
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onArrowHit(ProjectileHitEvent event) {
+        // Проверяем, что попали именно в сущность, а не в блок
+        if (event.getHitEntity() == null) return;
 
-    @EventHandler
-    public void onArrowHit(ProjectileHitEvent event){
-        if (event.getHitEntity() == null) {
-            return;
+        if (!(event.getEntity() instanceof AbstractArrow arrow)) return;
+        if (!(arrow.getShooter() instanceof Player player)) return;
+
+        // Предотвращаем рекурсию: если это стрела, упавшая с неба, она не может вызвать новый дождь
+        if (arrow.getPersistentDataContainer().has(rainedKey, PersistentDataType.BYTE)) return;
+
+        ItemStack bow = null;
+
+        // Быстрая проверка предмета в основной руке
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+        if (!mainHand.getType().isAir() && mainHand.hasItemMeta()) {
+            if (mainHand.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) {
+                bow = mainHand;
+            }
         }
-        if (!(event.getEntity().getShooter() instanceof Player)) {
-            return;
-        }
-        if (((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta() == null) {
-            return;
-        }
-        if ((event.getEntity().getPersistentDataContainer().has(new NamespacedKey(plugin,"rained"),PersistentDataType.BOOLEAN))) {
-            return;
-        }
-        PersistentDataContainer container = ((Player) event.getEntity().getShooter()).getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer();
-        if (container.has(id)) {
-            if (Math.random() <= container.get(id,PersistentDataType.INTEGER)*0.06) {
-                EntityType arrow = EntityType.ARROW;
-                for (int i=0;i<container.get(id,PersistentDataType.INTEGER);i++) {
-                    event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(Math.random()*1-0.5,30-4*container.get(id,PersistentDataType.INTEGER),Math.random()*1-0.5),arrow).setVelocity(new Vector(0,-2.5*container.get(id,PersistentDataType.INTEGER),0));
+
+        // Быстрая проверка предмета в левой руке
+        if (bow == null) {
+            ItemStack offHand = player.getInventory().getItemInOffHand();
+            if (!offHand.getType().isAir() && offHand.hasItemMeta()) {
+                if (offHand.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) {
+                    bow = offHand;
                 }
-                event.getHitEntity().getLocation().getWorld().spawnEntity(event.getHitEntity().getLocation().add(0,5+5*container.get(id,PersistentDataType.INTEGER),0),arrow);
-                event.getEntity().getPersistentDataContainer().set(new NamespacedKey(plugin,"rained"), PersistentDataType.BOOLEAN,true);
+            }
+        }
+
+        if (bow == null) return;
+
+        // Получаем уровень ровно один раз
+        int level = bow.getItemMeta().getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 1);
+
+        // Шанс: 6% за каждый уровень
+        double chance = level * 0.06;
+
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+
+        if (random.nextDouble() <= chance) {
+            arrow.getPersistentDataContainer().set(rainedKey, PersistentDataType.BYTE, (byte) 1);
+
+            Location hitLoc = event.getHitEntity().getLocation();
+
+            for (int i = 0; i < level; i++) {
+                Location spawnLoc = hitLoc.clone().add(
+                        random.nextDouble() - 0.5,
+                        30 - (4.0 * level),
+                        random.nextDouble() - 0.5
+                );
+
+                AbstractArrow rainArrow = (AbstractArrow) hitLoc.getWorld().spawnEntity(spawnLoc, EntityType.ARROW);
+                rainArrow.setShooter(player);
+                rainArrow.setVelocity(new Vector(0, -2.5 * level, 0));
+
+                rainArrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+                rainArrow.getPersistentDataContainer().set(rainedKey, PersistentDataType.BYTE, (byte) 1);
+            }
+            Location extraSpawn = hitLoc.clone().add(0, 5.0 + (5.0 * level), 0);
+            AbstractArrow extraArrow = (AbstractArrow) hitLoc.getWorld().spawnEntity(extraSpawn, EntityType.ARROW);
+            extraArrow.setShooter(player);
+            extraArrow.setPickupStatus(AbstractArrow.PickupStatus.DISALLOWED);
+            extraArrow.getPersistentDataContainer().set(rainedKey, PersistentDataType.BYTE, (byte) 1);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onRainArrowDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof AbstractArrow arrow)) return;
+        if (!(event.getEntity() instanceof LivingEntity victim)) return;
+
+        if (arrow.getPersistentDataContainer().has(rainedKey, PersistentDataType.BYTE)) {
+            if (!victim.getPersistentDataContainer().has(bypassKey, PersistentDataType.INTEGER)) {
+                int max = victim.getMaximumNoDamageTicks();
+                victim.getPersistentDataContainer().set(bypassKey, PersistentDataType.INTEGER, max);
+                victim.setMaximumNoDamageTicks(0);
+                victim.setNoDamageTicks(0);
+
+                Bukkit.getScheduler().runTask(DFanchovments.plugin, () -> {
+                    if (victim.isValid()) {
+                        Integer orig = victim.getPersistentDataContainer().get(bypassKey, PersistentDataType.INTEGER);
+                        if (orig != null) {
+                            victim.setMaximumNoDamageTicks(orig);
+                            victim.getPersistentDataContainer().remove(bypassKey);
+                        }
+                    }
+                });
+            } else {
+                victim.setNoDamageTicks(0);
             }
         }
     }
@@ -57,16 +137,18 @@ public class rain extends CEnchantment implements Listener {
         retu.add("BOW");
         return retu;
     }
+
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Шквал Стрел");
         defaults.put("biomes", List.of("WOODED_BADLANDS"));
-        defaults.put("chance", 1);
-        defaults.put("luck", 2);
+        defaults.put("chance", 1.0);
+        defaults.put("luck", 2.0);
         defaults.put("maxlvl", 5);
         return defaults;
     }
+
     @Override
     public NamespacedKey getId(){
         return this.id;
