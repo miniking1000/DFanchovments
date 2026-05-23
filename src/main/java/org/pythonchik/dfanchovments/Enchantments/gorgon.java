@@ -65,8 +65,6 @@ public class gorgon extends CEnchantment implements Listener {
             attacker.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, durationTicks, 10, false, false, true));
             attacker.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, durationTicks, 10, false, false, true));
 
-            attacker.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, durationTicks, 128, false, false, true));
-
             player.getWorld().playSound(attacker.getLocation(), Sound.BLOCK_DEEPSLATE_BREAK, 1.0f, 0.5f);
             player.getWorld().spawnParticle(Particle.ASH, attacker.getLocation().add(0, 1, 0), 30, 0.5, 0.5, 0.5, 0);
         }
