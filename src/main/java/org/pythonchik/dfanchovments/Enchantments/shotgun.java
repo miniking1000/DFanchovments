@@ -16,7 +16,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -218,6 +220,18 @@ public class shotgun extends CEnchantment implements Listener {
                 });
             } else {
                 victim.setNoDamageTicks(0);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onResp(PlayerRespawnEvent event) {
+        if (event.getPlayer().getPersistentDataContainer().has(bypassKey, PersistentDataType.INTEGER)) {
+            Player player = event.getPlayer();
+            Integer orig = player.getPersistentDataContainer().get(bypassKey, PersistentDataType.INTEGER);
+            if (orig != null) {
+                player.setMaximumNoDamageTicks(orig);
+                player.getPersistentDataContainer().remove(bypassKey);
             }
         }
     }
