@@ -215,6 +215,9 @@ public class CEnchantment {
         int finalLevel = Math.max(this.getStartLevel(), level);
 
         meta.getPersistentDataContainer().set(this.getId(), PersistentDataType.INTEGER, finalLevel);
+        org.bukkit.inventory.meta.components.CustomModelDataComponent cmd = meta.getCustomModelDataComponent();
+        cmd.setStrings(List.of(this.getId().getKey()));
+        meta.setCustomModelDataComponent(cmd);
         this.applyAttributeEnchantments(meta, finalLevel);
         Util.updateCustomLore(meta);
         meta.setEnchantmentGlintOverride(true);
