@@ -2,7 +2,7 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -12,13 +12,17 @@ import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 import org.pythonchik.dfanchovments.Util;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class soulbound extends CEnchantment implements Listener {
     public soulbound(NamespacedKey id) {
         super(id);
     }
-    private final static Map<Player, List<ItemStack>> itemsToKeep = new HashMap<Player, List<ItemStack>>();
+    private final static Map<UUID, List<ItemStack>> itemsToKeep = new HashMap<UUID, List<ItemStack>>();
+    private final File returnableItemsFile = new File(DFanchovments.plugin.getDataFolder(), "soulbound_items.yml");
+
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent e) {
         List<ItemStack> soulbound = new ArrayList<ItemStack>();
@@ -28,13 +32,13 @@ public class soulbound extends CEnchantment implements Listener {
             }
         }
         e.getDrops().removeAll(soulbound);
-        itemsToKeep.put(e.getEntity(), soulbound);
+        itemsToKeep.put(e.getEntity().getUniqueId(), soulbound);
     }
     @EventHandler
     public void onPlayerRes(PlayerRespawnEvent e){
-        if (itemsToKeep.containsKey(e.getPlayer())) {
-            for (ItemStack stack : itemsToKeep.get(e.getPlayer())) e.getPlayer().getInventory().addItem(stack);
-            itemsToKeep.remove(e.getPlayer());
+        if (itemsToKeep.containsKey(e.getPlayer().getUniqueId())) {
+            for (ItemStack stack : itemsToKeep.get(e.getPlayer().getUniqueId())) e.getPlayer().getInventory().addItem(stack);
+            itemsToKeep.remove(e.getPlayer().getUniqueId());
         }
     }
     @Override
@@ -62,10 +66,73 @@ public class soulbound extends CEnchantment implements Listener {
 
     @Override
     public void onDisable() {
-        if (!itemsToKeep.isEmpty()) {
-            DFanchovments.plugin.getLogger().warning("Soulbound class contains some items that will NOT be returned! Here is raw map:");
-            DFanchovments.plugin.getLogger().info(itemsToKeep.toString());
+        if (itemsToKeep.isEmpty()) {
+            if (returnableItemsFile.exists()) {
+                returnableItemsFile.delete();
+            }
+            return;
         }
+
+        YamlConfiguration config = new YamlConfiguration();
+
+        int playerIndex = 0;
+
+        for (Map.Entry<UUID, List<ItemStack>> entry : itemsToKeep.entrySet()) {
+            UUID player = entry.getKey();
+            List<ItemStack> items = entry.getValue();
+
+            if (items == null || items.isEmpty()) {
+                continue;
+            }
+
+            config.set(player + ".items", items);
+
+            playerIndex++;
+        }
+
+        try {
+            config.save(returnableItemsFile);
+            DFanchovments.plugin.getLogger().info(
+                    "Saved " + playerIndex + " players with soulbound items to " + returnableItemsFile.getName()
+            );
+        } catch (IOException e) {
+            DFanchovments.plugin.getLogger().severe("Failed to save soulbound items!");
+        }
+    }
+
+    @Override
+    public void onEnable() {
+        if (!returnableItemsFile.exists()) {
+            return;
+        }
+
+        YamlConfiguration config = YamlConfiguration.loadConfiguration(returnableItemsFile);
+
+        for (String uuidString : config.getKeys(false)) {
+            UUID uuid;
+
+            try {
+                uuid = UUID.fromString(uuidString);
+            } catch (IllegalArgumentException e) {
+                DFanchovments.plugin.getLogger().warning("Invalid UUID in returnable items file: " + uuidString);
+                continue;
+            }
+
+            List<?> rawItems = config.getList(uuidString + ".items");
+            if (rawItems == null || rawItems.isEmpty()) {
+                continue;
+            }
+            List<ItemStack> items = new ArrayList<>();
+            for (Object obj : rawItems) {
+                if (obj instanceof ItemStack item && item.getType() != Material.AIR) {
+                    items.add(item);
+                }
+            }
+            itemsToKeep.put(uuid, items);
+        }
+
+        DFanchovments.plugin.getLogger().info("Loaded soulbound items from " + returnableItemsFile.getName());
+        returnableItemsFile.delete();
     }
 
     @Override

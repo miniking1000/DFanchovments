@@ -97,6 +97,10 @@ public final class DFanchovments extends JavaPlugin {
 
         getCommand("dfchants").setExecutor(new dfchants(this));
         getCommand("dfchants").setTabCompleter(new dfchants(this));
+
+        for (CEnchantment ench : CEnchantments) {
+            ench.onEnable();
+        }
     }
 
     @Override

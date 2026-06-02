@@ -1,22 +1,19 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class spider extends CEnchantment {
+    private static final long CACHE_TICKS = 20L;
+    private final Map<UUID, Boolean> armorCache = new HashMap<>();
 
     private static final Vector[] CHECKS = {
             new Vector(0.45, 0, 0), new Vector(-0.45, 0, 0),
@@ -25,10 +22,13 @@ public class spider extends CEnchantment {
 
     public spider(NamespacedKey id) {
         super(id);
+        Bukkit.getScheduler().runTaskTimer(DFanchovments.plugin, armorCache::clear, CACHE_TICKS, CACHE_TICKS);
 
         // ЕДИНСТВЕННЫЙ ТАЙМЕР (1 тик) - Логика инвертирована для нулевой нагрузки
         Bukkit.getScheduler().runTaskTimer(DFanchovments.plugin, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
+                if (!hasFancyBoots(player)) continue;
+                if (player.getGameMode() == GameMode.SPECTATOR) continue;
 
                 // 1. ПРОВЕРКА ФИЗИКИ (Сверхбыстро, выполняется без обращения к предметам)
                 if (player.isOnGround() || player.isFlying() || player.isGliding()) continue;
@@ -62,11 +62,6 @@ public class spider extends CEnchantment {
                 // Нагрузка здесь равна 0.00%, сервер даже не смотрит в инвентарь игрока.
                 if (!chestWall && !legWall) continue;
 
-                // 2. ПРОВЕРКА ПРЕДМЕТОВ (Сработает ТОЛЬКО если игрок физически трется о стену)
-                ItemStack boots = player.getInventory().getBoots();
-                if (boots == null || !boots.hasItemMeta()) continue;
-                if (!boots.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) continue;
-
                 // 3. ФИЗИКА КАРАБКАНЬЯ (Игрок коснулся стены и у него есть ботинки)
                 Vector vel = player.getVelocity();
                 if (chestWall) {
@@ -84,6 +79,27 @@ public class spider extends CEnchantment {
                 }
             }
         }, 0L, 1L);
+    }
+
+    private boolean hasFancyBoots(Player player) {
+        UUID uuid = player.getUniqueId();
+        if (armorCache.containsKey(uuid)) {
+            return armorCache.get(uuid);
+        } else {
+            boolean res = hasFancyBootsRaw(player);
+            armorCache.put(player.getUniqueId(), res);
+            return res;
+        }
+    }
+
+    private boolean hasFancyBootsRaw(Player player) {
+        ItemStack boots = player.getInventory().getBoots();
+        if (boots == null || boots.getType().isAir()) return false;
+
+        ItemMeta meta = boots.getItemMeta();
+        if (meta == null) return false;
+
+        return meta.getPersistentDataContainer().has(id);
     }
 
     @Override

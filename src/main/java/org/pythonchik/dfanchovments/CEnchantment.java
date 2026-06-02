@@ -115,7 +115,9 @@ public class CEnchantment {
     public void onDisable() {
         // intentionally empty
     }
-
+    public void onEnable() {
+        // intentionally empty
+    }
     public record EnchantmentAttribute(Attribute attribute,
                                        double amountPerLevel,
                                        AttributeModifier.Operation operation,
