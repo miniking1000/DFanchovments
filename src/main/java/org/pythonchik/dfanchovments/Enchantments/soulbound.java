@@ -51,6 +51,7 @@ public class soulbound extends CEnchantment implements Listener {
         retu.add(Material.MACE.name());
         retu.add(Material.TRIDENT.name());
         retu.add(Material.TURTLE_HELMET.name());
+        retu.add(Material.FISHING_ROD.name());
 
         retu.addAll(Util.swords());
         retu.addAll(Util.spears());
