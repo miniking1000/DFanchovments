@@ -9,10 +9,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.DFanchovments;
 
 import java.util.*;
 
@@ -70,7 +70,11 @@ public class phishing extends CEnchantment implements Listener {
 
         spawned.setPickupDelay(caughtItem.getPickupDelay());
         spawned.setOwner(caughtItem.getOwner());
-        caught.addPassenger(spawned);
+        Bukkit.getScheduler().runTaskLater(DFanchovments.plugin, () -> {
+            if (caught.isValid() && spawned.isValid()) {
+                caught.addPassenger(spawned);
+            }
+        }, 1);
     }
 
     @Override
