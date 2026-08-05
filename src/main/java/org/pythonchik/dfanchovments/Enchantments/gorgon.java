@@ -14,6 +14,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class gorgon extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add("SHIELD");
@@ -86,11 +87,16 @@ public class gorgon extends CEnchantment implements Listener {
         defaults.put("chance", 0.02);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.LEGENDARY.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

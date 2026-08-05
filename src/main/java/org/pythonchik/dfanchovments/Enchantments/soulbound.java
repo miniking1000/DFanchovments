@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 import org.pythonchik.dfanchovments.Util;
@@ -20,6 +21,7 @@ public class soulbound extends CEnchantment implements Listener {
     public soulbound(NamespacedKey id) {
         super(id);
     }
+
     private final static Map<UUID, List<ItemStack>> itemsToKeep = new HashMap<UUID, List<ItemStack>>();
     private final File returnableItemsFile = new File(DFanchovments.plugin.getDataFolder(), "soulbound_items.yml");
 
@@ -34,13 +36,16 @@ public class soulbound extends CEnchantment implements Listener {
         e.getDrops().removeAll(soulbound);
         itemsToKeep.put(e.getEntity().getUniqueId(), soulbound);
     }
+
     @EventHandler
-    public void onPlayerRes(PlayerRespawnEvent e){
+    public void onPlayerRes(PlayerRespawnEvent e) {
         if (itemsToKeep.containsKey(e.getPlayer().getUniqueId())) {
-            for (ItemStack stack : itemsToKeep.get(e.getPlayer().getUniqueId())) e.getPlayer().getInventory().addItem(stack);
+            for (ItemStack stack : itemsToKeep.get(e.getPlayer().getUniqueId()))
+                e.getPlayer().getInventory().addItem(stack);
             itemsToKeep.remove(e.getPlayer().getUniqueId());
         }
     }
+
     @Override
     public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
@@ -144,6 +149,11 @@ public class soulbound extends CEnchantment implements Listener {
         defaults.put("chance", 0.55);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.EPIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 }

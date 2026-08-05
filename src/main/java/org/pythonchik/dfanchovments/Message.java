@@ -1,4 +1,5 @@
 package org.pythonchik.dfanchovments;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -7,13 +8,21 @@ import java.util.regex.Pattern;
 
 public class Message {
 
-    public Message() {}
-    public void send(CommandSender sender,String message) {
+    public Message() {
+    }
+
+    public void send(CommandSender sender, String message) {
         sender.sendMessage(recreator(message));
     }
+
+    public void sendNoPrefix(CommandSender sender, String message) {
+        sender.sendMessage(hex(message));
+    }
+
     public String recreator(String message) {
         return hexPerfix(message);
     }
+
     public String hex(String message) {
         Pattern pattern = Pattern.compile("(#[a-fA-F0-9]{6})");
         Matcher matcher = pattern.matcher(message);
@@ -31,7 +40,8 @@ public class Message {
         }
         return ChatColor.translateAlternateColorCodes('&', message).replace('&', '§');
     }
-    public String hexPerfix(String message){
+
+    public String hexPerfix(String message) {
         return hex("&7[&6Уникальные чары&7]&r " + message);
     }
 }

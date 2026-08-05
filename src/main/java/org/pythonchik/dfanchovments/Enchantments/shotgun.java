@@ -1,36 +1,22 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Particle;
-import org.bukkit.Sound;
-import org.bukkit.entity.AbstractArrow;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.*;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class shotgun extends CEnchantment implements Listener {
@@ -237,7 +223,7 @@ public class shotgun extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add(Material.CROSSBOW.name());
@@ -252,11 +238,16 @@ public class shotgun extends CEnchantment implements Listener {
         defaults.put("chance", 0.5);
         defaults.put("luck", 0.1);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.MYTHIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

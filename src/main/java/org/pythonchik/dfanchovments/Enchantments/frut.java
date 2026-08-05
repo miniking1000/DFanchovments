@@ -1,15 +1,18 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -17,18 +20,21 @@ import java.util.*;
 
 public class frut extends CEnchantment implements Listener {
     private static final Random RANDOM = new Random();
+
     public frut(NamespacedKey id) {
         super(id);
     }
+
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.addAll(Util.chestplates());
         return retu;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
@@ -53,6 +59,11 @@ public class frut extends CEnchantment implements Listener {
         defaults.put("chance", 999);
         defaults.put("luck", 3);
         defaults.put("maxlvl", 3);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.RARE.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 

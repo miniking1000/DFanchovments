@@ -1,6 +1,9 @@
 package org.pythonchik.dfanchovments;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +17,9 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class anvil implements Listener {
@@ -64,7 +69,7 @@ public class anvil implements Listener {
                 finalLevel = Math.clamp(finalLevel, incoming.getStartLevel(), incoming.getMaxLevel());
 
                 boolean canEnchant = isVanillaApplicableTo(incoming, result);
-                for (Map.Entry<Enchantment, Integer> originalEnchantment: enchantments.entrySet()) {
+                for (Map.Entry<Enchantment, Integer> originalEnchantment : enchantments.entrySet()) {
                     if (originalEnchantment.getKey() != incoming && (incoming.conflictsWith(originalEnchantment.getKey()) || originalEnchantment.getKey().conflictsWith(incoming))) {
                         canEnchant = false;
                         break;
@@ -213,7 +218,7 @@ public class anvil implements Listener {
         Material material = result.getType();
         if (material == Material.ENCHANTED_BOOK) {
             return true;
-        } 
+        }
         return enchantment.canEnchantItem(result);
     }
 

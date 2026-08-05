@@ -11,6 +11,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
@@ -78,14 +79,15 @@ public class xxxxxxxxxx extends CEnchantment implements Listener {
 
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add(Material.GRAY_STAINED_GLASS_PANE.name());
         return retu;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
@@ -97,6 +99,11 @@ public class xxxxxxxxxx extends CEnchantment implements Listener {
         defaults.put("chance", 0.005);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.LEGENDARY.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 }

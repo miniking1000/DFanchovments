@@ -16,6 +16,7 @@ import java.util.*;
 
 public class CEnchantment {
     protected NamespacedKey id;
+
     protected CEnchantment(NamespacedKey id) {
         this.id = id;
         DFanchovments.CEnchantments.add(this);
@@ -23,14 +24,17 @@ public class CEnchantment {
             DFanchovments.plugin.getServer().getPluginManager().registerEvents(listener, DFanchovments.plugin);
         }
     }
+
     public String getName() {
         return DFanchovments.config.getString(this.getId().getKey() + ".name");
     }
+
     public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add(Material.ENCHANTED_BOOK.name());
         return retu;
     }
+
     public List<String> getConflictKeys() {
         return DFanchovments.config.getStringList(this.getId().getKey() + ".conflicts").stream()
                 .map(conflict -> {
@@ -39,20 +43,25 @@ public class CEnchantment {
                 })
                 .toList();
     }
+
     public List<NamespacedKey> getConflicts() {
         return getConflictKeys().stream()
                 .map(key -> new NamespacedKey(DFanchovments.plugin, key))
                 .toList();
     }
+
     public boolean conflictsWith(CEnchantment cEnchantment) {
         return cEnchantment != null && this.conflictsWith(cEnchantment.getId());
     }
+
     public boolean conflictsWith(NamespacedKey namespacedKey) {
         return namespacedKey != null && this.conflictsWith(namespacedKey.getKey());
     }
+
     public boolean conflictsWith(String key) {
         return key != null && this.getConflictKeys().contains(key);
     }
+
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7" + this.getId().getKey()); // string
@@ -63,27 +72,39 @@ public class CEnchantment {
         defaults.put("conflicts", List.of()); // list<String> (id of enchant, not namespaced key)
         return defaults;
     }
+
     public NamespacedKey getId() {
         return this.id;
     }
+
     public int getMaxLevel() {
         return DFanchovments.config.getInt(this.getId().getKey() + ".maxlvl");
     }
+
     public int getStartLevel() {
         return 1;
     }
+
     public double getChance() {
         return DFanchovments.config.getDouble(this.getId().getKey() + ".chance");
     }
+
     public double getLuck() {
         return DFanchovments.config.getDouble(this.getId().getKey() + ".luck");
     }
+
     public double getDropChance(double luck) {
-        return this.getChance() + this.getLuck()*luck;
+        return this.getChance() + this.getLuck() * luck;
     }
+
     public boolean roll(double luck) {
         return this.getDropChance(luck) > Math.random() * 100;
     }
+
+    public int getWeight(Bosses.Rarity rarity) {
+        return DFanchovments.config.getInt(this.getId().getKey() + ".bosses." + rarity.getName(), 0);
+    }
+
     public List<NamespacedKey> getBiomes() {
         List<String> biomes = DFanchovments.config.getStringList(this.getId().getKey() + ".biomes");
         if (biomes.isEmpty()) {
@@ -106,22 +127,28 @@ public class CEnchantment {
                 .filter(Objects::nonNull)
                 .toList();
     }
+
     public boolean isInBiome(Biome biome) {
         return this.getBiomes().contains(biome.getKey());
     }
+
     public boolean isInBiome(NamespacedKey biome) {
         return this.getBiomes().contains(biome);
     }
+
     public void onDisable() {
         // intentionally empty
     }
+
     public void onEnable() {
         // intentionally empty
     }
+
     public record EnchantmentAttribute(Attribute attribute,
                                        double amountPerLevel,
                                        AttributeModifier.Operation operation,
-                                       EquipmentSlotGroup slotGroup) {}
+                                       EquipmentSlotGroup slotGroup) {
+    }
 
     public List<EnchantmentAttribute> getAttributeEnchantments() {
         return List.of();
@@ -156,6 +183,9 @@ public class CEnchantment {
 
     /**
      * ChatGPT 5.2 written function, but I like the output it gives, DM me for tables if you are interested.
+     * Umm actually, you can just watch graphs here:
+     * http://pytomain.ru/dfanchovments_3.png <- 3 levels of enchantments
+     * http://pytomain.ru/dfanchovments_5.png <- 5 levels of enchantments
      * Geometric weighted level roll:
      * weight(levelIndex i) = q^i, i=0..levels-1
      * q interpolates between qLow..qHigh using softcapped luck01.
@@ -171,7 +201,7 @@ public class CEnchantment {
         }
         double luck01 = Util.softcapLuck(luck);
         // 2) map luck01 to q in (0..1). Higher q => more weight to higher levels
-        final double qLow  = 0.55; // luck=0
+        final double qLow = 0.55; // luck=0
         final double qHigh = 0.90; // big luck (approaches, but never reaches)
         double q = qLow + (qHigh - qLow) * luck01;
 

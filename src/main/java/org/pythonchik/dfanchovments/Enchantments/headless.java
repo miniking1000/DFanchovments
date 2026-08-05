@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -19,6 +20,7 @@ public class headless extends CEnchantment implements Listener {
     public headless(NamespacedKey id) {
         super(id);
     }
+
     private static final Map<EntityType, Material> HEADS = new HashMap<>();
     private static final Random RANDOM = new Random();
 
@@ -61,7 +63,7 @@ public class headless extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
 
@@ -70,6 +72,7 @@ public class headless extends CEnchantment implements Listener {
 
         return retu;
     }
+
     @Override
     public java.util.Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new java.util.LinkedHashMap<>();
@@ -78,10 +81,16 @@ public class headless extends CEnchantment implements Listener {
         defaults.put("chance", 0.5);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.RARE.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

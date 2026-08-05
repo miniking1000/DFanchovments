@@ -14,8 +14,9 @@ import java.util.List;
 public class dfchants implements CommandExecutor, TabCompleter {
     Message message = DFanchovments.getMessage();
     DFanchovments plugin;
-    public dfchants(DFanchovments plugin){
-        this.plugin=plugin;
+
+    public dfchants(DFanchovments plugin) {
+        this.plugin = plugin;
     }
 
 
@@ -46,6 +47,7 @@ public class dfchants implements CommandExecutor, TabCompleter {
 
         return true;
     }
+
     public void handleGive(Player player, String[] args) {
         if (args.length < 2) {
             message.send(player, "Команда не полная");
@@ -119,8 +121,6 @@ public class dfchants implements CommandExecutor, TabCompleter {
         }
         return null;
     }
-
-
 
 
     @Override

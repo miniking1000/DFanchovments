@@ -3,17 +3,16 @@ package org.pythonchik.dfanchovments.Enchantments;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -28,7 +27,7 @@ public class victor extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.addAll(Util.instruments());
@@ -48,16 +47,21 @@ public class victor extends CEnchantment implements Listener {
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
-        defaults.put("name", "&7Предохранитель");
+        defaults.put("name", "&7Предохранитель_Целостность");
         defaults.put("biomes", List.of("sunflower_plains"));
         defaults.put("chance", 0.05);
         defaults.put("luck", 0.03);
         defaults.put("maxlvl", 3);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.RARE.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
@@ -94,12 +98,12 @@ public class victor extends CEnchantment implements Listener {
             if (level == 1) {
                 pdc.remove(this.id);
             } else {
-                pdc.set(this.id, PersistentDataType.INTEGER, level-1);
+                pdc.set(this.id, PersistentDataType.INTEGER, level - 1);
             }
-            meta.setDamage(Math.max(0, meta.getDamage() - (50*level)));
+            meta.setDamage(Math.max(0, meta.getDamage() - (50 * level)));
             stack.setItemMeta(meta);
             event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ITEM_TOTEM_USE, 0.5F, 0.95F);
-            stack.setAmount(stack.getAmount()+1);
+            stack.setAmount(stack.getAmount() + 1);
         }
         // 50 durability per level
         // plays sound on activate

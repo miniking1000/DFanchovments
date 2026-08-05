@@ -3,14 +3,19 @@ package org.pythonchik.dfanchovments.Enchantments;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.*;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class tntanon extends CEnchantment implements Listener {
     public tntanon(NamespacedKey id) {
@@ -18,8 +23,8 @@ public class tntanon extends CEnchantment implements Listener {
     }
 
     @EventHandler
-    public void CrossEvents(ProjectileLaunchEvent event){
-        if (event.getEntity().getShooter() instanceof Player){
+    public void CrossEvents(ProjectileLaunchEvent event) {
+        if (event.getEntity().getShooter() instanceof Player) {
             Player player = (Player) event.getEntity().getShooter();
             if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
                 if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
@@ -34,7 +39,7 @@ public class tntanon extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add("CROSSBOW");
@@ -49,10 +54,16 @@ public class tntanon extends CEnchantment implements Listener {
         defaults.put("chance", 0);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.RARE.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

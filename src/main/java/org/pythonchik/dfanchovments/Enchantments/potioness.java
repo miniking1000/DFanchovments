@@ -10,19 +10,23 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class potioness extends CEnchantment implements Listener {
 
     @EventHandler
-    public void onHit(EntityDamageByEntityEvent event){
-        if (!(event.getEntity() instanceof Player player)){
+    public void onHit(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
-        if (!(event.getDamager() instanceof LivingEntity entity)){
+        if (!(event.getDamager() instanceof LivingEntity entity)) {
             return;
         }
         if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
@@ -31,36 +35,36 @@ public class potioness extends CEnchantment implements Listener {
         }
 
         int lvl = 0;
-        if (player.getInventory().getHelmet() != null){
-            if (player.getInventory().getHelmet().getItemMeta() != null){
-                if (player.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().has(id)){
-                    lvl = lvl +player.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+        if (player.getInventory().getHelmet() != null) {
+            if (player.getInventory().getHelmet().getItemMeta() != null) {
+                if (player.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + player.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
                 }
             }
         }
-        if (player.getInventory().getChestplate() != null){
+        if (player.getInventory().getChestplate() != null) {
             if (player.getInventory().getChestplate().getItemMeta() != null) {
                 if (player.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)) {
                     lvl = lvl + player.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
                 }
             }
         }
-        if (player.getInventory().getLeggings() != null){
+        if (player.getInventory().getLeggings() != null) {
             if (player.getInventory().getLeggings().getItemMeta() != null) {
                 if (player.getInventory().getLeggings().getItemMeta().getPersistentDataContainer().has(id)) {
                     lvl = lvl + player.getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
                 }
             }
         }
-        if (player.getInventory().getBoots() != null){
+        if (player.getInventory().getBoots() != null) {
             if (player.getInventory().getBoots().getItemMeta() != null) {
                 if (player.getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(id)) {
                     lvl = lvl + player.getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
                 }
             }
         }
-        if (lvl >0) {
-            entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON,20*lvl,lvl==1?0:lvl==2||lvl==3||lvl==4? 1 : lvl==5||lvl==6||lvl==7? 2 : lvl==8||lvl==9||lvl==10||lvl==11? 3 : lvl==12||lvl==13||lvl==14||lvl==15 ? 4 : 5));
+        if (lvl > 0) {
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * lvl, lvl == 1 ? 0 : lvl == 2 || lvl == 3 || lvl == 4 ? 1 : lvl == 5 || lvl == 6 || lvl == 7 ? 2 : lvl == 8 || lvl == 9 || lvl == 10 || lvl == 11 ? 3 : lvl == 12 || lvl == 13 || lvl == 14 || lvl == 15 ? 4 : 5));
         }
     }
 
@@ -69,13 +73,14 @@ public class potioness extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
 
         retu.addAll(Util.armors());
         return retu;
     }
+
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
@@ -84,10 +89,16 @@ public class potioness extends CEnchantment implements Listener {
         defaults.put("chance", 3);
         defaults.put("luck", 2);
         defaults.put("maxlvl", 4);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.UNCOMMON.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class france extends CEnchantment implements Listener {
     public france(NamespacedKey id) {
         super(id);
     }
+
     private static final String ARROW_TAG = "french_arrow";
 
     @EventHandler(ignoreCancelled = true)
@@ -39,7 +41,7 @@ public class france extends CEnchantment implements Listener {
         // 15% chance on shot
         if (Math.random() >= 0.15 * level) return;
 
-        arrow.getPersistentDataContainer().set(this.id,PersistentDataType.BYTE, (byte) 1);
+        arrow.getPersistentDataContainer().set(this.id, PersistentDataType.BYTE, (byte) 1);
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -77,14 +79,15 @@ public class france extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add(Material.CROSSBOW.name());
         return retu;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
@@ -96,6 +99,12 @@ public class france extends CEnchantment implements Listener {
         defaults.put("chance", 0);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 1);
+
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.MYTHIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 }

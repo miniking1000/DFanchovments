@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
-import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,6 +28,7 @@ public class ebow extends CEnchantment implements Listener {
     public ebow(NamespacedKey id) {
         super(id);
     }
+
     private final NamespacedKey arrowKey = new NamespacedKey(DFanchovments.plugin, "earrow");
 
     @EventHandler
@@ -78,14 +79,15 @@ public class ebow extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add(Material.BOW.name());
         return retu;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
@@ -97,6 +99,11 @@ public class ebow extends CEnchantment implements Listener {
         defaults.put("chance", 0.1);
         defaults.put("luck", 0.2);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.EPIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 }

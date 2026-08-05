@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -19,24 +20,6 @@ public class democracy extends CEnchantment implements Listener {
     public democracy(NamespacedKey id) {
         super(id);
     }
-    @Override
-    public List<String> getTragers() {
-        List<String> retu = new ArrayList<>();
-        retu.add(Material.ENCHANTED_BOOK.name());
-        retu.addAll(Util.helmets());
-        retu.add(Material.CARVED_PUMPKIN.name());
-        return retu;
-    }
-    @Override
-    public Map<String, Object> getDefaultConfig() {
-        Map<String, Object> defaults = new LinkedHashMap<>();
-        defaults.put("name", "&7Нормальность");
-        defaults.put("biomes", List.of("THE_END"));
-        defaults.put("chance", 30);
-        defaults.put("luck", 0);
-        defaults.put("maxlvl", 3);
-        return defaults;
-    }
 
     @Override
     public List<EnchantmentAttribute> getAttributeEnchantments() {
@@ -44,7 +27,7 @@ public class democracy extends CEnchantment implements Listener {
     }
 
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
@@ -64,4 +47,31 @@ public class democracy extends CEnchantment implements Listener {
             }
         }
     }
+
+    @Override
+    public List<String> getTragers() {
+        List<String> retu = new ArrayList<>();
+        retu.add(Material.ENCHANTED_BOOK.name());
+        retu.addAll(Util.helmets());
+        retu.add(Material.CARVED_PUMPKIN.name());
+        return retu;
+    }
+
+    @Override
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
+        defaults.put("name", "&7Нормальность");
+        defaults.put("biomes", List.of("THE_END"));
+        defaults.put("chance", 30);
+        defaults.put("luck", 0);
+        defaults.put("maxlvl", 3);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.UNKNOWN.getName(), 10);
+
+        defaults.put("bosses", bosses);
+        return defaults;
+    }
+
+
 }

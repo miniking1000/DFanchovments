@@ -2,7 +2,6 @@ package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Statistic;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -15,6 +14,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -122,13 +122,12 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
     }
 
     private static int random(int min, int max) {
-        return min + (int)(Math.random() * (max - min + 1));
+        return min + (int) (Math.random() * (max - min + 1));
     }
 
 
-
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
 
@@ -136,18 +135,25 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
         retu.addAll(Util.pickaxes());
         return retu;
     }
+
     @Override
     public java.util.Map<String, Object> getDefaultConfig() {
-      Map<String, Object> defaults = new java.util.LinkedHashMap<>();
+        Map<String, Object> defaults = new java.util.LinkedHashMap<>();
         defaults.put("name", "&7Рудолом");
         defaults.put("biomes", java.util.List.of("BASALT_DELTAS"));
         defaults.put("chance", 2);
         defaults.put("luck", 1);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.RARE.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

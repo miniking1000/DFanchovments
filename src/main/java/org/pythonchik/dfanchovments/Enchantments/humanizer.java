@@ -1,7 +1,7 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
 import org.bukkit.NamespacedKey;
-import org.bukkit.event.Listener;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -15,15 +15,17 @@ public class humanizer extends CEnchantment {
     public humanizer(NamespacedKey id) {
         super(id);
     }
+
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.addAll(Util.helmets());
         return retu;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
@@ -35,6 +37,11 @@ public class humanizer extends CEnchantment {
         defaults.put("chance", 0.5);
         defaults.put("luck", 0.05);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.UNCOMMON.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 }

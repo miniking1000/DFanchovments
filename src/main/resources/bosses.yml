@@ -1,0 +1,262 @@
+# default true chances:
+# 0.25 - 0.00
+# 0.19
+# 0.15
+# 0.11
+# 0.05
+# 0.02
+cooldown: 900000
+rarities:
+  common:
+    chance: 0.0
+    dropChance: 100
+    luck: 0
+    color: "white"
+    hexColor: "#FFFFFF"
+    names:
+      male:
+        - "Обычняшка"
+      female:
+        - ""
+    attributes:
+      MAX_HEALTH:
+        amount:
+          min: 1.5
+          max: 2
+        operation: ADD_SCALAR
+      ATTACK_KNOCKBACK:
+        amount:
+          min: 0.0
+          max: 0.15
+        operation: ADD_NUMBER
+      ARMOR:
+        amount: 4
+        operation: ADD_NUMBER
+  uncommon:
+    chance: 0.52
+    dropChance: 100
+    luck: 0
+    color: "dark_green"
+    hexColor: "#32CD32"
+    names:
+      male:
+        - "Обычняшка"
+        - "Будильник на 6:00"
+        - "Великий Хруст в Колене"
+        - "Грифер с Ведром Лавы"
+        - "Повелитель Пепла Азраил"
+        - "Кот: Уронивший Сервер в 3 Ночи"
+        - "Ягами Лайт: Тетрадь Потерял"
+      female:
+        - "Очередь в Поликлинике: «Мне Только Спросить»"
+        - "Маомао"
+        - "Пчела, Защищающая Свой Цветок"
+    attributes:
+      MAX_HEALTH:
+        amount:
+          min: 2
+          max: 2.5
+        operation: ADD_SCALAR
+      ATTACK_KNOCKBACK:
+        amount:
+          min: 0.0
+          max: 0.3
+        operation: ADD_NUMBER
+      ARMOR:
+        amount:
+          min: 4
+          max: 10
+        operation: ADD_NUMBER
+      MOVEMENT_SPEED:
+        amount: 0.15
+        operation: ADD_SCALAR
+      attack_damage:
+        amount: 2
+        operation: ADD_SCALAR
+  rare:
+    chance: 0.33
+    dropChance: 100
+    luck: 0
+    color: "blue"
+    hexColor: "#4169E1"
+    names:
+      male:
+        - "Синий Экран Смерти: Владыка Несохраненного Прогресса"
+        - "Рюк"
+        - "Девятый"
+        - "Разрушитель Миров Ваал"
+        - "Парень, Сказавший «Я Защищу Её Любой Ценой»"
+      female:
+        - "Рё Ямада"
+        - "Бабушка возле Подъезда: Всевидящее Око"
+        - "Блокировка РКН"
+        - "Айн"
+    attributes:
+      MAX_HEALTH:
+        amount:
+          min: 2
+          max: 3
+        operation: ADD_SCALAR
+      JUMP_STRENGTH:
+        amount:
+          min: 1.0
+          max: 1.35
+        operation: ADD_SCALAR
+      ARMOR:
+        amount:
+          min: 6
+          max: 12
+        operation: ADD_NUMBER
+      MOVEMENT_SPEED:
+        amount: 0.23
+        operation: ADD_SCALAR
+  epic:
+    chance: 0.18
+    dropChance: 100
+    luck: 0
+    color: "light_purple"
+    hexColor: "#9932CC"
+    names:
+      male:
+        - "EpicSniper"
+        - "#4e5452Зеленоватый мокрый асфальт"
+        - "Двенадцатый"
+        - "Стив с Полным Инвентарем Булыжника"
+        - "Эрен Йегер: Главный Эксперт по Демонтажу Стен"
+      female:
+        - "Хитори Гото"
+        - "Аканэ"
+        - "Гладос"
+        - "Лоли с Мечом Больше Её Роста"
+    attributes:
+      MAX_HEALTH:
+        amount:
+          min: 2
+          max: 5
+        operation: ADD_SCALAR
+      AIR_DRAG_MODIFIER:
+        amount:
+          min: 0.5
+          max: 1.2
+        operation: ADD_NUMBER
+      ARMOR:
+        amount:
+          min: 8
+          max: 14
+        operation: ADD_NUMBER
+      ARMOR_TOUGHNESS:
+        amount:
+          min: 2
+          max: 6
+        operation: ADD_NUMBER
+      MOVEMENT_SPEED:
+        amount: 0.4
+        operation: ADD_SCALAR
+  legendary:
+    chance: 0.07
+    dropChance: 100
+    luck: 0
+    color: "gold"
+    hexColor: "#FF8C00"
+    names:
+      male:
+        - "Фокcюа"
+        - "Оранж"
+        - "Дио Брандо: Kono DIO Da!"
+        - "Леон"
+        - "Кирито выбравший не то SAO"
+      female:
+        - "Нидзика Идзити"
+        - "Кано"
+        - "Руби"
+        - "Добрая мита"
+        - "Бесполезногиня Аква"
+    attributes:
+      max_health:
+        amount:
+          min: 10.0
+          max: 20.0
+        operation: ADD_SCALAR
+      attack_damage:
+        amount:
+          min: 10.0
+          max: 20.0
+        operation: ADD_NUMBER
+      armor:
+        amount: 15
+        operation: ADD_NUMBER
+      armor_toughness:
+        amount: 7
+        operation: ADD_NUMBER
+      knockback_resistance:
+        amount: 0.9
+        operation: ADD_NUMBER
+      movement_speed:
+        amount: 0.45
+        operation: ADD_SCALAR
+      scale:
+        amount: 0.75
+        operation: ADD_SCALAR
+      step_height:
+        amount: 1.5
+        operation: ADD_NUMBER
+      fall_damage_multiplier:
+        amount: -1.0
+        operation: ADD_NUMBER
+  mythic:
+    chance: 0.02
+    dropChance: 100
+    luck: 0
+    color: "dark_red"
+    hexColor: "#B22222"
+    names:
+      male:
+        - "Великий поедатель пельменей"
+        - "Архидемон Рагнарос"
+        - "Владыка Бездны Моргот"
+        - "Душегуб"
+        - "Шлёпа: Большой и Опасный"
+      female:
+        - "Икуё Кита"
+        - "Кана"
+        - "Курису"
+        - "Юмэко"
+        - "Безумная Мита"
+    attributes:
+      max_health:
+        amount:
+          min: 10.0
+          max: 30.0
+        operation: ADD_SCALAR
+      attack_damage:
+        amount:
+          min: 14.0
+          max: 24.0
+        operation: ADD_NUMBER
+      armor:
+        amount: 20.0
+        operation: ADD_NUMBER
+      armor_toughness:
+        amount: 10.0
+        operation: ADD_NUMBER
+      knockback_resistance:
+        amount: 1.0
+        operation: ADD_NUMBER
+      explosion_knockback_resistance:
+        amount: 1.0
+        operation: ADD_NUMBER
+      movement_speed:
+        amount: 1.65
+        operation: ADD_SCALAR
+      scale:
+        amount: 1.5
+        operation: ADD_SCALAR
+      step_height:
+        amount: 2.5
+        operation: ADD_NUMBER
+      burning_time:
+        amount: -0.9
+        operation: ADD_NUMBER
+      fall_damage_multiplier:
+        amount: -1.0
+        operation: ADD_NUMBER

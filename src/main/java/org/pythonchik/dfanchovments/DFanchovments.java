@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pythonchik.dfanchovments.Enchantments.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +18,9 @@ import java.util.Random;
 
 public final class DFanchovments extends JavaPlugin {
     public static FileConfiguration config;
+    public static FileConfiguration bossConfig;
     public static DFanchovments plugin;
+    public static Bosses bosses;
     public static ArrayList<CEnchantment> CEnchantments = new ArrayList<>();
     public static Random random = new Random();
     public static HashSet<Biome> allBiomes = new HashSet<>();
@@ -25,14 +28,13 @@ public final class DFanchovments extends JavaPlugin {
     //add a line to ench
 
     public static Message message;
-    public static Message getMessage(){return message;}
+
+    public static Message getMessage() {
+        return message;
+    }
 
     public void reload5() {
         loadConfig();
-    }
-
-    public static FileConfiguration getConfig1() {
-        return config;
     }
 
     @Override
@@ -41,61 +43,69 @@ public final class DFanchovments extends JavaPlugin {
         plugin = this;
         CEnchantments = new ArrayList<>();
 
-        new soulbound(    new NamespacedKey(plugin,"soulbound"));
-        new shockwave(    new NamespacedKey(plugin,"shockwave"));
-        new fireworks(    new NamespacedKey(plugin,"fireworks"));
-        new potioness(    new NamespacedKey(plugin,"potioness"));
-        new dodge(        new NamespacedKey(plugin,"dodge"));
-        new rain(         new NamespacedKey(plugin,"rain"));
-        new exp(          new NamespacedKey(plugin,"exp"));
-        new bamboom(      new NamespacedKey(plugin,"bamboom"));
-        new tntanon(      new NamespacedKey(plugin,"tntanon"));
-        new fish(         new NamespacedKey(plugin,"fish"));
-        new poshot(       new NamespacedKey(plugin,"poshot"));
-        new steveoshot(   new NamespacedKey(plugin,"steveoshot"));
-        new antiholy(     new NamespacedKey(plugin,"antiholy"));
-        new neverended(   new NamespacedKey(plugin,"neverended"));
-        new democracy(    new NamespacedKey(plugin,"democracy"));
-        new telepathy(    new NamespacedKey(plugin,"telepathy"));
-        new headless(     new NamespacedKey(plugin,"headless"));
-        new axicia(       new NamespacedKey(plugin,"axicia"));
-        new log(          new NamespacedKey(plugin,"log"));
-        new breakerOrIsIt(new NamespacedKey(plugin,"breakerorisit"));
-        new stunning(     new NamespacedKey(plugin,"stunning"));
-        new myolner(      new NamespacedKey(plugin,"myolner"));
-        new handover(     new NamespacedKey(plugin,"handover"));
-        new phishing(     new NamespacedKey(plugin,"phishing"));
-        new victor(       new NamespacedKey(plugin,"victor"));
-        new frut(         new NamespacedKey(plugin,"frut"));
-        new leave(        new NamespacedKey(plugin,"leave"));
-        new adblock(      new NamespacedKey(plugin,"adblock"));
-        new ebow(         new NamespacedKey(plugin,"ebow"));
-        new humanizer(    new NamespacedKey(plugin,"humanizer"));
-        new xxxxxxxxxx(   new NamespacedKey(plugin,"xxxxxxxxxx"));
-        new ein(          new NamespacedKey(plugin,"ein"));
-        new oganesson(    new NamespacedKey(plugin,"oganesson"));
-        new hemovibe(     new NamespacedKey(plugin,"hemovibe"));
-        new france(       new NamespacedKey(plugin,"france"));
-        new frostbite(    new NamespacedKey(plugin,"frostbite"));
-        new gorgon(       new NamespacedKey(plugin,"gorgon"));
-        new harvester(    new NamespacedKey(plugin,"harvester"));
-        new hawkeye(      new NamespacedKey(plugin,"hawkeye"));
-        new shotgun(      new NamespacedKey(plugin,"shotgun"));
-        new smelting(     new NamespacedKey(plugin,"smelting"));
-        new spider(       new NamespacedKey(plugin,"spider"));
-        new spring(       new NamespacedKey(plugin,"spring"));
-        new cascade(      new NamespacedKey(plugin,"cascade"));
-        new geyser(       new NamespacedKey(plugin,"geyser"));
-        new martyr_curse( new NamespacedKey(plugin,"martyr_curse"));
+        new soulbound(new NamespacedKey(plugin, "soulbound"));
+        new shockwave(new NamespacedKey(plugin, "shockwave"));
+        new fireworks(new NamespacedKey(plugin, "fireworks"));
+        new potioness(new NamespacedKey(plugin, "potioness"));
+        new dodge(new NamespacedKey(plugin, "dodge"));
+        new rain(new NamespacedKey(plugin, "rain"));
+        new exp(new NamespacedKey(plugin, "exp"));
+        new bamboom(new NamespacedKey(plugin, "bamboom"));
+        new tntanon(new NamespacedKey(plugin, "tntanon"));
+        new fish(new NamespacedKey(plugin, "fish"));
+        new poshot(new NamespacedKey(plugin, "poshot"));
+        new steveoshot(new NamespacedKey(plugin, "steveoshot"));
+        new antiholy(new NamespacedKey(plugin, "antiholy"));
+        new neverended(new NamespacedKey(plugin, "neverended"));
+        new democracy(new NamespacedKey(plugin, "democracy"));
+        new telepathy(new NamespacedKey(plugin, "telepathy"));
+        new headless(new NamespacedKey(plugin, "headless"));
+        new axicia(new NamespacedKey(plugin, "axicia"));
+        new log(new NamespacedKey(plugin, "log"));
+        new breakerOrIsIt(new NamespacedKey(plugin, "breakerorisit"));
+        new stunning(new NamespacedKey(plugin, "stunning"));
+        new myolner(new NamespacedKey(plugin, "myolner"));
+        new handover(new NamespacedKey(plugin, "handover"));
+        new phishing(new NamespacedKey(plugin, "phishing"));
+        new victor(new NamespacedKey(plugin, "victor"));
+        new frut(new NamespacedKey(plugin, "frut"));
+        new leave(new NamespacedKey(plugin, "leave"));
+        new adblock(new NamespacedKey(plugin, "adblock"));
+        new ebow(new NamespacedKey(plugin, "ebow"));
+        new humanizer(new NamespacedKey(plugin, "humanizer"));
+        new xxxxxxxxxx(new NamespacedKey(plugin, "xxxxxxxxxx"));
+        new ein(new NamespacedKey(plugin, "ein"));
+        new oganesson(new NamespacedKey(plugin, "oganesson"));
+        new hemovibe(new NamespacedKey(plugin, "hemovibe"));
+        new france(new NamespacedKey(plugin, "france"));
+        new frostbite(new NamespacedKey(plugin, "frostbite"));
+        new gorgon(new NamespacedKey(plugin, "gorgon"));
+        new harvester(new NamespacedKey(plugin, "harvester"));
+        new hawkeye(new NamespacedKey(plugin, "hawkeye"));
+        new shotgun(new NamespacedKey(plugin, "shotgun"));
+        new smelting(new NamespacedKey(plugin, "smelting"));
+        new spider(new NamespacedKey(plugin, "spider"));
+        new spring(new NamespacedKey(plugin, "spring"));
+        new cascade(new NamespacedKey(plugin, "cascade"));
+        new geyser(new NamespacedKey(plugin, "geyser"));
+        new martyr_curse(new NamespacedKey(plugin, "martyr_curse"));
+        new twodent(new NamespacedKey(plugin, "twodent"));
 
 
         loadConfig();
 
-        getServer().getPluginManager().registerEvents(new fishing(),this);
-        getServer().getPluginManager().registerEvents(new anvil(),this);
+        getServer().getPluginManager().registerEvents(new fishing(), this);
+        getServer().getPluginManager().registerEvents(new anvil(), this);
+        bosses = new Bosses();
+        getServer().getPluginManager().registerEvents(bosses, this);
 
-        getCommand("dfchants").setExecutor(new dfchants(this));
-        getCommand("dfchants").setTabCompleter(new dfchants(this));
+        dfchants command = new dfchants(this);
+        getCommand("dfchants").setExecutor(command);
+        getCommand("dfchants").setTabCompleter(command);
+
+        bosscommand command2temp = new bosscommand(this);
+        getCommand("makeaboss").setExecutor(command2temp);
+        getCommand("makeaboss").setTabCompleter(command2temp);
 
         for (CEnchantment ench : CEnchantments) {
             ench.onEnable();
@@ -111,6 +121,7 @@ public final class DFanchovments extends JavaPlugin {
     }
 
     public void loadConfig() {
+        loadBossConfig();
         File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             saveResource("config.yml", false);
@@ -151,6 +162,15 @@ public final class DFanchovments extends JavaPlugin {
         for (CEnchantment enchantment : CEnchantments) {
             allBiomes.addAll(enchantment.getBiomes().stream().map(Registry.BIOME::get).toList());
         }
+    }
+
+    public void loadBossConfig() {
+        File configFile = new File(getDataFolder(), "bosses.yml");
+        if (!configFile.exists()) {
+            saveResource("bosses.yml", false);
+        }
+        bossConfig = null;
+        bossConfig = YamlConfiguration.loadConfiguration(configFile);
     }
 
 }

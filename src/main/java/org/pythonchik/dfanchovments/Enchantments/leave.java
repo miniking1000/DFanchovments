@@ -12,6 +12,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -52,7 +53,7 @@ public class leave extends CEnchantment implements Listener {
         while (!queue.isEmpty()) {
             Block b = queue.poll();
             if (!LOGS.contains(b.getType()) || !visited.add(b)) continue;
-            if (visited.size() >= 128*level) break;
+            if (visited.size() >= 128 * level) break;
 
             for (BlockFace face : Arrays.asList(
                     BlockFace.UP, BlockFace.NORTH, BlockFace.SOUTH,
@@ -104,7 +105,7 @@ public class leave extends CEnchantment implements Listener {
 
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
 
@@ -120,11 +121,16 @@ public class leave extends CEnchantment implements Listener {
         defaults.put("chance", 0.1);
         defaults.put("luck", 0.05);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.EPIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

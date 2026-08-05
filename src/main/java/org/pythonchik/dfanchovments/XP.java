@@ -1,12 +1,13 @@
 package org.pythonchik.dfanchovments;
-import java.math.BigDecimal;
-
 
 import org.bukkit.entity.Player;
 
+import java.math.BigDecimal;
+
 public class XP {
 
-    public XP(){}
+    public XP() {
+    }
 
     public static int getTotalXpForLevel(int level) {
         if (level <= 15) {
@@ -21,13 +22,13 @@ public class XP {
     public static int getTotalExperience(Player player) {
         int experience = 0;
         int level = player.getLevel();
-        if(level >= 0 && level <= 15) {
+        if (level >= 0 && level <= 15) {
             experience = (int) Math.ceil(Math.pow(level, 2) + (6 * level));
             int requiredExperience = 2 * level + 7;
             double currentExp = Double.parseDouble(Float.toString(player.getExp()));
             experience += Math.ceil(currentExp * requiredExperience);
             return experience;
-        } else if(level > 15 && level <= 30) {
+        } else if (level > 15 && level <= 30) {
             experience = (int) Math.ceil((2.5 * Math.pow(level, 2) - (40.5 * level) + 360));
             int requiredExperience = 5 * level - 38;
             double currentExp = Double.parseDouble(Float.toString(player.getExp()));
@@ -42,21 +43,23 @@ public class XP {
         }
     }
 
-    public static void setTotalExperience(Player player,int xp) {
+    public static void setTotalExperience(Player player, int xp) {
         //Levels 0 through 15
-        if(xp >= 0 && xp < 351) {
+        if (xp >= 0 && xp < 351) {
             //Calculate Everything
-            int a = 1; int b = 6; int c = -xp;
+            int a = 1;
+            int b = 6;
+            int c = -xp;
             int level = (int) (-b + Math.sqrt(Math.pow(b, 2) - (4 * a * c))) / (2 * a);
             int xpForLevel = (int) (Math.pow(level, 2) + (6 * level));
             int remainder = xp - xpForLevel;
             int experienceNeeded = (2 * level) + 7;
             float experience = (float) remainder / (float) experienceNeeded;
             experience = round(experience, 2);
-            if (experience >1){
+            if (experience > 1) {
                 experience = 1;
             }
-            if (experience <0){
+            if (experience < 0) {
                 experience = 0;
             }
 
@@ -65,9 +68,11 @@ public class XP {
             player.setLevel(level);
             player.setExp(experience);
             //Levels 16 through 30
-        } else if(xp >= 352 && xp < 1507) {
+        } else if (xp >= 352 && xp < 1507) {
             //Calculate Everything
-            double a = 2.5; double b = -40.5; int c = -xp + 360;
+            double a = 2.5;
+            double b = -40.5;
+            int c = -xp + 360;
             double dLevel = (-b + Math.sqrt(Math.pow(b, 2) - (4 * a * c))) / (2 * a);
             int level = (int) Math.floor(dLevel);
             int xpForLevel = (int) (2.5 * Math.pow(level, 2) - (40.5 * level) + 360);
@@ -76,10 +81,10 @@ public class XP {
             float experience = (float) remainder / (float) experienceNeeded;
             experience = round(experience, 2);
 
-            if (experience >1){
+            if (experience > 1) {
                 experience = 1;
             }
-            if (experience <0){
+            if (experience < 0) {
                 experience = 0;
             }
 
@@ -89,7 +94,9 @@ public class XP {
             //Level 31 and greater
         } else {
             //Calculate Everything
-            double a = 4.5; double b = -162.5; int c = -xp + 2220;
+            double a = 4.5;
+            double b = -162.5;
+            int c = -xp + 2220;
             double dLevel = (-b + Math.sqrt(Math.pow(b, 2) - (4 * a * c))) / (2 * a);
             int level = (int) Math.floor(dLevel);
             int xpForLevel = (int) (4.5 * Math.pow(level, 2) - (162.5 * level) + 2220);
@@ -98,10 +105,10 @@ public class XP {
             float experience = (float) remainder / (float) experienceNeeded;
             experience = round(experience, 2);
 
-            if (experience >1){
+            if (experience > 1) {
                 experience = 1;
             }
-            if (experience <0){
+            if (experience < 0) {
                 experience = 0;
             }
 

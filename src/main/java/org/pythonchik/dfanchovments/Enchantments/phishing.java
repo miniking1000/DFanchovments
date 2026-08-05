@@ -1,6 +1,8 @@
 package org.pythonchik.dfanchovments.Enchantments;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -11,10 +13,14 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class phishing extends CEnchantment implements Listener {
     public phishing(NamespacedKey id) {
@@ -78,24 +84,31 @@ public class phishing extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add(Material.FISHING_ROD.name());
         return retu;
     }
+
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
-        defaults.put("name", "&7Удача в воде");
+        defaults.put("name", "&7Уловистость");
         defaults.put("biomes", List.of("nether_wastes"));
         defaults.put("chance", 0.08);
         defaults.put("luck", 0.05);
         defaults.put("maxlvl", 5);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.LEGENDARY.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

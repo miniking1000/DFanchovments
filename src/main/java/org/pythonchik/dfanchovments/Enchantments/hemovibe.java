@@ -12,6 +12,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
@@ -57,20 +58,21 @@ public class hemovibe extends CEnchantment implements Listener {
 
         double maxHealth = maxHealthAttr.getValue();
         double newHealth = Math.min(player.getHealth() + healAmount, maxHealth);
-        player.getWorld().spawnParticle(Particle.HEART, player.getLocation().add(0,1,0), 1);
+        player.getWorld().spawnParticle(Particle.HEART, player.getLocation().add(0, 1, 0), 1);
         player.setHealth(newHealth);
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.addAll(Util.swords());
         retu.add(Material.BAMBOO.name());
         return retu;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
@@ -82,6 +84,11 @@ public class hemovibe extends CEnchantment implements Listener {
         defaults.put("chance", 0);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 5);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.EPIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 }

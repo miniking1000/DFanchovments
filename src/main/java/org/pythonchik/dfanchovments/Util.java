@@ -5,7 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class Util {
 
@@ -31,6 +33,7 @@ public class Util {
     }
 
     private static final double LUCK_SOFTCAP_K = 1.5;
+
     public static double softcapLuck(double luck) {
         if (luck <= 0.0) return 0.0;
         return luck / (LUCK_SOFTCAP_K + luck);

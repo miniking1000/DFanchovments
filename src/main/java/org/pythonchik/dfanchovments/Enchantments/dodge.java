@@ -7,19 +7,23 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class dodge extends CEnchantment implements Listener {
     @EventHandler
     public void DbtxHxRvieptrLyoLwdzVpjTdXTYTVTYR(EntityDamageEvent event) { //this name is not random btw
-        if(!(event.getEntity() instanceof Player player)){
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
         ItemStack chestplate = player.getInventory().getChestplate();
-        if(chestplate != null && chestplate.getItemMeta() != null && chestplate.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) {
+        if (chestplate != null && chestplate.getItemMeta() != null && chestplate.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) {
             int level = chestplate.getItemMeta().getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);
             if (Math.random() < (0.10 + (0.05 * level))) {
                 event.setDamage(0);
@@ -30,26 +34,34 @@ public class dodge extends CEnchantment implements Listener {
     public dodge(NamespacedKey id) {
         super(id);
     }
+
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         //chestplates
         retu.addAll(Util.chestplates());
         return retu;
     }
+
     @Override
     public Map<String, Object> getDefaultConfig() {
-      Map<String, Object> defaults = new LinkedHashMap<>();
+        Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7Уклонение");
         defaults.put("biomes", List.of("CHERRY_GROVE"));
         defaults.put("chance", 1);
         defaults.put("luck", 2);
         defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.UNCOMMON.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

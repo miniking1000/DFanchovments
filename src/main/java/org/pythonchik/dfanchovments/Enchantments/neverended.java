@@ -15,7 +15,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.pythonchik.dfanchovments.CEnchantment;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class neverended extends CEnchantment implements Listener {
     public neverended(NamespacedKey id) {
@@ -51,8 +54,8 @@ public class neverended extends CEnchantment implements Listener {
     }
 
     @EventHandler
-    public void onDeath(EntityResurrectEvent event){
-        if (!(event.getEntity() instanceof Player player)){
+    public void onDeath(EntityResurrectEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
             return;
         }
         if (player.getInventory().getItemInOffHand().getItemMeta() != null && player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) {
@@ -72,7 +75,7 @@ public class neverended extends CEnchantment implements Listener {
 
     @EventHandler
     public void onThrow(ProjectileLaunchEvent event) {
-        if (!(event.getEntity().getShooter() instanceof Player player)){
+        if (!(event.getEntity().getShooter() instanceof Player player)) {
             return;
         }
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
@@ -116,9 +119,8 @@ public class neverended extends CEnchantment implements Listener {
     }
 
 
-
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add("ROTTEN_FLESH");
@@ -129,6 +131,7 @@ public class neverended extends CEnchantment implements Listener {
         retu.add("END_CRYSTAL");
         return retu;
     }
+
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
@@ -139,8 +142,9 @@ public class neverended extends CEnchantment implements Listener {
         defaults.put("maxlvl", 1);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

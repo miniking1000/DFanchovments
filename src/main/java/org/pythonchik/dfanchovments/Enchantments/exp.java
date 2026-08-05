@@ -6,13 +6,17 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 import org.pythonchik.dfanchovments.XP;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-public class exp  extends CEnchantment implements Listener {
+public class exp extends CEnchantment implements Listener {
     @EventHandler
     public void ondKillEvent(EntityDeathEvent event) {
         if (event.getEntity().getKiller() == null) {
@@ -23,7 +27,7 @@ public class exp  extends CEnchantment implements Listener {
             return;
         }
         if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
-            int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(id, PersistentDataType.INTEGER, 0)*15);
+            int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(id, PersistentDataType.INTEGER, 0) * 15);
             XP.setTotalExperience(player, a);
         }
 
@@ -32,13 +36,15 @@ public class exp  extends CEnchantment implements Listener {
     public exp(NamespacedKey id) {
         super(id);
     }
+
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.addAll(Util.swords());
         return retu;
     }
+
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
@@ -47,11 +53,16 @@ public class exp  extends CEnchantment implements Listener {
         defaults.put("chance", 0.4);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 5);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.EPIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

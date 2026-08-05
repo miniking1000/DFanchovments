@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitTask;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 
@@ -20,6 +21,7 @@ public class myolner extends CEnchantment implements Listener {
     public myolner(NamespacedKey id) {
         super(id);
     }
+
     private HashMap<Entity, BukkitTask> tasks = new HashMap<>();
 
     @EventHandler
@@ -39,9 +41,9 @@ public class myolner extends CEnchantment implements Listener {
 
         double chance;
         if (world.isThundering()) {
-            chance = 0.15*level;
+            chance = 0.15 * level;
         } else if (world.hasStorm()) {
-            chance = 0.1*level;
+            chance = 0.1 * level;
         } else {
             return;
         }
@@ -71,12 +73,13 @@ public class myolner extends CEnchantment implements Listener {
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add("MACE");
         return retu;
     }
+
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
@@ -86,10 +89,16 @@ public class myolner extends CEnchantment implements Listener {
         defaults.put("luck", 0.05);
         defaults.put("maxlvl", 5);
         defaults.put("conflicts", List.of("stunning"));
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.EPIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

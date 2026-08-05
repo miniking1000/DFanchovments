@@ -14,9 +14,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class stunning extends CEnchantment implements Listener {
     public stunning(NamespacedKey id) {
@@ -40,20 +44,21 @@ public class stunning extends CEnchantment implements Listener {
         int level = meta.getPersistentDataContainer().get(this.id, PersistentDataType.INTEGER);
         if (event.getEntity() instanceof LivingEntity target) {
             target.getWorld().spawnParticle(Particle.CRIT, target.getLocation(), 50, 0.2, 0.5, 0.2);
-            target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 5*20, (2*level)-1));
-            target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 5*20, (2*level)-1));
-            target.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 5*20, (2*level)-1));
-            target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5*20, 0));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 5 * 20, (2 * level) - 1));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.WEAKNESS, 5 * 20, (2 * level) - 1));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.NAUSEA, 5 * 20, (2 * level) - 1));
+            target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5 * 20, 0));
         }
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add("MACE");
         return retu;
     }
+
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
@@ -63,10 +68,16 @@ public class stunning extends CEnchantment implements Listener {
         defaults.put("luck", 0.4);
         defaults.put("maxlvl", 3);
         defaults.put("conflicts", List.of("myolner"));
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.EPIC.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 }

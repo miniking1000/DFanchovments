@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataType;
+import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.DFanchovments;
 import org.pythonchik.dfanchovments.Util;
@@ -61,12 +62,12 @@ public class ein extends CEnchantment implements Listener {
 
             target.setMetadata(EXTRA_HIT_META, new FixedMetadataValue(DFanchovments.plugin, true));
             target.damage(damage, player);
-            target.getWorld().spawnParticle(Particle.SWEEP_ATTACK, target.getLocation().add(0,2,0), 1);
+            target.getWorld().spawnParticle(Particle.SWEEP_ATTACK, target.getLocation().add(0, 2, 0), 1);
         }, 11L);
     }
 
     @Override
-    public List<String> getTragers(){
+    public List<String> getTragers() {
         List<String> retu = new ArrayList<>();
         retu.add("ENCHANTED_BOOK");
         retu.add(Material.TRIDENT.name());
@@ -76,19 +77,25 @@ public class ein extends CEnchantment implements Listener {
         retu.addAll(Util.axes());
         return retu;
     }
+
     @Override
-    public NamespacedKey getId(){
+    public NamespacedKey getId() {
         return this.id;
     }
 
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
-        defaults.put("name", "&7Фантомный клинок");
+        defaults.put("name", "&7Фантомный удар");
         defaults.put("biomes", List.of("THE_VOID"));
         defaults.put("chance", 0);
         defaults.put("luck", 0);
         defaults.put("maxlvl", 2);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.LEGENDARY.getName(), 10);
+
+        defaults.put("bosses", bosses);
         return defaults;
     }
 }
