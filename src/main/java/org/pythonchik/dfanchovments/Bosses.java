@@ -73,11 +73,15 @@ public class Bosses implements Listener {
 
         private final String name;
         private final int number;
-        private final ConfigurationSection config;
+        private ConfigurationSection config;
 
         Rarity(String name, int number) {
             this.name = name;
             this.number = number;
+            this.config = DFanchovments.bossConfig.getConfigurationSection("rarities." + name);
+        }
+
+        public void updateConfig() {
             this.config = DFanchovments.bossConfig.getConfigurationSection("rarities." + name);
         }
 

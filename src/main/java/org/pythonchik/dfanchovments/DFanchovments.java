@@ -38,6 +38,9 @@ public final class DFanchovments extends JavaPlugin {
 
     public void reload5() {
         loadConfig();
+        for (Bosses.Rarity rarity : Bosses.Rarity.ALL) {
+            rarity.updateConfig();
+        }
     }
 
     @Override
