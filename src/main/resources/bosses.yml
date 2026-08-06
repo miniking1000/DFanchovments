@@ -5,7 +5,7 @@
 # 0.11
 # 0.05
 # 0.02
-cooldown: 900000
+cooldown: 1900000
 rarities:
   common:
     chance: 0.0
@@ -33,7 +33,8 @@ rarities:
         amount: 4
         operation: ADD_NUMBER
   uncommon:
-    chance: 0.52
+    chance: 0.72
+    chanceSummoned: 100.0
     dropChance: 100
     luck: 0
     color: "dark_green"
@@ -75,6 +76,7 @@ rarities:
         operation: ADD_SCALAR
   rare:
     chance: 0.33
+    chanceSummoned: 37.759
     dropChance: 100
     luck: 0
     color: "blue"
@@ -91,6 +93,7 @@ rarities:
         - "Бабушка возле Подъезда: Всевидящее Око"
         - "Блокировка РКН"
         - "Айн"
+        - "Аканэ"
     attributes:
       MAX_HEALTH:
         amount:
@@ -112,6 +115,7 @@ rarities:
         operation: ADD_SCALAR
   epic:
     chance: 0.18
+    chanceSummoned: 17.012
     dropChance: 100
     luck: 0
     color: "light_purple"
@@ -125,7 +129,6 @@ rarities:
         - "Эрен Йегер: Главный Эксперт по Демонтажу Стен"
       female:
         - "Хитори Гото"
-        - "Аканэ"
         - "Гладос"
         - "Лоли с Мечом Больше Её Роста"
     attributes:
@@ -153,7 +156,8 @@ rarities:
         amount: 0.4
         operation: ADD_SCALAR
   legendary:
-    chance: 0.07
+    chance: 0.05
+    chanceSummoned: 4.564
     dropChance: 100
     luck: 0
     color: "gold"
@@ -166,16 +170,16 @@ rarities:
         - "Леон"
         - "Кирито выбравший не то SAO"
       female:
-        - "Нидзика Идзити"
-        - "Кано"
-        - "Руби"
-        - "Добрая мита"
+        - "Моника"
+        - "Прородительница Миров"
+        - "Алекс"
+        - "Добрая Мита"
         - "Бесполезногиня Аква"
     attributes:
       max_health:
         amount:
           min: 10.0
-          max: 20.0
+          max: 40.0
         operation: ADD_SCALAR
       attack_damage:
         amount:
@@ -183,7 +187,7 @@ rarities:
           max: 20.0
         operation: ADD_NUMBER
       armor:
-        amount: 15
+        amount: 25
         operation: ADD_NUMBER
       armor_toughness:
         amount: 7
@@ -192,10 +196,7 @@ rarities:
         amount: 0.9
         operation: ADD_NUMBER
       movement_speed:
-        amount: 0.45
-        operation: ADD_SCALAR
-      scale:
-        amount: 0.75
+        amount: 1.45
         operation: ADD_SCALAR
       step_height:
         amount: 1.5
@@ -204,7 +205,8 @@ rarities:
         amount: -1.0
         operation: ADD_NUMBER
   mythic:
-    chance: 0.02
+    chance: 0.01
+    chanceSummoned: 0.415
     dropChance: 100
     luck: 0
     color: "dark_red"
@@ -216,25 +218,26 @@ rarities:
         - "Владыка Бездны Моргот"
         - "Душегуб"
         - "Шлёпа: Большой и Опасный"
+        - "minikeng1000"
       female:
-        - "Икуё Кита"
-        - "Кана"
-        - "Курису"
+        - "Пустая пельменица"
+        - "?"
+        - "Пчелка делает БЗ-БЗ"
         - "Юмэко"
         - "Безумная Мита"
     attributes:
       max_health:
         amount:
           min: 10.0
-          max: 30.0
+          max: 50.0
         operation: ADD_SCALAR
       attack_damage:
         amount:
           min: 14.0
-          max: 24.0
+          max: 50.0
         operation: ADD_NUMBER
       armor:
-        amount: 20.0
+        amount: 50.0
         operation: ADD_NUMBER
       armor_toughness:
         amount: 10.0
@@ -246,16 +249,13 @@ rarities:
         amount: 1.0
         operation: ADD_NUMBER
       movement_speed:
-        amount: 1.65
-        operation: ADD_SCALAR
-      scale:
-        amount: 1.5
+        amount: 1.85
         operation: ADD_SCALAR
       step_height:
         amount: 2.5
         operation: ADD_NUMBER
       burning_time:
-        amount: -0.9
+        amount: -1.0
         operation: ADD_NUMBER
       fall_damage_multiplier:
         amount: -1.0

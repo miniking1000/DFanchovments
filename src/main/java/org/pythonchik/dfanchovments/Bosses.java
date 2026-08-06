@@ -11,6 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -21,6 +23,7 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class Bosses implements Listener {
@@ -28,9 +31,14 @@ public class Bosses implements Listener {
     static Long CDtimestamp = 0L;
     static final NamespacedKey rarityKey = new NamespacedKey(DFanchovments.plugin, "rarity");
     static final Random rng = new Random();
+    static HashSet<EntityType> blacklisted = new HashSet<>(List.of(
+            EntityType.SILVERFISH, EntityType.CREEPER, EntityType.CREAKING, EntityType.ENDERMITE, EntityType.PHANTOM,
+            EntityType.SLIME, EntityType.VEX, EntityType.MAGMA_CUBE, EntityType.SKELETON));
     final Scoreboard scoreboard;
+    private final NamespacedKey summonerKey;
 
     public Bosses() {
+        summonerKey = DFanchovments.summonerKey;
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         if (manager == null) {
             System.out.println("WARNING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WHY are bosses loading before every world? no scoreboards to take!");
@@ -83,6 +91,10 @@ public class Bosses implements Listener {
 
         public boolean isAccepted(double rolled) {
             return config.getDouble("chance") >= rolled;
+        }
+
+        public boolean isAcceptedSummon(double rolled) {
+            return config.getDouble("chanceSummoned") >= rolled;
         }
 
         public boolean shouldDrop(double rolled, double luck) {
@@ -157,10 +169,11 @@ public class Bosses implements Listener {
         }
     }
 
-    @EventHandler
+    //@EventHandler
     public void onEntitySpawn(EntitySpawnEvent event) {
         if (System.currentTimeMillis() < DFanchovments.bossConfig.getLong("cooldown") + CDtimestamp) return;
         if (!(event.getEntity() instanceof Enemy entity)) return;
+        if (entity instanceof Ageable ageable && !ageable.isAdult()) return;
         double roll = Math.random() * 100; // % that rolled
         for (Rarity rarity : Rarity.ALL) {
             if (rarity.isAccepted(roll)) {
@@ -171,9 +184,42 @@ public class Bosses implements Listener {
         }
     }
 
+    @EventHandler
+    public void onSummonerUse(PlayerItemConsumeEvent event) {
+        Player player = event.getPlayer();
+        ItemMeta meta = event.getItem().getItemMeta();
+        if (meta == null) return;
+        if (!meta.getPersistentDataContainer().has(summonerKey)) return;
+        Collection<Entity> allNearby = player.getWorld().getNearbyEntities(player.getLocation(), 64, 64, 64, e -> {
+            return (e instanceof Enemy enemy) && //mob is hostile
+                    !blacklisted.contains(enemy.getType()) && // its not blacklisted (small or slimes etc.)
+                    !(e instanceof Ageable ageable && !ageable.isAdult()) && // its not a baby
+                    !enemy.getPersistentDataContainer().has(rarityKey, PersistentDataType.STRING) &&  // and its not a boss already
+                    enemy.hasAI();  // its no on the hook already
+        });
+        if (allNearby.isEmpty()) {
+            DFanchovments.message.sendNoPrefix(player, "&6Не получилось найти сущность для превращения в босса.");
+            event.setCancelled(true); // could not pick anyone
+            return;
+        }
+        List<Entity> entities = new ArrayList<>(allNearby);
+        Enemy entity = (Enemy) entities.get(rng.nextInt(entities.size()));
+
+        double roll = Math.random() * 100; // % that rolled
+        for (Rarity rarity : Rarity.ALL) {
+            if (rarity.isAcceptedSummon(roll)) {
+                makeIntoBoss(entity, rarity);
+                return;
+            }
+        }
+        DFanchovments.message.sendNoPrefix(player, "&6Не получилось выбрать редкость босса.");
+        event.setCancelled(true);
+    }
+
     public void makeIntoBoss(Enemy enemy, Rarity rarity) {
         // it IS a boss
         enemy.getPersistentDataContainer().set(rarityKey, PersistentDataType.STRING, rarity.name);
+        enemy.getPersistentDataContainer().set(new NamespacedKey("craftbukket", "unpickupable"), PersistentDataType.BOOLEAN, true);
         enemy.setRemoveWhenFarAway(false);
 
         // custom name
@@ -190,11 +236,11 @@ public class Bosses implements Listener {
         scoreboard.getTeam(rarity.name).addEntry(enemy.getUniqueId().toString());
         enemy.addPotionEffect(PotionEffectType.GLOWING.createEffect(Integer.MAX_VALUE, 1));
         World world = enemy.getWorld();
-        //world.playSound(enemy, Sound.EVENT_RAID_HORN, 1f, 1f);
         Location loc = enemy.getLocation();
         Collection<Entity> players = world.getNearbyEntities(enemy.getLocation(), 128, 400, 128, e -> e.getType().equals(EntityType.PLAYER));
         for (Entity player : players) {
-            DFanchovments.message.sendNoPrefix(player, "Рядом " + (isMaleName ? "появился " : "появилась ") + name + String.format("&r! &7(%.1f, %.1f, %.1f)", loc.getX(), loc.getY(), loc.getZ()));
+            DFanchovments.message.sendNoPrefix(player, "&6Рядом " + (isMaleName ? "появился " : "появилась ") + name + String.format("&r&6! &7(%.1f %.1f %.1f)", loc.getX(), loc.getY(), loc.getZ()));
+            player.getWorld().playSound(player, Sound.BLOCK_END_PORTAL_SPAWN, 1f, 1f);
         }
 
         //attributes
@@ -244,6 +290,13 @@ public class Bosses implements Listener {
             ItemStack book = enchantment.createRandomBook(luck);
             Item item = enemy.getWorld().dropItemNaturally(enemy.getLocation(), book);
             item.setGlowing(true);
+        }
+    }
+
+    @EventHandler
+    public void onVehicleEnter(VehicleEnterEvent event) {
+        if (event.getEntered() instanceof Enemy enemy && enemy.getPersistentDataContainer().has(rarityKey, PersistentDataType.STRING)) {
+            event.setCancelled(true);
         }
     }
 

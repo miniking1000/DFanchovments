@@ -1,19 +1,21 @@
 package org.pythonchik.dfanchovments;
 
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pythonchik.dfanchovments.Enchantments.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 
 public final class DFanchovments extends JavaPlugin {
@@ -24,6 +26,7 @@ public final class DFanchovments extends JavaPlugin {
     public static ArrayList<CEnchantment> CEnchantments = new ArrayList<>();
     public static Random random = new Random();
     public static HashSet<Biome> allBiomes = new HashSet<>();
+    public static NamespacedKey summonerKey;
 
     //add a line to ench
 
@@ -41,55 +44,56 @@ public final class DFanchovments extends JavaPlugin {
     public void onEnable() {
         message = new Message();
         plugin = this;
+        summonerKey = new NamespacedKey(DFanchovments.plugin, "summoner");
         CEnchantments = new ArrayList<>();
 
-        new soulbound(new NamespacedKey(plugin, "soulbound"));
-        new shockwave(new NamespacedKey(plugin, "shockwave"));
-        new fireworks(new NamespacedKey(plugin, "fireworks"));
-        new potioness(new NamespacedKey(plugin, "potioness"));
-        new dodge(new NamespacedKey(plugin, "dodge"));
-        new rain(new NamespacedKey(plugin, "rain"));
-        new exp(new NamespacedKey(plugin, "exp"));
-        new bamboom(new NamespacedKey(plugin, "bamboom"));
-        new tntanon(new NamespacedKey(plugin, "tntanon"));
-        new fish(new NamespacedKey(plugin, "fish"));
-        new poshot(new NamespacedKey(plugin, "poshot"));
-        new steveoshot(new NamespacedKey(plugin, "steveoshot"));
-        new antiholy(new NamespacedKey(plugin, "antiholy"));
-        new neverended(new NamespacedKey(plugin, "neverended"));
-        new democracy(new NamespacedKey(plugin, "democracy"));
-        new telepathy(new NamespacedKey(plugin, "telepathy"));
-        new headless(new NamespacedKey(plugin, "headless"));
-        new axicia(new NamespacedKey(plugin, "axicia"));
-        new log(new NamespacedKey(plugin, "log"));
+        new soulbound(    new NamespacedKey(plugin, "soulbound"));
+        new shockwave(    new NamespacedKey(plugin, "shockwave"));
+        new fireworks(    new NamespacedKey(plugin, "fireworks"));
+        new potioness(    new NamespacedKey(plugin, "potioness"));
+        new dodge(        new NamespacedKey(plugin, "dodge"));
+        new rain(         new NamespacedKey(plugin, "rain"));
+        new exp(          new NamespacedKey(plugin, "exp"));
+        new bamboom(      new NamespacedKey(plugin, "bamboom"));
+        new tntanon(      new NamespacedKey(plugin, "tntanon"));
+        new fish(         new NamespacedKey(plugin, "fish"));
+        new poshot(       new NamespacedKey(plugin, "poshot"));
+        new steveoshot(   new NamespacedKey(plugin, "steveoshot"));
+        new antiholy(     new NamespacedKey(plugin, "antiholy"));
+        new neverended(   new NamespacedKey(plugin, "neverended"));
+        new democracy(    new NamespacedKey(plugin, "democracy"));
+        new telepathy(    new NamespacedKey(plugin, "telepathy"));
+        new headless(     new NamespacedKey(plugin, "headless"));
+        new axicia(       new NamespacedKey(plugin, "axicia"));
+        new log(          new NamespacedKey(plugin, "log"));
         new breakerOrIsIt(new NamespacedKey(plugin, "breakerorisit"));
-        new stunning(new NamespacedKey(plugin, "stunning"));
-        new myolner(new NamespacedKey(plugin, "myolner"));
-        new handover(new NamespacedKey(plugin, "handover"));
-        new phishing(new NamespacedKey(plugin, "phishing"));
-        new victor(new NamespacedKey(plugin, "victor"));
-        new frut(new NamespacedKey(plugin, "frut"));
-        new leave(new NamespacedKey(plugin, "leave"));
-        new adblock(new NamespacedKey(plugin, "adblock"));
-        new ebow(new NamespacedKey(plugin, "ebow"));
-        new humanizer(new NamespacedKey(plugin, "humanizer"));
-        new xxxxxxxxxx(new NamespacedKey(plugin, "xxxxxxxxxx"));
-        new ein(new NamespacedKey(plugin, "ein"));
-        new oganesson(new NamespacedKey(plugin, "oganesson"));
-        new hemovibe(new NamespacedKey(plugin, "hemovibe"));
-        new france(new NamespacedKey(plugin, "france"));
-        new frostbite(new NamespacedKey(plugin, "frostbite"));
-        new gorgon(new NamespacedKey(plugin, "gorgon"));
-        new harvester(new NamespacedKey(plugin, "harvester"));
-        new hawkeye(new NamespacedKey(plugin, "hawkeye"));
-        new shotgun(new NamespacedKey(plugin, "shotgun"));
-        new smelting(new NamespacedKey(plugin, "smelting"));
-        new spider(new NamespacedKey(plugin, "spider"));
-        new spring(new NamespacedKey(plugin, "spring"));
-        new cascade(new NamespacedKey(plugin, "cascade"));
-        new geyser(new NamespacedKey(plugin, "geyser"));
-        new martyr_curse(new NamespacedKey(plugin, "martyr_curse"));
-        new twodent(new NamespacedKey(plugin, "twodent"));
+        new stunning(     new NamespacedKey(plugin, "stunning"));
+        new myolner(      new NamespacedKey(plugin, "myolner"));
+        new handover(     new NamespacedKey(plugin, "handover"));
+        new phishing(     new NamespacedKey(plugin, "phishing"));
+        new victor(       new NamespacedKey(plugin, "victor"));
+        new frut(         new NamespacedKey(plugin, "frut"));
+        new leave(        new NamespacedKey(plugin, "leave"));
+        new adblock(      new NamespacedKey(plugin, "adblock"));
+        new ebow(         new NamespacedKey(plugin, "ebow"));
+        new humanizer(    new NamespacedKey(plugin, "humanizer"));
+        new xxxxxxxxxx(   new NamespacedKey(plugin, "xxxxxxxxxx"));
+        new ein(          new NamespacedKey(plugin, "ein"));
+        new oganesson(    new NamespacedKey(plugin, "oganesson"));
+        new hemovibe(     new NamespacedKey(plugin, "hemovibe"));
+        new france(       new NamespacedKey(plugin, "france"));
+        new frostbite(    new NamespacedKey(plugin, "frostbite"));
+        new gorgon(       new NamespacedKey(plugin, "gorgon"));
+        new harvester(    new NamespacedKey(plugin, "harvester"));
+        new hawkeye(      new NamespacedKey(plugin, "hawkeye"));
+        new shotgun(      new NamespacedKey(plugin, "shotgun"));
+        new smelting(     new NamespacedKey(plugin, "smelting"));
+        new spider(       new NamespacedKey(plugin, "spider"));
+        new spring(       new NamespacedKey(plugin, "spring"));
+        new cascade(      new NamespacedKey(plugin, "cascade"));
+        new geyser(       new NamespacedKey(plugin, "geyser"));
+        new martyr_curse( new NamespacedKey(plugin, "martyr_curse"));
+        new twodent(      new NamespacedKey(plugin, "twodent"));
 
 
         loadConfig();
