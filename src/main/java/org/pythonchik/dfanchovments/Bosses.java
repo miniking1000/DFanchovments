@@ -194,7 +194,7 @@ public class Bosses implements Listener {
         ItemMeta meta = event.getItem().getItemMeta();
         if (meta == null) return;
         if (!meta.getPersistentDataContainer().has(summonerKey)) return;
-        Collection<Entity> allNearby = player.getWorld().getNearbyEntities(player.getLocation(), 64, 64, 64, e -> {
+        Collection<Entity> allNearby = player.getWorld().getNearbyEntities(player.getLocation(), 32, 16, 32, e -> {
             return (e instanceof Enemy enemy) && //mob is hostile
                     !blacklisted.contains(enemy.getType()) && // its not blacklisted (small or slimes etc.)
                     !(e instanceof Ageable ageable && !ageable.isAdult()) && // its not a baby
@@ -241,10 +241,10 @@ public class Bosses implements Listener {
         enemy.addPotionEffect(PotionEffectType.GLOWING.createEffect(Integer.MAX_VALUE, 1));
         World world = enemy.getWorld();
         Location loc = enemy.getLocation();
-        Collection<Entity> players = world.getNearbyEntities(enemy.getLocation(), 128, 400, 128, e -> e.getType().equals(EntityType.PLAYER));
+        Collection<Entity> players = world.getNearbyEntities(enemy.getLocation(), 32, 64, 32, e -> e.getType().equals(EntityType.PLAYER));
         for (Entity player : players) {
             DFanchovments.message.sendNoPrefix(player, "&6Рядом " + (isMaleName ? "появился " : "появилась ") + name + String.format("&r&6! &7(%.1f %.1f %.1f)", loc.getX(), loc.getY(), loc.getZ()));
-            player.getWorld().playSound(player, Sound.BLOCK_END_PORTAL_SPAWN, 1f, 1f);
+            player.getWorld().playSound(player, Sound.BLOCK_END_PORTAL_SPAWN, 0.3f, 1f);
         }
 
         //attributes
