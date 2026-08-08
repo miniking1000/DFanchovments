@@ -97,6 +97,7 @@ public final class DFanchovments extends JavaPlugin {
         new geyser(       new NamespacedKey(plugin, "geyser"));
         new martyr_curse( new NamespacedKey(plugin, "martyr_curse"));
         new twodent(      new NamespacedKey(plugin, "twodent"));
+        new steper(       new NamespacedKey(plugin, "steper"));
 
 
         loadConfig();

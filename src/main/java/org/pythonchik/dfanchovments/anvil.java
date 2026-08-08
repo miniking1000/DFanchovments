@@ -5,6 +5,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -61,13 +62,12 @@ public class anvil implements Listener {
         if (right != null && right.getItemMeta() != null) {
             ItemMeta rightMeta = right.getItemMeta();
 
+            // apply regular enchantments merging
             for (Map.Entry<Enchantment, Integer> entry : getAllEnchants(rightMeta).entrySet()) {
                 Enchantment incoming = entry.getKey();
                 int incomingLevel = entry.getValue();
                 int currentLevel = enchantments.getOrDefault(incoming, 0);
                 int finalLevel = incomingLevel == currentLevel ? currentLevel + 1 : Math.max(currentLevel, incomingLevel);
-                finalLevel = Math.clamp(finalLevel, incoming.getStartLevel(), incoming.getMaxLevel());
-
                 boolean canEnchant = isVanillaApplicableTo(incoming, result);
                 for (Map.Entry<Enchantment, Integer> originalEnchantment : enchantments.entrySet()) {
                     if (originalEnchantment.getKey() != incoming && (incoming.conflictsWith(originalEnchantment.getKey()) || originalEnchantment.getKey().conflictsWith(incoming))) {
@@ -85,7 +85,7 @@ public class anvil implements Listener {
                 applyVanillaEnchants(resultMeta, enchantments);
             }
 
-
+            // apply custom enchantments merging
             for (CEnchantment ench : DFanchovments.CEnchantments) {
                 Integer rightLevel = rightMeta.getPersistentDataContainer().get(ench.getId(), PersistentDataType.INTEGER);
                 if (rightLevel == null) continue;
@@ -96,7 +96,10 @@ public class anvil implements Listener {
                 int level = leftLevel == rightLevel
                         ? leftLevel + 1
                         : Math.max(leftLevel, rightLevel);
-                level = Math.clamp(level, ench.getStartLevel(), ench.getMaxLevel());
+                HumanEntity player = event.getView().getPlayer();
+                if (!player.isOp() || player.getGameMode() != GameMode.CREATIVE) {
+                    level = Math.clamp(level, ench.getStartLevel(), ench.getMaxLevel());
+                }
 
                 resultMeta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, level);
                 ench.applyAttributeEnchantments(resultMeta, level);
