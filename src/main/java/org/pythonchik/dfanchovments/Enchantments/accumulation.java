@@ -3,13 +3,15 @@ package org.pythonchik.dfanchovments.Enchantments;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerAnimationEvent;
+import org.bukkit.event.player.PlayerAnimationType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.persistence.PersistentDataType;
@@ -25,16 +27,61 @@ import java.util.Map;
 
 public class accumulation extends CEnchantment implements Listener {
 
+
     private final NamespacedKey comboKey;
-    private final NamespacedKey timeKey;
+    private final NamespacedKey hitTimeKey;
+    private final NamespacedKey swingTimeKey;
 
     public accumulation(NamespacedKey id) {
         super(id);
-        // Сохраняем комбо и время в самом игроке, чтобы счетчик не сбрасывался при Размашистом ударе
         this.comboKey = new NamespacedKey(DFanchovments.plugin, id.getKey() + "_combo");
-        this.timeKey = new NamespacedKey(DFanchovments.plugin, id.getKey() + "_time");
+        this.hitTimeKey = new NamespacedKey(DFanchovments.plugin, id.getKey() + "_hit_time");
+        this.swingTimeKey = new NamespacedKey(DFanchovments.plugin, id.getKey() + "_swing_time");
     }
 
+    // --- ВСПОМОГАТЕЛЬНЫЙ МЕТОД: ВЫЧИСЛЕНИЕ ДИНАМИЧЕСКОГО КУЛДАУНА ---
+    private long getDynamicCooldownMs(Player player) {
+        // Получаем атрибут скорости атаки через Registry (безопасно для 1.21.11)
+        Attribute speedAttr = Attribute.ATTACK_SPEED;
+        double attackSpeed = 1.6; // Дефолтное значение для меча
+
+        if (speedAttr != null && player.getAttribute(speedAttr) != null) {
+            attackSpeed = player.getAttribute(speedAttr).getValue();
+        }
+
+        // Формула: (1.0 / скорость_атаки) * 1000 = время в миллисекундах.
+        // Вычитаем 40 мс (примерно 1 тик) для компенсации пинга и задержек сервера,
+        // чтобы игрок не терял комбо, если ударит на долю секунды раньше из-за рассинхрона.
+        return (long) ((1.0 / attackSpeed) * 1000) - 40;
+    }
+
+    // --- 1. ОТСЛЕЖИВАНИЕ СПАМА В ВОЗДУХ ---
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerSwing(PlayerAnimationEvent event) {
+        if (event.getAnimationType() != PlayerAnimationType.ARM_SWING) return;
+
+        Player player = event.getPlayer();
+        ItemStack mainHand = player.getInventory().getItemInMainHand();
+
+        if (mainHand.getType().isAir() || !mainHand.hasItemMeta()) return;
+        if (!mainHand.getType().name().endsWith("_SWORD")) return;
+        if (!mainHand.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) return;
+
+        long currentTime = System.currentTimeMillis();
+        long lastSwing = player.getPersistentDataContainer().getOrDefault(swingTimeKey, PersistentDataType.LONG, 0L);
+
+        // Получаем идеальное время перезарядки ИМЕННО ДЛЯ ЭТОГО игрока в данный момент
+        long requiredCooldownMs = getDynamicCooldownMs(player);
+
+        // Если клик произошел до того, как шкала заполнилась — это спам!
+        if (currentTime - lastSwing < requiredCooldownMs) {
+            player.getPersistentDataContainer().set(comboKey, PersistentDataType.INTEGER, 0);
+        }
+
+        player.getPersistentDataContainer().set(swingTimeKey, PersistentDataType.LONG, currentTime);
+    }
+
+    // --- 2. ОТСЛЕЖИВАНИЕ ПОПАДАНИЙ ---
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAccumulationHit(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player)) return;
@@ -42,75 +89,57 @@ public class accumulation extends CEnchantment implements Listener {
 
         ItemStack mainHand = player.getInventory().getItemInMainHand();
         if (mainHand.getType().isAir() || !mainHand.hasItemMeta()) return;
-
-        // Работает только для мечей
         if (!mainHand.getType().name().endsWith("_SWORD")) return;
         if (!mainHand.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) return;
 
         int level = mainHand.getItemMeta().getPersistentDataContainer().get(this.id, PersistentDataType.INTEGER);
 
         long currentTime = System.currentTimeMillis();
-        long lastTime = player.getPersistentDataContainer().getOrDefault(timeKey, PersistentDataType.LONG, 0L);
+        long lastHit = player.getPersistentDataContainer().getOrDefault(hitTimeKey, PersistentDataType.LONG, 0L);
         int combo = player.getPersistentDataContainer().getOrDefault(comboKey, PersistentDataType.INTEGER, 0);
 
-        // --- ЗАЩИТА ОТ РАЗМАШИСТОГО УДАРА (Sweeping Edge) ---
-        // Ивент срабатывает несколько раз в одну миллисекунду, если мы бьем толпу.
-        // Чтобы комбо не накручивалось х10 за один взмах, проверяем разницу во времени.
-        boolean isSweepHit = (currentTime - lastTime < 50);
+        long hitTimeDiff = currentTime - lastHit;
+
+        // Защита от Размашистого удара (Sweeping Edge)
+        boolean isSweepHit = (hitTimeDiff < 50);
 
         if (!isSweepHit) {
-            // --- 1. ПРОВЕРКА ИДЕАЛЬНОГО УДАРА ---
-            // getCooledAttackStrength возвращает шкалу от 0.0 до 1.0.
-            // Берем 0.95f для компенсации микро-задержек пинга
-            boolean isPerfect = player.getAttackCooldown() >= 0.95f;
 
-            // Если игрок спамил (не идеальный удар) ИЛИ прошло больше 3 секунд (3000 мс)
-            if (!isPerfect || (currentTime - lastTime > 3000)) {
-                combo = 0; // Наказание: полное обнуление комбо!
+            // Если с прошлого удара прошло больше 3 секунд (3000 мс) - комбо остыло
+            if (hitTimeDiff > 3000) {
+                combo = 0;
             }
 
-            // Если удар идеальный - увеличиваем комбо
-            if (isPerfect) {
-                combo++;
-            }
+            // Увеличиваем счетчик
+            combo++;
 
-            // Обновляем данные в памяти игрока
-            player.getPersistentDataContainer().set(timeKey, PersistentDataType.LONG, currentTime);
+            player.getPersistentDataContainer().set(hitTimeKey, PersistentDataType.LONG, currentTime);
             player.getPersistentDataContainer().set(comboKey, PersistentDataType.INTEGER, combo);
         }
 
-        // --- 2. ПРИМЕНЕНИЕ ЭФФЕКТОВ НАКОПЛЕНИЯ ---
-        // Комбо начинает работать со 2-го удара (combo > 1)
+        // --- 3. ЭФФЕКТЫ ---
         if (combo > 1) {
 
-            // ГЕОМЕТРИЧЕСКАЯ ПРОГРЕССИЯ
-            // Базовый бонус: 5% за каждый уровень зачарования
             double baseBonus = 0.05 * level;
-            // Формула: Урон * (1 + бонус) ^ (комбо - 1)
             double multiplier = Math.pow(1.0 + baseBonus, combo - 1);
 
             event.setDamage(event.getDamage() * multiplier);
 
-            // АУДИО И ВИЗУАЛ (Зарядка)
-            // Чем выше комбо, тем звонче звук (максимальный питч = 2.0)
             float pitch = Math.min(2.0f, 0.5f + (combo * 0.1f));
             player.getWorld().playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 0.6f, pitch);
             victim.getWorld().spawnParticle(Particle.WAX_OFF, victim.getLocation().add(0, 1, 0), combo * 2, 0.4, 0.4, 0.4, 0.1);
 
-            // --- 3. РАСПЛАТА ПРОЧНОСТЬЮ ---
-            // Применяем износ только к основной цели, чтобы размашистый удар не сломал меч за секунду
+            // --- 4. ПЛАТА ПРОЧНОСТЬЮ ---
             if (!isSweepHit) {
                 org.bukkit.inventory.meta.ItemMeta meta = mainHand.getItemMeta();
                 if (meta instanceof Damageable damageable) {
 
                     int currentDamage = damageable.getDamage();
-                    // Экспоненциальный рост износа: 10-й удар нанесет мечу 9 единиц урона прочности за раз!
                     int extraDamage = combo - 1;
 
                     damageable.setDamage(currentDamage + extraDamage);
-                    mainHand.setItemMeta(damageable);
+                    mainHand.setItemMeta(meta);
 
-                    // Проверяем, не сломался ли меч от перенапряжения
                     if (damageable.getDamage() >= mainHand.getType().getMaxDurability()) {
                         player.getInventory().setItemInMainHand(null);
                         player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0f, 1.0f);
