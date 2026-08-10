@@ -102,7 +102,7 @@ public class anvil implements Listener {
                 }
 
                 resultMeta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, level);
-                ench.applyAttributeEnchantments(resultMeta, level);
+                ench.applyAttributeEnchantments(resultMeta, result, level);
                 resultMeta.setEnchantmentGlintOverride(true);
                 changed = true;
             }

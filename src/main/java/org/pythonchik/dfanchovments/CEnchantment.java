@@ -154,23 +154,41 @@ public class CEnchantment {
         return List.of();
     }
 
-    public void applyAttributeEnchantments(ItemMeta meta, int level) {
+    public void applyAttributeEnchantments(ItemMeta meta, ItemStack stack, int level) {
+        // Material defaults are implicit until we create explicit modifiers.
+        if (!meta.hasAttributeModifiers()) {
+            var defaults = stack.getType().getDefaultAttributeModifiers(stack.getType().getEquipmentSlot());
+
+            for (var entry : defaults.entries()) {
+                meta.addAttributeModifier(
+                        entry.getKey(),
+                        entry.getValue()
+                );
+            }
+        }
+
         for (EnchantmentAttribute attributeEnchantment : this.getAttributeEnchantments()) {
-            if (attributeEnchantment == null || attributeEnchantment.attribute() == null || attributeEnchantment.operation() == null || attributeEnchantment.slotGroup() == null) {
+            if (attributeEnchantment == null
+                    || attributeEnchantment.attribute() == null
+                    || attributeEnchantment.operation() == null
+                    || attributeEnchantment.slotGroup() == null) {
                 continue;
             }
-            if (meta.hasAttributeModifiers()) {
-                var modifiers = meta.getAttributeModifiers(attributeEnchantment.attribute());
-                if (modifiers != null) {
-                    for (AttributeModifier modifier : modifiers) {
-                        if (modifier.getKey().equals(this.getId())) {
-                            meta.removeAttributeModifier(attributeEnchantment.attribute(), modifier);
-                        }
+
+            Attribute attribute = attributeEnchantment.attribute();
+
+            var modifiers = meta.getAttributeModifiers(attribute);
+
+            if (modifiers != null) {
+                for (AttributeModifier modifier : List.copyOf(modifiers)) {
+                    if (modifier.getKey().equals(this.getId())) {
+                        meta.removeAttributeModifier(attribute, modifier);
                     }
                 }
             }
+
             meta.addAttributeModifier(
-                    attributeEnchantment.attribute(),
+                    attribute,
                     new AttributeModifier(
                             this.getId(),
                             attributeEnchantment.amountPerLevel() * level,
@@ -250,7 +268,7 @@ public class CEnchantment {
         org.bukkit.inventory.meta.components.CustomModelDataComponent cmd = meta.getCustomModelDataComponent();
         cmd.setStrings(List.of(this.getId().getKey()));
         meta.setCustomModelDataComponent(cmd);
-        this.applyAttributeEnchantments(meta, finalLevel);
+        this.applyAttributeEnchantments(meta, book, finalLevel);
         Util.updateCustomLore(meta);
         meta.setEnchantmentGlintOverride(true);
         book.setItemMeta(meta);

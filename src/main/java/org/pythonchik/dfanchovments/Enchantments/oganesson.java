@@ -13,10 +13,7 @@ import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class oganesson extends CEnchantment implements Listener {
     public oganesson(NamespacedKey id) {
@@ -26,8 +23,12 @@ public class oganesson extends CEnchantment implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onHit(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player)) return;
-
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item;
+        if (player.getItemInUse() != null) {
+            item = player.getItemInUse();
+        } else {
+            item = player.getInventory().getItemInMainHand();
+        }
         if (item.getItemMeta() == null) return;
         int cd = player.getCooldown(item.getType());
         if (cd >= 1) {
