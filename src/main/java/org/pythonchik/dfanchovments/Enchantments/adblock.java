@@ -31,6 +31,12 @@ public class adblock extends CEnchantment implements Listener {
         if (!defender.isBlocking()) return;
         ItemStack shield = defender.getItemInUse();
         if (shield == null) return;
+
+        Vector playerLook = defender.getLocation().getDirection().setY(0).normalize();
+        Vector vectorToAttacker = event.getDamager().getLocation().toVector().subtract(defender.getLocation().toVector()).setY(0).normalize();
+
+        if (playerLook.dot(vectorToAttacker) < 0) return;
+
         ItemMeta meta = shield.getItemMeta();
         if (meta == null || !meta.getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) return;
         int level = meta.getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);

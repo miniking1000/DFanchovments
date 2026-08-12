@@ -35,7 +35,12 @@ public class ein extends CEnchantment implements Listener {
         if (!(event.getDamager() instanceof Player player)) return;
         if (!(event.getEntity() instanceof LivingEntity target)) return;
 
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item;
+        if (player.getItemInUse() != null) {
+            item = player.getItemInUse();
+        } else {
+            item = player.getInventory().getItemInMainHand();
+        }
         if (item.getItemMeta() == null) return;
 
         if (target.hasMetadata(EXTRA_HIT_META)) {

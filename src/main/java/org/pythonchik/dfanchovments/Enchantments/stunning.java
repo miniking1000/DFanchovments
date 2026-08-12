@@ -30,7 +30,12 @@ public class stunning extends CEnchantment implements Listener {
     @EventHandler
     public void onDamage(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player)) return;
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item;
+        if (player.getItemInUse() != null) {
+            item = player.getItemInUse();
+        } else {
+            item = player.getInventory().getItemInMainHand();
+        }
         if (item.getType() != Material.MACE) return;
         if (player.getFallDistance() <= 5.0f) return;
         if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK

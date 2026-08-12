@@ -30,7 +30,12 @@ public class hemovibe extends CEnchantment implements Listener {
     public void onHit(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player player)) return;
 
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item;
+        if (player.getItemInUse() != null) {
+            item = player.getItemInUse();
+        } else {
+            item = player.getInventory().getItemInMainHand();
+        }
         if (item.getItemMeta() == null) return;
 
         if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK

@@ -34,7 +34,12 @@ public class frostbite extends CEnchantment implements Listener {
                 && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
             return;
         }
-        ItemStack sword = player.getInventory().getItemInMainHand();
+        ItemStack sword;
+        if (player.getItemInUse() != null) {
+            sword = player.getItemInUse();
+        } else {
+            sword = player.getInventory().getItemInMainHand();
+        }
         if (sword.getType().isAir() || !sword.getType().name().endsWith("_SWORD")) return;
         if (!sword.hasItemMeta()) return;
 

@@ -36,7 +36,12 @@ public class headless extends CEnchantment implements Listener {
     public void onEntityDeath(EntityDeathEvent event) {
         if (event.getEntity().getKiller() != null) {
             Player killer = event.getEntity().getKiller();
-            ItemStack weapon = killer.getInventory().getItemInMainHand();
+            ItemStack weapon;
+            if (killer.getItemInUse() != null) {
+                weapon = killer.getItemInUse();
+            } else {
+                weapon = killer.getInventory().getItemInMainHand();
+            }
             if (weapon.getItemMeta() != null && weapon.getItemMeta().getPersistentDataContainer().has(id) && HEADS.containsKey(event.getEntityType())) {
                 double dropChance = 0.2;
                 int lootingLevel = weapon.getEnchantmentLevel(Enchantment.FORTUNE);
@@ -55,7 +60,12 @@ public class headless extends CEnchantment implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player player) {
-            ItemStack weapon = player.getInventory().getItemInMainHand();
+            ItemStack weapon;
+            if (player.getItemInUse() != null) {
+                weapon = player.getItemInUse();
+            } else {
+                weapon = player.getInventory().getItemInMainHand();
+            }
             if (weapon.getItemMeta() != null && weapon.getItemMeta().getPersistentDataContainer().has(id)) {
                 event.setDamage(event.getDamage() - 3);
             }

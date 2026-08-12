@@ -30,11 +30,7 @@ public class oganesson extends CEnchantment implements Listener {
             item = player.getInventory().getItemInMainHand();
         }
         if (item.getItemMeta() == null) return;
-        int cd = player.getCooldown(item.getType());
-        if (cd >= 1) {
-            event.setCancelled(true);
-            return;
-        }
+
         if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
                 && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
             return;
@@ -46,16 +42,22 @@ public class oganesson extends CEnchantment implements Listener {
 
         if (level == null || level <= 0) return;
 
-        double failChance = (100.0 - (10.0 * level)) / 100.0;
-        failChance = Math.max(0.0, Math.min(1.0, failChance));
-
-        if (Math.random() < failChance) {
-            player.setCooldown(item.getType(), 20 * 3); // 3 seconds
-            event.setCancelled(true);
-            return;
+        double successChance = Math.min(0.95, 0.60 + 0.035 * level);
+        double multiplier;
+        if (Math.random() < successChance) {
+            multiplier = 1.35 + 0.055 * level;
+        } else {
+            multiplier = 0.5 / (1.0 + 0.23 * level);
         }
+        /*
+      level | avg buff  | chance to hit | damage multipliers
+        1) avg buff: 1.04, chance=0.64,   success=1.41, fail=0.41
+        2) avg buff: 1.09, chance=0.67,   success=1.46, fail=0.34
+        3) avg buff: 1.16, chance=0.70,   success=1.52, fail=0.30
+        4) avg buff: 1.23, chance=0.74,   success=1.57, fail=0.26
+        4) avg buff: 1.31, chance=0.78,   success=1.62, fail=0.23
+         */
 
-        double multiplier = 0.5 + (0.5 * level);
         event.setDamage(event.getDamage() * multiplier);
     }
 

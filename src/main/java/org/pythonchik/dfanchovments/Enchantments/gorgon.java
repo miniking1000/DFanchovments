@@ -36,19 +36,9 @@ public class gorgon extends CEnchantment implements Listener {
 
         if (!player.isBlocking()) return;
 
-        ItemStack shield = null;
+        ItemStack shield = player.getItemInUse();
 
-        ItemStack offHand = player.getInventory().getItemInOffHand();
-        if (offHand.getType().name().endsWith("SHIELD") && offHand.hasItemMeta()) {
-            shield = offHand;
-        } else {
-            ItemStack mainHand = player.getInventory().getItemInMainHand();
-            if (mainHand.getType().name().endsWith("SHIELD") && mainHand.hasItemMeta()) {
-                shield = mainHand;
-            }
-        }
-
-        if (shield == null) return;
+        if (shield == null || shield.getItemMeta() == null) return;
 
         if (!shield.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) return;
 
