@@ -268,6 +268,7 @@ public class CEnchantment {
         org.bukkit.inventory.meta.components.CustomModelDataComponent cmd = meta.getCustomModelDataComponent();
         cmd.setStrings(List.of(this.getId().getKey()));
         meta.setCustomModelDataComponent(cmd);
+        //meta.setItemModel(new NamespacedKey(DFanchovments.plugin, "custom_book"));
         this.applyAttributeEnchantments(meta, book, finalLevel);
         Util.updateCustomLore(meta);
         meta.setEnchantmentGlintOverride(true);

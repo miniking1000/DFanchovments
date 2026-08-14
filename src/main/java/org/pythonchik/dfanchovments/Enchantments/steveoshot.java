@@ -3,6 +3,7 @@ package org.pythonchik.dfanchovments.Enchantments;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -33,24 +34,27 @@ public class steveoshot extends CEnchantment implements Listener {
         if (!(projectile.getShooter() instanceof Player player)) {
             return;
         }
-        ItemStack mainHand = player.getInventory().getItemInMainHand();
-        if (mainHand.getType().isAir() || !mainHand.hasItemMeta()) {
+        ItemStack mainHand = player.getItemInUse();
+        if (mainHand == null || !mainHand.hasItemMeta()) {
             return;
         }
         ItemMeta meta = mainHand.getItemMeta();
-        if (meta.getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) {
-            Entity guy = sendFlying(player.getPassengers(), null);
-            if (guy != null && guy.getVehicle() != null) {
-                guy.getVehicle().eject();
-                guy.setVelocity(projectile.getVelocity().multiply(2));
-                Bukkit.getScheduler().runTask(DFanchovments.plugin, projectile::remove);
-            }
+        assert meta != null;
+        if (!meta.getPersistentDataContainer().has(this.getId(), PersistentDataType.INTEGER)) {
+            return;
         }
+        Entity guy = sendFlying(player.getPassengers(), null);
+        if (guy != null && guy.getVehicle() != null) {
+            guy.getVehicle().eject();
+            guy.setVelocity(projectile.getVelocity().multiply(2));
+            Bukkit.getScheduler().runTask(DFanchovments.plugin, projectile::remove);
+        }
+
     }
 
     private Entity sendFlying(List<Entity> list, Entity result) {
         for (Entity entity : list) {
-            if (entity instanceof Player) {
+            if (entity instanceof LivingEntity) {
                 return entity;
             } else {
                 result = sendFlying(entity.getPassengers(), result);
@@ -70,7 +74,7 @@ public class steveoshot extends CEnchantment implements Listener {
     @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
-        defaults.put("name", "&7Стиво-стрел");
+        defaults.put("name", "&7Мобо-стрел");
         defaults.put("biomes", List.of("DESERT"));
         defaults.put("chance", 0.45);
         defaults.put("luck", 0);

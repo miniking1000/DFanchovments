@@ -1,21 +1,20 @@
 package org.pythonchik.dfanchovments;
 
-import org.bukkit.*;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.components.CustomModelDataComponent;
-import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.Plugin;
+import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.pythonchik.dfanchovments.Enchantments.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Random;
 
 
 public final class DFanchovments extends JavaPlugin {
@@ -41,6 +40,15 @@ public final class DFanchovments extends JavaPlugin {
         for (Bosses.Rarity rarity : Bosses.Rarity.ALL) {
             rarity.updateConfig();
         }
+        ArrayList<EntityType> types = new ArrayList<>();
+        for (String e : bossConfig.getStringList("blacklisted")) {
+            try {
+                types.add(EntityType.valueOf(e));
+            } catch (Exception ignored) {
+                getLogger().warning("Failed to get EntityType to blacklist from: " + e);
+            }
+        }
+        Bosses.blacklisted = new HashSet<>(types);
     }
 
     @Override

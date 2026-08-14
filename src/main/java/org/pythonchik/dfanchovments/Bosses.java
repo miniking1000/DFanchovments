@@ -10,7 +10,6 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.inventory.EquipmentSlotGroup;
@@ -23,7 +22,6 @@ import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.scoreboard.Team;
 
 import java.util.*;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class Bosses implements Listener {
@@ -31,15 +29,22 @@ public class Bosses implements Listener {
     static Long CDtimestamp = 0L;
     static final NamespacedKey rarityKey = new NamespacedKey(DFanchovments.plugin, "rarity");
     static final Random rng = new Random();
-    static HashSet<EntityType> blacklisted = new HashSet<>(List.of(
-            EntityType.SILVERFISH, EntityType.CREEPER, EntityType.CREAKING, EntityType.ENDERMITE, EntityType.PHANTOM,
-            EntityType.SLIME, EntityType.VEX, EntityType.MAGMA_CUBE, EntityType.SKELETON));
+    static HashSet<EntityType> blacklisted = new HashSet<>();
     final Scoreboard scoreboard;
     private final NamespacedKey summonerKey;
 
     public Bosses() {
         summonerKey = DFanchovments.summonerKey;
         ScoreboardManager manager = Bukkit.getScoreboardManager();
+        ArrayList<EntityType> types = new ArrayList<>();
+        for (String e : DFanchovments.bossConfig.getStringList("blacklisted")) {
+            try {
+                types.add(EntityType.valueOf(e));
+            } catch (Exception ignored) {
+                DFanchovments.plugin.getLogger().warning("Failed to get EntityType to blacklist from: " + e);
+            }
+        }
+        blacklisted = new HashSet<>(types);
         if (manager == null) {
             System.out.println("WARNING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!WHY are bosses loading before every world? no scoreboards to take!");
             scoreboard = null;
@@ -173,20 +178,6 @@ public class Bosses implements Listener {
         }
     }
 
-    //@EventHandler
-    public void onEntitySpawn(EntitySpawnEvent event) {
-        if (System.currentTimeMillis() < DFanchovments.bossConfig.getLong("cooldown") + CDtimestamp) return;
-        if (!(event.getEntity() instanceof Enemy entity)) return;
-        if (entity instanceof Ageable ageable && !ageable.isAdult()) return;
-        double roll = Math.random() * 100; // % that rolled
-        for (Rarity rarity : Rarity.ALL) {
-            if (rarity.isAccepted(roll)) {
-                makeIntoBoss(entity, rarity);
-                CDtimestamp = System.currentTimeMillis();
-                return;
-            }
-        }
-    }
 
     @EventHandler
     public void onSummonerUse(PlayerItemConsumeEvent event) {
