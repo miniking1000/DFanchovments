@@ -25,10 +25,7 @@ public class humanizer extends CEnchantment {
         return retu;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
     @Override
     public Map<String, Object> getDefaultConfig() {

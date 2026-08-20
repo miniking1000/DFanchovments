@@ -102,8 +102,5 @@ public class myolner extends CEnchantment implements Listener {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 }

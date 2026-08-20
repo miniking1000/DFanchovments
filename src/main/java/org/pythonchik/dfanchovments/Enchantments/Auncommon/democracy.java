@@ -26,10 +26,7 @@ public class democracy extends CEnchantment implements Listener {
         return List.of(new EnchantmentAttribute(Attribute.SCALE, 0.25D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.HEAD));
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
     //this event handler is used NOT as part of this enchantment, but rather as a way to create 'upgradable' items
     @EventHandler

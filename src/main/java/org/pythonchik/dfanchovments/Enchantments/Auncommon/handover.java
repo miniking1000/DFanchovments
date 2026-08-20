@@ -48,9 +48,6 @@ public class handover extends CEnchantment {
         );
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
 }

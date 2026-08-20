@@ -86,10 +86,7 @@ public class xxxxxxxxxx extends CEnchantment implements Listener {
         return retu;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
     @Override
     public Map<String, Object> getDefaultConfig() {

@@ -72,8 +72,5 @@ public class poshot extends CEnchantment implements Listener {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 }

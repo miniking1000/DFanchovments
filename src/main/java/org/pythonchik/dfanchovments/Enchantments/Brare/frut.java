@@ -119,9 +119,6 @@ public class frut extends CEnchantment implements Listener {
         return retu;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
 }

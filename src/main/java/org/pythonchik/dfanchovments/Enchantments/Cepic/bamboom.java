@@ -104,8 +104,5 @@ public class bamboom extends CEnchantment implements Listener {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 }

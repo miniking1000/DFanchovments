@@ -127,8 +127,5 @@ public class spider extends CEnchantment {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 }

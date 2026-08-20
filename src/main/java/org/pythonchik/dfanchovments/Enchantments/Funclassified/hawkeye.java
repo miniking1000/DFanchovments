@@ -105,8 +105,5 @@ public class hawkeye extends CEnchantment implements Listener {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 }

@@ -16,9 +16,11 @@ import java.util.*;
 
 public class CEnchantment {
     protected NamespacedKey id;
+    private final HashSet<String> targets;
 
     protected CEnchantment(NamespacedKey id) {
         this.id = id;
+        this.targets = new HashSet<>(this.getTragers().stream().map(String::toUpperCase).toList());
         DFanchovments.CEnchantments.add(this);
         if (this instanceof Listener listener && DFanchovments.plugin != null) {
             DFanchovments.plugin.getServer().getPluginManager().registerEvents(listener, DFanchovments.plugin);
@@ -33,6 +35,10 @@ public class CEnchantment {
         List<String> retu = new ArrayList<>();
         retu.add(Material.ENCHANTED_BOOK.name());
         return retu;
+    }
+
+    public boolean isApplicable(Material material) {
+        return targets.contains(material.name().toUpperCase());
     }
 
     public List<String> getConflictKeys() {

@@ -56,9 +56,6 @@ public class tntanon extends CEnchantment implements Listener {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 }
 

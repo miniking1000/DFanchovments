@@ -24,11 +24,6 @@ public class ToCopyEnch extends CEnchantment implements Listener {
     }
 
     @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
-
-    @Override
     public Map<String, Object> getDefaultConfig() {
         Map<String, Object> defaults = new LinkedHashMap<>();
         defaults.put("name", "&7name");

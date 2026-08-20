@@ -66,10 +66,7 @@ public class twodent extends CEnchantment implements Listener {
         }
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
     @Override
     public Map<String, Object> getDefaultConfig() {

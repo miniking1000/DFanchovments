@@ -152,8 +152,5 @@ public class breakerOrIsIt extends CEnchantment implements Listener {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 }

@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionEffectType;
 import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
@@ -76,7 +77,7 @@ public class antiholy extends CEnchantment implements Listener {
         ItemMeta meta = chestplate.getItemMeta();
         if (meta == null) return false;
 
-        return meta.getPersistentDataContainer().has(id);
+        return meta.getPersistentDataContainer().has(this.getId(), PersistentDataType.INTEGER);
     }
 
 
@@ -105,8 +106,5 @@ public class antiholy extends CEnchantment implements Listener {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 }

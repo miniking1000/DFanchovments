@@ -24,10 +24,7 @@ public class steper extends CEnchantment {
         return List.of(new EnchantmentAttribute(Attribute.STEP_HEIGHT, 0.5D, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.LEGS));
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
     @Override
     public List<String> getTragers() {

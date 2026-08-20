@@ -69,9 +69,6 @@ public class telepathy extends CEnchantment implements Listener {
         return defaults;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
 }

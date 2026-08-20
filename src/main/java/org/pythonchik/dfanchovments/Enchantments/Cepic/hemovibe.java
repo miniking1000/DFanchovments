@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.DFanchovments;
 import org.pythonchik.dfanchovments.Util;
 
 import java.util.ArrayList;
@@ -47,8 +48,8 @@ public class hemovibe extends CEnchantment implements Listener {
 
         if (level == null || level <= 0) return;
 
-        // 2.5% chance per level
-        double chance = 0.05 * level;
+        // 5% chance per level
+        double chance = 0.05 * level * (item.getType() == Material.BAMBOO ? 4.0 : 1.0); // 100% if using bamboo (its easy to suck blood from a bamboo)
         if (Math.random() >= chance) return;
 
         double damageDealt = event.getFinalDamage();
@@ -76,10 +77,7 @@ public class hemovibe extends CEnchantment implements Listener {
         return retu;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
     @Override
     public Map<String, Object> getDefaultConfig() {

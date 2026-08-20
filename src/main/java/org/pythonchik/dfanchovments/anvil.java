@@ -98,7 +98,7 @@ public class anvil implements Listener {
                         : Math.max(leftLevel, rightLevel);
                 HumanEntity player = event.getView().getPlayer();
                 if (!player.isOp() || player.getGameMode() != GameMode.CREATIVE) {
-                    level = Math.clamp(level, ench.getStartLevel(), ench.getMaxLevel());
+                    level = Math.min(Math.max(level, ench.getStartLevel()), ench.getMaxLevel());
                 }
 
                 resultMeta.getPersistentDataContainer().set(ench.getId(), PersistentDataType.INTEGER, level);
@@ -199,7 +199,7 @@ public class anvil implements Listener {
     }
 
     private boolean isApplicableTo(Material material, CEnchantment ench) {
-        return ench.getTragers().contains(material.name().toUpperCase());
+        return ench.isApplicable(material);
     }
 
     private boolean hasVanillaConflict(ItemMeta meta, Enchantment incoming) {

@@ -38,8 +38,8 @@ public class adblock extends CEnchantment implements Listener {
         if (playerLook.dot(vectorToAttacker) < 0) return;
 
         ItemMeta meta = shield.getItemMeta();
-        if (meta == null || !meta.getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER)) return;
-        int level = meta.getPersistentDataContainer().getOrDefault(this.id, PersistentDataType.INTEGER, 0);
+        if (meta == null || !meta.getPersistentDataContainer().has(this.getId(), PersistentDataType.INTEGER)) return;
+        int level = meta.getPersistentDataContainer().getOrDefault(this.getId(), PersistentDataType.INTEGER, 0);
 
         if (!(event.getDamager() instanceof LivingEntity attacker)) return;
         if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
@@ -67,10 +67,7 @@ public class adblock extends CEnchantment implements Listener {
         return retu;
     }
 
-    @Override
-    public NamespacedKey getId() {
-        return this.id;
-    }
+
 
     @Override
     public Map<String, Object> getDefaultConfig() {

@@ -12,9 +12,7 @@ import org.pythonchik.dfanchovments.Enchantments.Brare.*;
 import org.pythonchik.dfanchovments.Enchantments.Cepic.*;
 import org.pythonchik.dfanchovments.Enchantments.Dlegendary.*;
 import org.pythonchik.dfanchovments.Enchantments.Emythic.*;
-import org.pythonchik.dfanchovments.Enchantments.Funclassified.hawkeye;
-import org.pythonchik.dfanchovments.Enchantments.Funclassified.neverended;
-import org.pythonchik.dfanchovments.Enchantments.Funclassified.tntanon;
+import org.pythonchik.dfanchovments.Enchantments.Funclassified.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,6 +112,11 @@ public final class DFanchovments extends JavaPlugin {
         new twodent(      new NamespacedKey(plugin, "twodent"));
         new steper(       new NamespacedKey(plugin, "steper"));
         new accumulation( new NamespacedKey(plugin, "accumulation"));
+        new turtlellini(  new NamespacedKey(plugin, "turtlellini"));
+        new cushioning(   new NamespacedKey(plugin, "cushioning"));
+        new proklyatost(  new NamespacedKey(plugin, "proklyatost"));
+        new shield_ram(   new NamespacedKey(plugin, "shield_ram"));
+        new turbine(      new NamespacedKey(plugin, "turbine"));
 
 
         loadConfig();
