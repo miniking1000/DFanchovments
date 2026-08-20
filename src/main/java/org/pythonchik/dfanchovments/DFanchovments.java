@@ -7,7 +7,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.pythonchik.dfanchovments.Enchantments.*;
+import org.pythonchik.dfanchovments.Enchantments.Auncommon.*;
+import org.pythonchik.dfanchovments.Enchantments.Brare.*;
+import org.pythonchik.dfanchovments.Enchantments.Cepic.*;
+import org.pythonchik.dfanchovments.Enchantments.Dlegendary.*;
+import org.pythonchik.dfanchovments.Enchantments.Emythic.*;
+import org.pythonchik.dfanchovments.Enchantments.Funclassified.hawkeye;
+import org.pythonchik.dfanchovments.Enchantments.Funclassified.neverended;
+import org.pythonchik.dfanchovments.Enchantments.Funclassified.tntanon;
 
 import java.io.File;
 import java.io.IOException;

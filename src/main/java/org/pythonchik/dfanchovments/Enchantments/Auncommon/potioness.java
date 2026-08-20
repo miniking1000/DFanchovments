@@ -1,0 +1,105 @@
+package org.pythonchik.dfanchovments.Enchantments.Auncommon;
+
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.pythonchik.dfanchovments.Bosses;
+import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.Util;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class potioness extends CEnchantment implements Listener {
+
+    @EventHandler
+    public void onHit(EntityDamageByEntityEvent event) {
+        if (!(event.getEntity() instanceof Player player)) {
+            return;
+        }
+        if (!(event.getDamager() instanceof LivingEntity entity)) {
+            return;
+        }
+        if (event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK
+                && event.getCause() != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) {
+            return;
+        }
+
+        int lvl = 0;
+        if (player.getInventory().getHelmet() != null) {
+            if (player.getInventory().getHelmet().getItemMeta() != null) {
+                if (player.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + player.getInventory().getHelmet().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+                }
+            }
+        }
+        if (player.getInventory().getChestplate() != null) {
+            if (player.getInventory().getChestplate().getItemMeta() != null) {
+                if (player.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + player.getInventory().getChestplate().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+                }
+            }
+        }
+        if (player.getInventory().getLeggings() != null) {
+            if (player.getInventory().getLeggings().getItemMeta() != null) {
+                if (player.getInventory().getLeggings().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + player.getInventory().getLeggings().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+                }
+            }
+        }
+        if (player.getInventory().getBoots() != null) {
+            if (player.getInventory().getBoots().getItemMeta() != null) {
+                if (player.getInventory().getBoots().getItemMeta().getPersistentDataContainer().has(id)) {
+                    lvl = lvl + player.getInventory().getBoots().getItemMeta().getPersistentDataContainer().get(id, PersistentDataType.INTEGER);
+                }
+            }
+        }
+        if (lvl > 0) {
+            entity.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 20 * lvl, lvl == 1 ? 0 : lvl == 2 || lvl == 3 || lvl == 4 ? 1 : lvl == 5 || lvl == 6 || lvl == 7 ? 2 : lvl == 8 || lvl == 9 || lvl == 10 || lvl == 11 ? 3 : lvl == 12 || lvl == 13 || lvl == 14 || lvl == 15 ? 4 : 5));
+        }
+    }
+
+    public potioness(NamespacedKey id) {
+        super(id);
+    }
+
+    @Override
+    public List<String> getTragers() {
+        List<String> retu = new ArrayList<>();
+        retu.add(Material.ENCHANTED_BOOK.name());
+
+        retu.addAll(Util.armors());
+        return retu;
+    }
+
+    @Override
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
+        defaults.put("name", "&7Отравленность");
+        defaults.put("biomes", List.of("SPARSE_JUNGLE"));
+        defaults.put("chance", 3);
+        defaults.put("luck", 2);
+        defaults.put("maxlvl", 4);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.UNCOMMON.getName(), 10);
+
+        defaults.put("bosses", bosses);
+        return defaults;
+    }
+
+    @Override
+    public NamespacedKey getId() {
+        return this.id;
+    }
+}

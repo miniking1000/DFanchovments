@@ -1,0 +1,92 @@
+package org.pythonchik.dfanchovments.Enchantments.Brare;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.entity.Axolotl;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.AxolotlBucketMeta;
+import org.pythonchik.dfanchovments.Bosses;
+import org.pythonchik.dfanchovments.CEnchantment;
+import org.pythonchik.dfanchovments.DFanchovments;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+public class fish extends CEnchantment implements Listener {
+    public fish(NamespacedKey id) {
+        super(id);
+    }
+
+    @EventHandler
+    public void CrossEvents(ProjectileLaunchEvent event) {
+        if (event.getEntity().getShooter() instanceof Player) {
+            Player player = (Player) event.getEntity().getShooter();
+            if (player.getInventory().getItemInMainHand().getItemMeta() != null) {
+                if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
+                    if (player.getInventory().getItemInOffHand().getType().equals(Material.AXOLOTL_BUCKET)) {
+                        AxolotlBucketMeta meta = (AxolotlBucketMeta) player.getInventory().getItemInOffHand().getItemMeta();
+                        player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
+                        Axolotl entity = (Axolotl) player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.AXOLOTL);
+                        entity.setVelocity(event.getEntity().getVelocity());
+                        entity.setVariant(meta.getVariant());
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
+                    } else if (player.getInventory().getItemInOffHand().getType().equals(Material.PUFFERFISH_BUCKET)) {
+                        player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
+                        player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.PUFFERFISH).setVelocity(event.getEntity().getVelocity());
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
+                    } else if (player.getInventory().getItemInOffHand().getType().equals(Material.SALMON_BUCKET)) {
+                        player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
+                        player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.SALMON).setVelocity(event.getEntity().getVelocity());
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
+                    } else if (player.getInventory().getItemInOffHand().getType().equals(Material.COD_BUCKET)) {
+                        player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
+                        player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.COD).setVelocity(event.getEntity().getVelocity());
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
+                    } else if (player.getInventory().getItemInOffHand().getType().equals(Material.TROPICAL_FISH_BUCKET)) {
+                        player.getInventory().setItemInOffHand(new ItemStack(Material.WATER_BUCKET));
+                        player.getLocation().getWorld().spawnEntity(player.getLocation().add(0, 1, 0), EntityType.TROPICAL_FISH).setVelocity(event.getEntity().getVelocity());
+                        Bukkit.getScheduler().runTask(DFanchovments.plugin, event.getEntity()::remove);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public List<String> getTragers() {
+        List<String> retu = new ArrayList<>();
+        retu.add(Material.ENCHANTED_BOOK.name());
+        retu.add(Material.CROSSBOW.name());
+        return retu;
+    }
+
+    @Override
+    public Map<String, Object> getDefaultConfig() {
+        Map<String, Object> defaults = new LinkedHashMap<>();
+        defaults.put("name", "&7Рыбный заряд");
+        defaults.put("biomes", List.of("BEACH"));
+        defaults.put("chance", 2);
+        defaults.put("luck", 3);
+        defaults.put("maxlvl", 1);
+
+        Map<String, Object> bosses = new LinkedHashMap<>();
+        bosses.put(Bosses.Rarity.RARE.getName(), 10);
+
+        defaults.put("bosses", bosses);
+
+        return defaults;
+    }
+
+    @Override
+    public NamespacedKey getId() {
+        return this.id;
+    }
+}
