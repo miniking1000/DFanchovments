@@ -13,7 +13,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.pythonchik.dfanchovments.Bosses;
 import org.pythonchik.dfanchovments.CEnchantment;
 import org.pythonchik.dfanchovments.Util;
-import org.pythonchik.dfanchovments.XP;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -31,7 +30,7 @@ public class exp extends CEnchantment implements Listener {
             return;
         }
         if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
-            int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(id, PersistentDataType.INTEGER, 0) * 15);
+            int a = (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(id, PersistentDataType.INTEGER, 0) * 15);
             ExperienceOrb orb = player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
             orb.setExperience(a);
             ((CraftExperienceOrb) orb).getHandle().playerTouch(((CraftPlayer) player).getHandle());
