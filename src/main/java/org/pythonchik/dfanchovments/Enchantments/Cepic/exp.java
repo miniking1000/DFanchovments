@@ -2,6 +2,9 @@ package org.pythonchik.dfanchovments.Enchantments.Cepic;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.craftbukkit.entity.CraftExperienceOrb;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,7 +32,11 @@ public class exp extends CEnchantment implements Listener {
         }
         if (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().has(id)) {
             int a = XP.getTotalExperience(player) + (player.getInventory().getItemInMainHand().getItemMeta().getPersistentDataContainer().getOrDefault(id, PersistentDataType.INTEGER, 0) * 15);
-            XP.setTotalExperience(player, a);
+            ExperienceOrb orb = player.getWorld().spawn(player.getLocation(), ExperienceOrb.class);
+            orb.setExperience(a);
+            ((CraftExperienceOrb) orb).getHandle().playerTouch(((CraftPlayer) player).getHandle());
+
+            //XP.setTotalExperience(player, a);
         }
 
     }

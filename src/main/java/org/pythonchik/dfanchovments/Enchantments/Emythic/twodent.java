@@ -1,5 +1,6 @@
 package org.pythonchik.dfanchovments.Enchantments.Emythic;
 
+import net.minecraft.util.Mth;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -48,19 +49,22 @@ public class twodent extends CEnchantment implements Listener {
             }
             if (meta.getPersistentDataContainer().has(this.getId(), PersistentDataType.INTEGER)) {
                 int level = meta.getPersistentDataContainer().get(this.getId(), PersistentDataType.INTEGER);
-                float f7 = player.getLocation().getPitch();
-                float f = player.getLocation().getYaw();
-                float f1 = (float) (-Math.sin(f7 * ((float) Math.PI / 180F)) * Math.cos(f * ((float) Math.PI / 180F)));
-                float f2 = (float) -Math.sin(f * ((float) Math.PI / 180F));
-                float f3 = (float) (Math.cos(f7 * ((float) Math.PI / 180F)) * Math.cos(f * ((float) Math.PI / 180F)));
-                float f4 = (float) Math.sqrt(f1 * f1 + f2 * f2 + f3 * f3);
-                float f5 = 3.0F * ((1.0F + (float) level) / 4.0F);
-                f1 *= f5 / f4;
-                f2 *= f5 / f4;
-                f3 *= f5 / f4;
+
+                float yRot = player.getLocation().getYaw();
+                float xRot = player.getLocation().getPitch();
+                float xd = -Mth.sin(yRot * Mth.DEG_TO_RAD) * Mth.cos(xRot * Mth.DEG_TO_RAD);
+                float yd = -Mth.sin(xRot * Mth.DEG_TO_RAD);
+                float zd = Mth.cos(yRot * Mth.DEG_TO_RAD) * Mth.cos(xRot * Mth.DEG_TO_RAD);
+                float dist = Mth.sqrt(xd * xd + yd * yd + zd * zd);
+                xd *= level / dist;
+                yd *= level / dist;
+                zd *= level / dist;
+
+
                 Vector move = player.getVelocity();
-                move.add(new Vector((double) f1, (double) f2, (double) f3));
+                move.add(new Vector((double) xd, (double) yd, (double) zd));
                 player.setVelocity(move);
+
                 player.startRiptideAttack(10 + (10 * level), 0, chestplate);
             }
         }

@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import org.pythonchik.dfanchovments.Bosses;
@@ -42,7 +43,10 @@ public class shield_ram extends CEnchantment implements Listener {
 
         // Проверяем наличие зачарованного щита в обеих руках
         ItemStack shield = player.getItemInUse();
-        if (shield == null) return;
+        if (shield == null || !shield.hasItemMeta()) return;
+
+        ItemMeta meta = shield.getItemMeta();
+        if (!(meta.getPersistentDataContainer().has(this.getId()))) return;
 
         Location frontLoc = player.getLocation().add(player.getLocation().getDirection().setY(0).normalize().multiply(1.0)).add(0, 0.5, 0);
         long currentTime = System.currentTimeMillis();
@@ -70,10 +74,6 @@ public class shield_ram extends CEnchantment implements Listener {
         }
     }
 
-    private boolean hasEnchant(ItemStack item) {
-        if (item == null || item.getType() != Material.SHIELD || !item.hasItemMeta()) return false;
-        return item.getItemMeta().getPersistentDataContainer().has(this.id, PersistentDataType.INTEGER);
-    }
 
     @Override
     public List<String> getTragers() {

@@ -44,6 +44,7 @@ public class proklyatost extends CEnchantment implements Listener {
         addIfPresent("LUCK");
         addIfPresent("HERO_OF_THE_VILLAGE");
         addIfPresent("INSTANT_HEALTH");
+        addIfPresent("JUMP_BOOST");
     }
 
     private static void addIfPresent(String name) {
@@ -68,7 +69,6 @@ public class proklyatost extends CEnchantment implements Listener {
 
             if (event.getNewEffect() != null && BENEFICIAL_EFFECTS.contains(event.getNewEffect().getType())) {
                 event.setCancelled(true);
-                player.getWorld().playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 0.6f, 1.8f);
                 player.getWorld().spawnParticle(Particle.SMOKE, player.getEyeLocation(), 8, 0.2, 0.2, 0.2, 0.05);
             }
         }
